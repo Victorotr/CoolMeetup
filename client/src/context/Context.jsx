@@ -1,10 +1,7 @@
 // MyContext.js
 import { createContext, useContext, useState } from "react";
 
-export const MyContext = createContext({
-    myData: "initial Data",
-    setMyData: () => {},
-  });
+export const MyContext = createContext();
 
 export const Handler = () => {
   const context = useContext(MyContext);
@@ -17,11 +14,12 @@ export const Handler = () => {
 // eslint-disable-next-line react/prop-types
 export const MyContextProvider = ({ children }) => {
   const [myData, setMyData] = useState("inital Data");
+  const [menuOn, setmenuOn] = useState(false);
 
 
 
   return (
-    <MyContext.Provider value={{ myData, setMyData }}>
+    <MyContext.Provider value={{ myData, setMyData ,menuOn,setmenuOn}}>
       {children}
     </MyContext.Provider>
   );

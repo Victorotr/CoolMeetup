@@ -6,7 +6,10 @@ export default {
   ],
 
   theme: {
-    extend: {},
+    extend: { fontFamily: {
+      Lora: ['Lora', "sans-serif"],
+      // Add more custom font families as needed
+    },},
   },
   plugins: [],
 }
