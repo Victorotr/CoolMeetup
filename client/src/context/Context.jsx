@@ -16,8 +16,6 @@ export const MyContextProvider = ({ children }) => {
   const [myData, setMyData] = useState("inital Data");
   const [menuOn, setmenuOn] = useState(false);
 
-
-
   return (
     <MyContext.Provider value={{ myData, setMyData ,menuOn,setmenuOn}}>
       {children}

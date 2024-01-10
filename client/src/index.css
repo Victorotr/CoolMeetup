@@ -4,13 +4,20 @@
 @tailwind components;
 @tailwind utilities;
 
-.drop-shadow{
+.custom-drop-shadow{
   
-  filter: drop-shadow(30px 10px 4px #4444dd);
+  filter: drop-shadow(20px 30px 10px #00000059);
 
 }
-
-
+.text-shadow-soft{
+  text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.103);
+}
+.text-shadow-medium{
+  text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.303);
+}
+.text-shadow{
+  text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.486);
+}
 
 .menubutton span {
   width: 100%;
@@ -40,7 +47,7 @@
   }
   50%{
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-5px);
   }
   100%{
     opacity: 1;
@@ -54,7 +61,7 @@
   }
   50%{
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-5px);
   }
   100%{
     opacity: 1;

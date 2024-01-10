@@ -1,7 +1,11 @@
-
+import { useNavigate } from "react-router"
 const LoginButton = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className='flex items-center justify-center text-zinc-900/90 w-20 font-semibold gap-2 border border-zinc-900/30 px-2.5 py-1 rounded-bl-lg rounded-tl-lg shadow-md'>
+    <div 
+    onClick={()=>navigate('/signin')}
+    className='text-shadow-soft flex items-center justify-center text-sm text-zinc-900/90 w-20 font-semibold gap-2 border hover:border-2 border-zinc-900/30 px-2 py-1.5 rounded-md shadow-md'>
     Login
     </div>
     
