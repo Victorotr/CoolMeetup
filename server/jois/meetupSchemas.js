@@ -18,7 +18,7 @@ const newCommentMeetupJoi = Joi.object().keys({
   comment: Joi.string().max(145).required(),
 });
 
-const commentOfferJoi = Joi.object().keys({
+const commentMeetupJoi = Joi.object().keys({
   newComment: Joi.string().max(145).required(),
 });
 
@@ -29,7 +29,7 @@ const commentOfferJoi = Joi.object().keys({
 module.exports = {
   newMeetupJoi,
   modifyMeetupJoi,
-  commentOfferJoi,
+  commentMeetupJoi,
   newCommentMeetupJoi,
   // voteMeetupJoi,
 };

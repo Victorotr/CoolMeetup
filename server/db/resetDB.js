@@ -1,16 +1,21 @@
-// Archivo para ejecutar la base de datos en local
+// Archivo para ejecutar la base de datos en local o resetearla
+
+// Require npm ↓
 
 require('dotenv').config();
 
+// Import ↓
+
 import getConnection from './ConnectionDB';
 
-async function createDB() {
+async function resetDB() {
   let connection;
 
   try {
     connection = await getConnection();
 
     await connection.query();
+    // Implementar aqui las queries que queramos hacer desde el código
   } catch (error) {
     console.error(error);
   } finally {
@@ -19,4 +24,4 @@ async function createDB() {
   }
 }
 
-createDB();
+resetDB();
