@@ -15,19 +15,19 @@ export const Handler = () => {
 export const MyContextProvider = ({ children }) => {
   const [myData, setMyData] = useState("inital Data");
   const [menuOn, setmenuOn] = useState(false);
+  const [toast, settoast] = useState({on:false,type:'',text:''})
 
   useEffect(() => {
-  
     const handleUnload = async () => {
       await HandleVisit();
     };
     window.addEventListener("beforeunload", handleUnload);
     return () => {
-      window.removeEventListener("beforeunload", handleUnload);
+    window.removeEventListener("beforeunload", handleUnload);
     };
   }, []);
   return (
-    <MyContext.Provider value={{ myData, setMyData, menuOn, setmenuOn }}>
+    <MyContext.Provider value={{ myData, setMyData, menuOn, setmenuOn,toast,settoast}}>
       {children}
     </MyContext.Provider>
   );
