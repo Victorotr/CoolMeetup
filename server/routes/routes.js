@@ -1,18 +1,21 @@
 import { Router } from 'express';
 import { Ping } from '../controllers/Ping.js';
 import { VisitCookie } from '../controllers/VisitCookie.js';
+import { getMeetups } from '../Controllers/meetups/getMeetups.js';
+import registerUser from '../Controllers/users/registerUser.js';
+
 
 const router = Router();
 
 // Rutas de Meetups
-router.get('/', getAllMeetups);
-router.get('/meetup/:id', getSingleMeetupDetails);
-router.post('/singUp/:meetupId', singUpForMeetup);
-router.post('/meetup', postMeetup);
+router.get('/', getMeetups);
+//router.get('/meetup/:id', getSingleMeetupDetails);
+//router.post('/singUp/:meetupId', singUpForMeetup);
+//router.post('/meetup', postMeetup);
 
 // Rutas de Usuarios
-router.post('/user', registerUser);
-router.post('/login', loginUser);
+router.post('/registerUser', registerUser);
+//router.post('/login', loginUser);
 /*
 *Opcional: Ver el perfil de un usuario y los meetups a los que se ha
 apuntado ordenados de más nuevo a más antiguo 
