@@ -44,8 +44,12 @@
 }
 .slideup{
   animation: slideup .5s forwards;
-
 }
+
+.generalButton {
+  cursor:pointer;
+}
+
 @keyframes menuon {
   0%{
     opacity: 1;
