@@ -6,7 +6,7 @@ require('dotenv').config();
 
 // Import ↓
 
-import getConnection from './ConnectionDB';
+import getConnection from './connectionDB';
 
 async function resetDB() {
   let connection;
