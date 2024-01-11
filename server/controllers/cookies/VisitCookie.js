@@ -1,5 +1,5 @@
 import { v4 as randomId } from 'uuid';
-import { getConnection } from '../db/ConnectionDB.js';
+import { getConnection } from '../../db/connectionDB.js';
 
 export const VisitCookie = async (req, res) => {
   const conexion = await getConnection();
