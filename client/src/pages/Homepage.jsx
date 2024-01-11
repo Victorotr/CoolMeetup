@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import Marker from "../assets/marker.png";
+import { Handler } from "../context/Context";
 const Homepage = () => {
   const navigate = useNavigate();
+  const {settoast} = Handler();
 
   return (
     <section className={`relative min-h-screen w-full pt-10  max-w-4xl mx-auto blur-0`}>
@@ -38,7 +40,9 @@ const Homepage = () => {
        
       </div>
 
-      <div className="z-0 shadow-lg bg-[url('./assets/madridmap.png')] w-full h-96 bg-center bg-cover mt-10 relative">
+      <div 
+      onClick={()=>{settoast({on:true,type:'warning',text:'Este mapa es un mapa explicativo, para ver los meetups haz click en el botón arriba :)'});console.log('clicked')}}
+      className="z-50 shadow-lg bg-[url('./assets/madridmap.png')] w-full h-96 bg-center bg-cover mt-10 relative">
       <img className="w-6 absolute top-20 right-32" src={Marker} alt="marker" />
       <img className="w-6 absolute bottom-20 left-52" src={Marker} alt="marker" />
       <img className="w-6 absolute top-40 left-32" src={Marker} alt="marker" />

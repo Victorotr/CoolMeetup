@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn";
 import MapMeetups from "./pages/MapMeetups";
 import CreateMeetUp from "./pages/CreateMeetUp";
 import ListMeetups from "./pages/ListMeetups";
+import ToastWindow from "./components/ToastWindow";
 function App() {
   const { myData, setMyData,setmenuOn } = Handler();
 
@@ -22,6 +23,7 @@ function App() {
     onClick={(e)=>{e.stopPropagation();setmenuOn(false)}}
     className={` min-h-screen relative bg-zinc-50`}>
       <Nav />
+      <ToastWindow />
       <SideBar />
       <Routes>
         <Route path="/" element={<Homepage />} />
