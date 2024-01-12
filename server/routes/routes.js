@@ -2,12 +2,13 @@ import { Router } from 'express';
 import { Ping } from '../controllers/cookies/Ping.js';
 import { VisitCookie } from '../controllers/cookies/VisitCookie.js';
 import { getAllMeetups } from '../controllers/meetups/getAllMeetups.js';
+import { getSingleMeetupDetails } from '../controllers/meetups/getSingleMeetupDetails.js';
 
 const router = Router();
 
 // Rutas de Meetups
 router.get('/', getAllMeetups);
-// router.get('/meetup/:id', getSingleMeetupDetails);
+router.get('/meetup/:id', getSingleMeetupDetails);
 // router.post('/singUp/:meetupId', singUpForMeetup);
 // router.post('/meetup', postMeetup);
 
