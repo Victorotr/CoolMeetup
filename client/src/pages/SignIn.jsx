@@ -1,4 +1,80 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Handler } from "../context/Context";
+
+const SigninInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+});
+
+
 const SignIn = () => {
+  const navigate = useNavigate();
+  const { settoast ,setuser} = Handler();
+  
+  const [formData, setformData] = useState({
+    email: "",
+    pwd: "",
+    checked: true,
+  });
+  const [loading, setloading] = useState(false);
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      setloading(true);
+      const res = await SigninInstance.post("/signin", formData);
+      console.log(res);
+      if (res && res.status === 200) {
+        setloading(false);
+        console.log("200", res);
+        setuser(res.data.user);
+        navigate('/list/meetups')
+        
+        
+      } else {
+        setloading(false);
+        settoast({
+          on: true,
+          type: "warning",
+          text: res.data.message,
+        });
+        console.log("error", res);
+      }
+    } catch (error) {
+
+      setloading(false);
+      console.log(error);
+
+      if (error && error.response.data.message) {
+        console.log("error message", error.response.data.message);
+        settoast({
+          on: true,
+          type: "error",
+          text: error.response.data.message,
+        });
+
+      } else {
+
+        settoast({
+          on: true,
+          type: "error",
+          text: "Problemas con el servidor, por favor intentelo más tarde",
+        });
+      }
+    }
+  };
+
+  const handleForm = (e) => {
+    if (e.target.name === "checkbox") {
+      setformData({ ...formData, checked: e.target.checked });
+      return;
+    }
+    setformData({ ...formData, [e.target.name]: e.target.value });
+    console.log(formData);
+  };
+
   return (
     <section className="bg-zinc-50">
       <div className="flex flex-col items-center justify-center px-6 py-32">
@@ -7,7 +83,7 @@ const SignIn = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
               Acceso a tu perfíl
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSignIn}>
               <div>
                 <label
                   htmlFor="email"
@@ -19,9 +95,10 @@ const SignIn = () => {
                   type="email"
                   name="email"
                   id="email"
+                  onChange={handleForm}
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5  "
                   placeholder="tucorreo@gmail.com"
-                  required=""
+                  required={true}
                 />
               </div>
               <div>
@@ -33,20 +110,22 @@ const SignIn = () => {
                 </label>
                 <input
                   type="password"
-                  name="password"
+                  name="pwd"
                   id="password"
+                  onChange={handleForm}
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5 "
-                  required=""
+                  required={true}
                 />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-start">
                   <div className="flex items-center h-5">
                     <input
-                      id="remember"
-                      aria-describedby="remember"
+                      onChange={handleForm}
                       type="checkbox"
+                      name="checkbox"
+                      defaultChecked
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 "
                       required={false}
                     />
@@ -66,12 +145,14 @@ const SignIn = () => {
               </div>
               <button
                 type="submit"
-                className="w-full border border-blue-900 bg-blue-600/90 focus:ring-4 shadow focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center text-white"
+                disabled={loading}
+                className="flex items-center justify-center gap-2 w-full border border-blue-900 bg-blue-600/90 focus:ring-4 shadow focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center text-white disabled:brightness-75"
               >
-                Acceso
+                {!loading ? "Acceso" : "Accediendo"}
+                {loading && <div className="lds-dual-ring"></div>}
               </button>
               <p className="text-sm font-light text-gray-500 ">
-                No estás registrado? {''}
+                No estás registrado? {""}
                 <a
                   href="/signup"
                   className="font-medium text-primary-600 hover:underline "

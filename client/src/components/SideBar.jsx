@@ -2,9 +2,12 @@ import { Handler } from "../context/Context";
 import { MdHome, MdPeople, MdMap, MdAdd } from "react-icons/md";
 import { LiaSignInAltSolid } from "react-icons/lia";
 import { useNavigate } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
+
 const SideBar = () => {
-  const { menuOn } = Handler();
+  const { menuOn, user } = Handler();
   const navigate = useNavigate();
+  console.log(user);
   return (
     <div
       className={`${
@@ -40,13 +43,20 @@ const SideBar = () => {
           <MdAdd />
           Crear Meetup
         </li>
-        <li
-          onClick={() => navigate("/signin")}
-          className="p-4 border-y transition-all flex items-center justify-start  shadow-inner text-zinc-900/90 gap-1 hover:scale-105"
-        >
-          <LiaSignInAltSolid />
-          Signin | Signup
-        </li>
+        {user ? (
+          <li className="p-4 border-y transition-all flex items-center justify-start  shadow-inner text-zinc-900/90 gap-1 hover:scale-105">
+            <FaUser />
+            {user.name}
+          </li>
+        ) : (
+          <li
+            onClick={() => navigate("/signin")}
+            className="p-4 border-y transition-all flex items-center justify-start  shadow-inner text-zinc-900/90 gap-1 hover:scale-105"
+          >
+            <LiaSignInAltSolid />
+            Signin | Signup
+          </li>
+        )}
       </ul>
     </div>
   );
