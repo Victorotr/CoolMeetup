@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Handler } from "../context/Context";
-import { useNavigate } from "react-router"
+import { useNavigate } from "react-router";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 const Signup = () => {
   const {settoast} = Handler();
@@ -113,9 +115,14 @@ const Signup = () => {
                   o
                 </span>
               </div>
-              <button className="mx-auto p-2 border w-full text-zinc-900/90 font-semibold rounded-md">
-                Regístrate con Google
-              </button>
+              <div>
+              <GoogleLogin onSuccess={(credentialResponse) => {
+                const USER_CREDENTIAL = jwtDecode(credentialResponse.credential);
+                console.log(USER_CREDENTIAL);
+              }}
+              onError = {() => {console.log('Login Failed');}}
+              />
+              </div>
             </form>
           </div>
         </div>
