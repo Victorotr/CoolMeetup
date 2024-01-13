@@ -8,7 +8,8 @@ const registerUser = async (req, res, next) => {
   let connect;
   try {
     let { mail, pwd, name } = req.body;
-
+    console.log(req.body);
+   
     //validaciones básicas
     const schema = Joi.object({
       password: Joi.string().pattern(
@@ -25,7 +26,7 @@ const registerUser = async (req, res, next) => {
         email: mail,
       });
     } catch (err) {
-      const error = new Error("La contraseña no cumple con los estándares de seguridad propuestos");
+      const error = new Error("La contraseña o el email no cumple con los estándares de seguridad propuestos");
       error.httpStatus = 404;
       next(error);
     }
@@ -40,7 +41,7 @@ const registerUser = async (req, res, next) => {
     if (userExist.length > 0) {
       const error = new Error("El e-mail utilizado ya existe en la base de datos");
       error.httpStatus = 409;
-      next(error);
+      throw error;
     }
 
     /**preparo para mandar mail de confirmacion */
@@ -54,7 +55,7 @@ const registerUser = async (req, res, next) => {
         `;
     /**llamo a enviar mail */
     
-    sendMail(mail, "Correo de verificación CoolMeetups.com", bodyMail);
+    //sendMail(mail, "Correo de verificación CoolMeetups.com", bodyMail); COMENTADO PARA MIENTRAS PROBAMOS NO ENVIE E-MAILS
 
     //hasear password
     async function passToBd() {

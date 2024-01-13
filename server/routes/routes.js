@@ -3,6 +3,7 @@ import { Ping } from '../controllers/Ping.js';
 import { VisitCookie } from '../controllers/VisitCookie.js';
 import { getMeetups } from '../Controllers/meetups/getMeetups.js';
 import registerUser from '../Controllers/users/registerUser.js';
+import validateUser from '../Controllers/users/validateUser.js';
 
 
 const router = Router();
@@ -15,6 +16,7 @@ router.get('/', getMeetups);
 
 // Rutas de Usuarios
 router.post('/registerUser', registerUser);
+router.post('/validateUser',validateUser);
 //router.post('/login', loginUser);
 /*
 *Opcional: Ver el perfil de un usuario y los meetups a los que se ha
