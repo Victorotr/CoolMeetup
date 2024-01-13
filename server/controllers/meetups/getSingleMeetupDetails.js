@@ -1,7 +1,6 @@
 // Querie require ↓
 
-import getSingleMeetupDetailsQuery from '../../db/meetupQueries/getSingleMeetupDetailsQuery.js';
-
+import { getSingleMeetupDetailsQuery } from '../../db/meetupQueries/getSingleMeetupDetailsQuery.js'
 // Controller ↓
 export const getSingleMeetupDetails = async (req, res, next) => {
   try {
