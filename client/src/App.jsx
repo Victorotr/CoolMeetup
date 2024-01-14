@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     setMyData("hello");
-    console.log(myData);
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myData]);
   return (

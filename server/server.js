@@ -15,7 +15,11 @@ app.use(express.json());
 // Express cors
 app.use(
   cors({
+<<<<<<< HEAD
     origin: ['http://localhost:5173'],
+=======
+    origin:[process.env.CLIENT_URL],
+>>>>>>> origin/Matteos-branch
     credentials: true,
   })
 );

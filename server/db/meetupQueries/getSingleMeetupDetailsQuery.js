@@ -1,6 +1,6 @@
 // Function import
 
-import { getConnection } from '../connectionDB';
+import { getConnection } from '../connectionDB.js';
 
 // Query ↓
 
