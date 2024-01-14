@@ -5,7 +5,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 
 const Signup = () => {
-  const {settoast} = Handler();
+  const {settoast, setuser} = Handler();
   const navigate = useNavigate();
   const submitForm = (e) => {
     e.preventDefault();
@@ -33,9 +33,30 @@ const Signup = () => {
     }).catch(function (error){
       settoast({on:true,type:'error',text:error.response.data.message});
     })
-    
-    
-};
+  };
+
+  const loginRegisterWithGoogle = (name,email) => {
+    axios.post(import.meta.env.VITE_API_URL+'/loginRegisterWithGoogle',
+    {
+      mail: email,
+      name: name
+    },
+    {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'origin':'x-requested-with',
+      'Access-Control-Allow-Headers': 'POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin',
+      'Content-Type': 'application/json',
+    },
+  }).then(function(response){
+    settoast({on:true,type:'warning',text:response.data.message});
+    setuser({name: name});
+    navigate('/list/meetups');
+    //redigirig al dashboard del usuario y meter el usuario en el contexto
+  }).catch(function (error){
+    settoast({on:true,type:'error',text:error.message});
+  })
+  }
 
   return (
     <section className="bg-zinc-50">
@@ -118,7 +139,12 @@ const Signup = () => {
               <div>
               <GoogleLogin onSuccess={(credentialResponse) => {
                 const USER_CREDENTIAL = jwtDecode(credentialResponse.credential);
-                console.log(USER_CREDENTIAL);
+                const USER_NAME = USER_CREDENTIAL.name;
+                const USER_EMAIL = USER_CREDENTIAL.email;
+                //llamar endpoint que comprobará si existe o no este usuario logueado por google
+                //Si no existe, crear y loguear
+                //Si existe y está activo, loguear
+                loginRegisterWithGoogle(USER_NAME, USER_EMAIL);
               }}
               onError = {() => {console.log('Login Failed');}}
               />

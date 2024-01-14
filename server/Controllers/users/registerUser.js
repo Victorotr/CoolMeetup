@@ -8,8 +8,7 @@ const registerUser = async (req, res, next) => {
   let connect;
   try {
     let { mail, pwd, name } = req.body;
-    console.log(req.body);
-   
+       
     //validaciones básicas
     const schema = Joi.object({
       password: Joi.string().pattern(
