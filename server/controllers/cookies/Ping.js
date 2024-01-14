@@ -1,4 +1,4 @@
-import { getConnection } from '../db/ConnectionDB.js';
+import { getConnection } from '../../db/connectionDB.js';
 
 export const Ping = async (req, res) => {
   const connection = await getConnection();
