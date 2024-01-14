@@ -11,7 +11,7 @@ export const OnRefreshCookies = async (req, res) => {
       const sessionToken = req.cookies.user_token;
       console.log('session token',sessionToken);
       if(!sessionToken.sessionOpen){
-        console.log('clear')
+      
         res.clearCookie('user_token')
       }
     }

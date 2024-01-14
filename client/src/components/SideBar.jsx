@@ -1,5 +1,5 @@
 import { Handler } from "../context/Context";
-import { MdHome, MdPeople, MdMap, MdAdd } from "react-icons/md";
+import { MdHome, MdPeople, MdMap, MdAdd, MdLogout } from "react-icons/md";
 import { LiaSignInAltSolid } from "react-icons/lia";
 import { useNavigate } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
@@ -44,10 +44,16 @@ const SideBar = () => {
           Crear Meetup
         </li>
         {user ? (
-          <li className="p-4 border-y transition-all flex items-center justify-start  shadow-inner text-zinc-900/90 gap-1 hover:scale-105">
-            <FaUser />
-            {user.name}
-          </li>
+          <>
+            <li className="p-4 border-y transition-all flex  items-center justify-start  shadow-inner text-zinc-900/90 gap-1 hover:scale-105">
+              <FaUser />
+              {user.name}
+            </li>
+            <li className="p-4 transition-all flex  items-center justify-start  shadow-inner text-zinc-900/90 gap-1">
+             
+             <div className="p-2 w-full flex items-center justify-start rounded-sm bg-red-500 select-none text-md font-medium text-zinc-50 border-2 border-red-500/90 brightness-90 hover:brightness-100 transition-all"> <MdLogout /> Log Out</div>
+            </li>
+          </>
         ) : (
           <li
             onClick={() => navigate("/signin")}

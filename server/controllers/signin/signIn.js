@@ -8,7 +8,7 @@ export const SignIn = async (req, res) => {
     try {
         console.log(req.body);
         
-        res.cookie('user_token', { sessionOpen: sessionOpen, token: '12345' }, {
+        res.cookie('user_token', { sessionOpen: sessionOpen, token: '12345',id:'123'}, {
             maxAge: expiration,
             httpOnly: true,
             sameSite: 'lax',
