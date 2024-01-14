@@ -5,10 +5,10 @@ export const isLogged = async (req, res) => {
    
 
     try {
-        console.log(req.cookies);
+     
         if(req.cookies && req.cookies.user_token){
-            const cookieInfo = req.cookies.user_token;
-            console.log(cookieInfo.id)
+           // const cookieInfo = req.cookies.user_token;
+         
             res.send({user:{name:'matteo',id:'123'}})
         }
        
