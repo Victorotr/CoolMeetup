@@ -17,10 +17,12 @@ const ListMeetups = () => {
   return (
     <div className="">
       <h1>meetups map</h1>
+      <div className='w-full h-96 border'>  
       {isLoaded && (
         <GoogleMap
+       
           onClick={(e) => console.log(e.latLng.lat(), e.latLng.lng())}
-          mapContainerStyle={{ height: "100vh", width: "100%" }}
+          mapContainerStyle={{ height: "100%", width: "100%" }}
           zoom={10}
           center={center}
           
@@ -32,7 +34,8 @@ const ListMeetups = () => {
           <Marker position={newCenter}></Marker>
 
         </GoogleMap>
-      )}
+      )}</div>
+    
     </div>
   );
 };
