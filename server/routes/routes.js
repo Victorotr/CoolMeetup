@@ -16,11 +16,15 @@ router.get('/islogged',isLogged);
 
 router.get('/meetup/:id', getSingleMeetupDetails);
 
+
 router.post('/signin',SignIn);
 
 router.get('/logout',LogOut);
 // router.post('/singUp/:meetupId', singUpForMeetup);
+
+
 // router.post('/meetup', postMeetup);
+// router.post('/singUp/:meetupId', singUpForMeetup);
 
 // Rutas de Usuarios
 // router.post('/user', registerUser);

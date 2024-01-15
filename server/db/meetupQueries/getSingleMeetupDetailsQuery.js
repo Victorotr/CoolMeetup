@@ -16,7 +16,7 @@ export const getSingleMeetupDetailsQuery = async (id) => {
     `,
       [id]
     );
-    // Revisar esta parte del endpoint
+
     return meetupDetails;
   } catch (error) {
     console.error(error);
@@ -24,3 +24,5 @@ export const getSingleMeetupDetailsQuery = async (id) => {
     if (connection) connection.release();
   }
 };
+
+export default { getSingleMeetupDetailsQuery };
