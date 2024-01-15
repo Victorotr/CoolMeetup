@@ -9,8 +9,8 @@ const router = Router();
 // Rutas de Meetups
 router.get('/', getAllMeetups);
 router.get('/meetup/:id', getSingleMeetupDetails);
-// router.post('/singUp/:meetupId', singUpForMeetup);
 // router.post('/meetup', postMeetup);
+// router.post('/singUp/:meetupId', singUpForMeetup);
 
 // Rutas de Usuarios
 // router.post('/user', registerUser);
