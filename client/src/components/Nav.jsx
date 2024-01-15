@@ -3,8 +3,13 @@ import MenuButton from "../buttons/MenuButton";
 import ImgMap from "../assets/map.png";
 import SignupButton from "../buttons/SignupButton";
 import { useNavigate } from "react-router-dom";
+import { Handler } from "../context/Context";
+import { FaUser } from "react-icons/fa";
+
 const Nav = () => {
   const navigate = useNavigate();
+  const { user } = Handler();
+
   return (
     <header className=" max-w-4xl mx-auto h-14 flex items-center justify-between px-3">
       <div
@@ -42,11 +47,18 @@ const Nav = () => {
           </li>
         </ul>
       </div>
-      <div className="flex items-center gap-1">
-        <LoginButton />
-        <SignupButton />
-        <MenuButton />
-      </div>
+      {user ? (
+        <div className="p-4 border-y transition-all flex items-center justify-start  shadow-inner text-zinc-900/90 gap-1 hover:scale-105">
+          <FaUser />
+          {user.name}
+        </div>
+      ) : (
+        <div className="flex items-center gap-1">
+          <LoginButton />
+          <SignupButton />
+          <MenuButton />
+        </div>
+      )}
     </header>
   );
 };

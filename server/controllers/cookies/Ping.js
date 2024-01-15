@@ -1,18 +1,13 @@
-// Controlador encargado de traer la lista de meetups
 import { getConnection } from '../../db/ConnectionDB.js';
 
-export const getMeetups = async (req, res) => {
+export const Ping = async (req, res) => {
   const connection = await getConnection();
   try {
-    //insertar consulta
+    const [res] = await connection.query('SELECT NOW() as TimeResponse;');
 
     res.send({ message: 'received' });
   } catch (error) {
     console.log(error);
     res.send('error');
-  }
-  finally
-  {
-    connection?.release();
   }
 };

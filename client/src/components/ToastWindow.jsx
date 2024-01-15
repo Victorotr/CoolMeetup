@@ -30,7 +30,7 @@ const ToastWindow = () => {
       <span className="my-auto">
       {toastType === 'warning' ? <MdWarning size={35} color="orange"/> : toastType === 'error' ? <MdError size={35} color="red" /> : <IoMdCheckmark size={35} />}  
       </span>
-      <p className="text-zinc-900/80 ">{toast.text}</p>
+      <p className="text-zinc-900/80 font-medium">{toast.text}</p>
       <span
         onClick={() => {
           settoast({ ...toast, on: false });

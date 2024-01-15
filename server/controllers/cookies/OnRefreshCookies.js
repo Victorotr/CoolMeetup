@@ -1,10 +1,21 @@
 import { v4 as randomId } from 'uuid';
-import { getConnection } from '../db/ConnectionDB.js';
+import { getConnection } from '../../db/connectionDB.js';
 
-export const VisitCookie = async (req, res) => {
+export const OnRefreshCookies = async (req, res) => {
   const conexion = await getConnection();
+  
   try {
-    console.log('cookie', req.cookies);
+    
+    if(req.cookies && req.cookies.user_token){
+      
+      const sessionToken = req.cookies.user_token;
+      console.log('session token',sessionToken);
+      if(!sessionToken.sessionOpen){
+        console.log('clear')
+        res.clearCookie('user_token')
+      }
+    }
+
     let userId;
     const expiration = 1000 * 60 * 60 * 24 * 28;
     if (req.cookies && req.cookies.visitId) {
@@ -16,8 +27,9 @@ export const VisitCookie = async (req, res) => {
         httpOnly: true,
         sameSite: 'lax',
       });
-      res.send({ message: 'received' });
-    }
+
+    } 
+    res.send({ message: 'received' });
     //const [saveVisit]= await conexion.query(`INSERT INTO visit(user_id) VALUE(?)`,[userId]);
   } catch (error) {
     console.log(error);

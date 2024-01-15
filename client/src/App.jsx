@@ -11,12 +11,13 @@ import CreateMeetUp from "./pages/CreateMeetUp";
 import ListMeetups from "./pages/ListMeetups";
 import ToastWindow from "./components/ToastWindow";
 import Signup from "./pages/Signup";
+import ValidateUser from "./pages/ValidateUser";
 function App() {
   const { myData, setMyData,setmenuOn } = Handler();
 
   useEffect(() => {
     setMyData("hello");
-    console.log(myData);
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myData]);
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/validateUser/:regCode" element={<ValidateUser />} />
         <Route path="/list/meetups" element={<ListMeetups />} />
         <Route path="/meetups/map" element={<MapMeetups />} />
         <Route path="/new/meetup" element={<CreateMeetUp />} />

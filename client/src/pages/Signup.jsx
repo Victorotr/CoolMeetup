@@ -1,4 +1,63 @@
+import axios from "axios";
+import { Handler } from "../context/Context";
+import { useNavigate } from "react-router";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+
 const Signup = () => {
+  const {settoast, setuser} = Handler();
+  const navigate = useNavigate();
+  const submitForm = (e) => {
+    e.preventDefault();
+
+    //lanzar login en la api
+    const formData = new FormData(e.target);
+    const form_values = Object.fromEntries(formData);
+    
+    axios.post(import.meta.env.VITE_API_URL+'/registerUser',
+      {
+        mail: form_values.email,
+        pwd: form_values.password,
+        name: form_values.nombre_usuario
+      },
+      {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'origin':'x-requested-with',
+        'Access-Control-Allow-Headers': 'POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin',
+        'Content-Type': 'application/json',
+      },
+    }).then(function(response){
+      settoast({on:true,type:'warning',text:'Te has registrado con éxito, consulta tu e-mail para validar tu cuenta y empezar a usar Coolmeetups. ¡Gracias!'});
+      navigate('/signin');
+    }).catch(function (error){
+      settoast({on:true,type:'error',text:error.response.data.message});
+    })
+  };
+
+  const loginRegisterWithGoogle = (name,email) => {
+    axios.post(import.meta.env.VITE_API_URL+'/loginRegisterWithGoogle',
+    {
+      mail: email,
+      name: name
+    },
+    {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'origin':'x-requested-with',
+      'Access-Control-Allow-Headers': 'POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin',
+      'Content-Type': 'application/json',
+    },
+  }).then(function(response){
+    settoast({on:true,type:'warning',text:response.data.message});
+    setuser({name: name});
+    navigate('/list/meetups');
+    //redigirig al dashboard del usuario y meter el usuario en el contexto
+  }).catch(function (error){
+    settoast({on:true,type:'error',text:error.message});
+  })
+  }
+
   return (
     <section className="bg-zinc-50">
       <div className="flex flex-col items-center justify-center px-6 py-32">
@@ -7,7 +66,7 @@ const Signup = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
               Regístrate en Coolmeetups.com
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form className="space-y-4 md:space-y-6" onSubmit={submitForm}>
             <div>
                 <label
                   htmlFor="nombre_usuario"
@@ -77,9 +136,19 @@ const Signup = () => {
                   o
                 </span>
               </div>
-              <button className="mx-auto p-2 border w-full text-zinc-900/90 font-semibold rounded-md">
-                Regístrate con Google
-              </button>
+              <div>
+              <GoogleLogin onSuccess={(credentialResponse) => {
+                const USER_CREDENTIAL = jwtDecode(credentialResponse.credential);
+                const USER_NAME = USER_CREDENTIAL.name;
+                const USER_EMAIL = USER_CREDENTIAL.email;
+                //llamar endpoint que comprobará si existe o no este usuario logueado por google
+                //Si no existe, crear y loguear
+                //Si existe y está activo, loguear
+                loginRegisterWithGoogle(USER_NAME, USER_EMAIL);
+              }}
+              onError = {() => {console.log('Login Failed');}}
+              />
+              </div>
             </form>
           </div>
         </div>
