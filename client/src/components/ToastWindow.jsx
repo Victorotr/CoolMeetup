@@ -9,14 +9,19 @@ const ToastWindow = () => {
   const [toastType, settoastType] = useState("success");
 
   useEffect(() => {
+    setTimeout(() => {
+      toast.on && settoast({...toast,on:false})
+    }, 6000);
+
     if (toast.type === "warning") {
-      settoastType("warning");
-      return;
+      return settoastType("warning");
     } else if (toast.type === "error") {
-      settoastType("error");
-      return;
+      return settoastType("error");
+      
     }
     settoastType("success");
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toast]);
 
   return (
@@ -30,7 +35,7 @@ const ToastWindow = () => {
       <span className="my-auto">
       {toastType === 'warning' ? <MdWarning size={35} color="orange"/> : toastType === 'error' ? <MdError size={35} color="red" /> : <IoMdCheckmark size={35} />}  
       </span>
-      <p className="text-zinc-900/80 ">{toast.text}</p>
+      <p className="text-zinc-900/80 font-medium">{toast.text}</p>
       <span
         onClick={() => {
           settoast({ ...toast, on: false });
