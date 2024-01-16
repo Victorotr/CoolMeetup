@@ -24,6 +24,7 @@ const loginRegisterWithGoogle = async (req, res, next) => {
         `INSERT INTO users (email_usuario, nombre_usuario, active) VALUES (?,?,1)`,
         [mail, name]
       );
+      
       res.status(200).send({
         status: "ok",
         message: "Estamos encantados de tenerte con nosotros "+name,
