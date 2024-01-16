@@ -16,6 +16,7 @@ const Map = () => {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [queryResults, setqueryResults] = useState(null);
   const [selected, setselected] = useState({ isSelected: false });
+
   
 
   const onMapLoad = (mapInstance) => {

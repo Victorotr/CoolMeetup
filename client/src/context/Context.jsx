@@ -6,6 +6,7 @@ import axios from "axios";
 const LoggedInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
+  
 });
 
 export const MyContext = createContext();
@@ -33,6 +34,7 @@ export const MyContextProvider = ({ children }) => {
         setuser(res.data.user);
       }else{
         setuser(null)
+        console.log(res)
       }
     }
     isLogged();
@@ -41,7 +43,6 @@ export const MyContextProvider = ({ children }) => {
   useEffect(() => {
     const handleUnload = async () => {
       await HandleVisit();
-      
     };
     window.addEventListener("beforeunload", handleUnload);
     return () => {
