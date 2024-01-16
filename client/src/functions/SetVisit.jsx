@@ -7,5 +7,4 @@ export const HandleVisit = async () => {
     withCredentials: true,
   });
   return res;
-  
 };

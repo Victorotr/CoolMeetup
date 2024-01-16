@@ -45,5 +45,5 @@ app.use((error, req, res, next) => {
 // Lanzamos el servidor
 
 app.listen(3000, () => {
-  console.log('Servidor funcionado ✅');
+  console.log('Servidor funcionado ✅ en puerto 3000');
 });
