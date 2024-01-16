@@ -9,14 +9,19 @@ const ToastWindow = () => {
   const [toastType, settoastType] = useState("success");
 
   useEffect(() => {
+    setTimeout(() => {
+      toast.on && settoast({...toast,on:false})
+    }, 6000);
+
     if (toast.type === "warning") {
-      settoastType("warning");
-      return;
+      return settoastType("warning");
     } else if (toast.type === "error") {
-      settoastType("error");
-      return;
+      return settoastType("error");
+      
     }
     settoastType("success");
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toast]);
 
   return (

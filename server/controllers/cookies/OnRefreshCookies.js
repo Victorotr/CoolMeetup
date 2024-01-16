@@ -7,11 +7,11 @@ export const OnRefreshCookies = async (req, res) => {
   try {
     
     if(req.cookies && req.cookies.user_token){
-      
+  
       const sessionToken = req.cookies.user_token;
-      console.log('session token',sessionToken);
+      
       if(!sessionToken.sessionOpen){
-        console.log('clear')
+      
         res.clearCookie('user_token')
       }
     }

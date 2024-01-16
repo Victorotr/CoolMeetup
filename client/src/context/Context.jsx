@@ -1,6 +1,13 @@
 // MyContext.js
 import { createContext, useContext, useState, useEffect } from "react";
 import { HandleVisit } from "../functions/SetVisit";
+import axios from "axios";
+
+const LoggedInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+});
+
 export const MyContext = createContext();
 
 export const Handler = () => {
@@ -18,6 +25,19 @@ export const MyContextProvider = ({ children }) => {
   const [toast, settoast] = useState({on:false,type:'',text:''});
   const [user, setuser] = useState(null);
 
+  useEffect(() => {
+    const isLogged = async ()=>{
+      const res = await LoggedInstance.get('/islogged');
+      console.log(res);
+      if(res && res.data.user){
+        setuser(res.data.user);
+      }else{
+        setuser(null)
+      }
+    }
+    isLogged();
+  }, [])
+  
   useEffect(() => {
     const handleUnload = async () => {
       await HandleVisit();

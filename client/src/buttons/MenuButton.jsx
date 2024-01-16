@@ -1,12 +1,8 @@
-import {useEffect} from 'react'
 import { MdMenu,MdClose } from "react-icons/md";
 import { Handler } from '../context/Context';
 const MenuButton = () => {
 const {menuOn,setmenuOn}= Handler();
 
-useEffect(() => {
-  console.log(menuOn)
-}, [menuOn])
 
 
  return (

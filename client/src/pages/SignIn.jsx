@@ -8,11 +8,10 @@ const SigninInstance = axios.create({
   withCredentials: true,
 });
 
-
 const SignIn = () => {
   const navigate = useNavigate();
-  const { settoast ,setuser} = Handler();
-  
+  const { settoast, setuser } = Handler();
+
   const [formData, setformData] = useState({
     email: "",
     pwd: "",
@@ -30,9 +29,7 @@ const SignIn = () => {
         setloading(false);
         console.log("200", res);
         setuser(res.data.user);
-        navigate('/list/meetups')
-        
-        
+        navigate("/list/meetups");
       } else {
         setloading(false);
         settoast({
@@ -40,13 +37,9 @@ const SignIn = () => {
           type: "warning",
           text: res.data.message,
         });
-        console.log("error", res);
       }
     } catch (error) {
-
       setloading(false);
-      console.log(error);
-
       if (error && error.response.data.message) {
         console.log("error message", error.response.data.message);
         settoast({
@@ -54,9 +47,7 @@ const SignIn = () => {
           type: "error",
           text: error.response.data.message,
         });
-
       } else {
-
         settoast({
           on: true,
           type: "error",
