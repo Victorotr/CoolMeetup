@@ -9,8 +9,8 @@ import { getSingleMeetupDetails } from '../controllers/meetups/getSingleMeetupDe
 import { postMeetup } from '../controllers/meetups/postMeetup.js';
 import { SignIn } from '../controllers/signin/signIn.js';
 import { LogOut } from '../controllers/cookies/LogOut.js';
-import loginRegisterWithGoogle from '../Controllers/users/loginRegisterWithGoogle.js';
 import { isLogged } from '../controllers/signin/isLogged.js';
+import loginRegisterWithGoogle from '../Controllers/users/loginRegisterWithGoogle.js';
 
 const router = Router();
 
@@ -23,7 +23,7 @@ router.get('/', getAllMeetups);
 // Rutas de Usuarios
 router.post('/registerUser', registerUser);
 router.post('/validateUser', validateUser);
-router.post('/loginRegisterWithGoogle',loginRegisterWithGoogle);
+router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
 //router.post('/login', loginUser);
 router.get('/', getAllMeetups);
 
