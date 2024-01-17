@@ -26,6 +26,7 @@
     "fs": "^0.0.1-security",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "morgan": "^1.10.0",
     "mysql2": "^3.7.0",
     "sendgrid": "^5.2.3",

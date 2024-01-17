@@ -9,7 +9,7 @@ const ValidateUser = () => {
   const { regCode } = useParams();
   const submitForm = (e) => {
     e.preventDefault();
-
+  
     //lanzar login en la api
     const formData = new FormData(e.target);
     const form_values = Object.fromEntries(formData);
@@ -26,7 +26,7 @@ const ValidateUser = () => {
         'Content-Type': 'application/json',
       },
     }).then(function(response){
-      settoast({on:true,type:'success',text:'Usuario validado correctamente, ¡Ya puedes accedera Coolmeetups!'});
+      settoast({on:true,type:'success',text:'Usuario validado correctamente, ¡Ya puedes acceder a Coolmeetups!'});
       navigate('/signin');
     }).catch(function (error){
       settoast({on:true,type:'error',text:error.response.data.message});
