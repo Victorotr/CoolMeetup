@@ -1,11 +1,12 @@
-import {getConnection} from "../../db/ConnectionDB.js"
+import { getConnection } from "../../db/ConnectionDB.js"
 import Joi from "joi";
 import bcrypt from "bcrypt";
-import {uuid} from "uuidv4";
+import { uuid } from "uuidv4";
 
+let connect;
+connect = await getConnection();
 
-
-async function passToBd(mail,pwd,regCode,name) {
+async function passToBd(mail, pwd, regCode, name) {
   bcrypt.hash(pwd, 10, async function (err, hash) {
     const [users] = await connect.query(
       //SHA2 es un estandar de cifrado que recibe como parámetro la llave que se utilizara y el número de bits del HASH,
@@ -17,13 +18,11 @@ async function passToBd(mail,pwd,regCode,name) {
   });
 }
 
-
-
 const registerUser = async (req, res, next) => {
-  let connect;
+
   try {
     let { mail, pwd, name } = req.body;
-       
+
     //validaciones básicas
     const schema = Joi.object({
       password: Joi.string().pattern(
@@ -46,8 +45,6 @@ const registerUser = async (req, res, next) => {
       next(error);
     }
 
-    connect = await getConnection();
-    
     const [userExist] = await connect.query(
       `SELECT id_user FROM users WHERE user_email=?`,
       [mail]
@@ -69,13 +66,13 @@ const registerUser = async (req, res, next) => {
     //     Pulsa el enlace para activar la cuenta: ${process.env.PUBLIC_HOST}${regCode}
     //     `;
     /**llamo a enviar mail */
-    
+
     //sendMail(mail, "Correo de verificación CoolMeetups.com", bodyMail); COMENTADO PARA MIENTRAS PROBAMOS NO ENVIE E-MAILS
 
     //hasear password
-   
-    
-    passToBd(mail,pwd,regCode,name).then(() => {
+
+
+    passToBd(mail, pwd, regCode, name).then(() => {
       res.status(200).send({
         status: "ok",
         message: "Usuario registrado con éxito",
