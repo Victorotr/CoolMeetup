@@ -43,7 +43,7 @@ const registerUser = async (req, res, next) => {
         'La contraseña o el email no cumple con los estándares de seguridad propuestos'
       );
       error.httpStatus = 404;
-      next(error);
+      throw error;
     }
 
     const [userExist] = await connect.query(
