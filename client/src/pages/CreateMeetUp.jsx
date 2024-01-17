@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState,useEffect} from "react";
 import {
   GoogleMap,
   Marker,
@@ -7,8 +7,12 @@ import {
 } from "@react-google-maps/api";
 import { IoMdClose } from "react-icons/io";
 import { MdSearch } from "react-icons/md";
+import { Handler } from "../context/Context";
+import { useNavigate } from "react-router-dom";
 
 const Map = () => {
+  const {user,settoast} = Handler();
+  const navigate = useNavigate();
   const [map, setMap] = useState(null);
   const [center, setCenter] = useState({ lat: 40.4165, lng: -3.70256 });
   const [address, setAddress] = useState("");
@@ -17,6 +21,13 @@ const Map = () => {
   const [queryResults, setqueryResults] = useState(null);
   const [selected, setselected] = useState({ isSelected: false });
 
+  useEffect(() => {
+  if(!user || !user.id){
+    navigate('/signin');
+    settoast({on:true,type:'warning',text:'Accede para poder crear meetups'})
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   
 
   const onMapLoad = (mapInstance) => {
