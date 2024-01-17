@@ -1,7 +1,7 @@
-import { getConnection } from "../../db/ConnectionDB.js"
-import Joi from "joi";
-import bcrypt from "bcrypt";
-import { uuid } from "uuidv4";
+import { getConnection } from '../../db/ConnectionDB.js';
+import Joi from 'joi';
+import bcrypt from 'bcrypt';
+import { uuid } from 'uuidv4';
 
 let connect;
 connect = await getConnection();
@@ -19,18 +19,17 @@ async function passToBd(mail, pwd, regCode, name) {
 }
 
 const registerUser = async (req, res, next) => {
-
   try {
     let { mail, pwd, name } = req.body;
 
     //validaciones básicas
     const schema = Joi.object({
       password: Joi.string().pattern(
-        new RegExp("^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,30}$")
+        new RegExp('^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,30}$')
       ),
       email: Joi.string().email({
         minDomainSegments: 2,
-        tlds: { allow: ["com", "net", "es", "org"] },
+        tlds: { allow: ['com', 'net', 'es', 'org'] },
       }),
     });
     try {
@@ -39,8 +38,10 @@ const registerUser = async (req, res, next) => {
         email: mail,
       });
     } catch (err) {
-      console.log(err)
-      const error = new Error("La contraseña o el email no cumple con los estándares de seguridad propuestos");
+      console.log(err);
+      const error = new Error(
+        'La contraseña o el email no cumple con los estándares de seguridad propuestos'
+      );
       error.httpStatus = 404;
       next(error);
     }
@@ -51,7 +52,9 @@ const registerUser = async (req, res, next) => {
     );
 
     if (userExist.length > 0) {
-      const error = new Error("El e-mail utilizado ya existe en la base de datos");
+      const error = new Error(
+        'El e-mail utilizado ya existe en la base de datos'
+      );
       error.httpStatus = 409;
       throw error;
     }
@@ -71,11 +74,10 @@ const registerUser = async (req, res, next) => {
 
     //hasear password
 
-
     passToBd(mail, pwd, regCode, name).then(() => {
       res.status(200).send({
-        status: "ok",
-        message: "Usuario registrado con éxito",
+        status: 'ok',
+        message: 'Usuario registrado con éxito',
       });
     });
   } catch (error) {

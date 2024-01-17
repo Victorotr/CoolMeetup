@@ -23,7 +23,7 @@ router.get('/', getAllMeetups);
 // Rutas de Usuarios
 router.post('/registerUser', registerUser);
 router.post('/validateUser', validateUser);
-router.post('/loginRegisterWithGoogle',loginRegisterWithGoogle);
+router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
 //router.post('/login', loginUser);
 router.get('/', getAllMeetups);
 
