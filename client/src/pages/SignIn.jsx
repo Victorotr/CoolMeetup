@@ -31,6 +31,7 @@ const SignIn = () => {
         setuser(res.data.user);
         navigate("/list/meetups");
       } else {
+        console.log('not 200',res)
         setloading(false);
         settoast({
           on: true,

@@ -13,13 +13,11 @@ app.use(cookieParser());
 app.use(express.json());
 
 // Express cors
-app.use(
-  cors({
-    origin:[process.env.CLIENT_URL],
+app.use(cors({
+    origin:[process.env.CLIENT_URL,'http://localhost:5173'],
     credentials: true,
   })
 );
-
 
 // Rutas
 app.use(router);
@@ -45,5 +43,5 @@ app.use((error, req, res, next) => {
 // Lanzamos el servidor
 
 app.listen(3000, () => {
-  console.log('Servidor funcionado ✅');
+  console.log('Servidor funcionado ✅ en puerto 3000');
 });

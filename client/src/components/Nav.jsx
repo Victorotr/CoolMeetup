@@ -51,7 +51,7 @@ const Nav = () => {
         <div className="flex items-center gap-1">
           <div className="p-4 border-y transition-all flex items-center justify-start  shadow-inner text-zinc-900/90 gap-1 hover:scale-105">
             <FaUser />
-            {user.name}
+            {user.username}
           </div>
           <MenuButton />
         </div>
