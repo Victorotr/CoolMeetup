@@ -76,13 +76,9 @@ const registerUser = async (req, res, next) => {
 
     passToBd(mail, pwd, regCode, name).then(() => {
       res.status(200).send({
-<<<<<<< HEAD
         status: 'ok',
-        message: 'Usuario registrado con éxito',
-=======
-        status: "ok",
-        message: "Usuario registrado con éxito, revisa tu correo para activar tu cuenta",
->>>>>>> origin/Matteos-Branch
+        message:
+          'Usuario registrado con éxito, revisa tu correo para activar tu cuenta',
       });
     });
   } catch (error) {
