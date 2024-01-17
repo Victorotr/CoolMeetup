@@ -30,7 +30,7 @@ const ToastWindow = () => {
         toast.on ? "slidedown" : "slideup"
       } ${
         toast.type
-      }  ${toastType === 'warning' ? 'border-amber-600/50' : toastType === 'error' ? 'border-red-500/50' : 'border-blue-500/50' } items-center justify-between gap-2 z-50 absolute p-2 rounded-md shadow-xl top-16 w-96 bg-zinc-50 left-0 right-0 mx-auto border-2 `}
+      }  ${toastType === 'warning' ? 'border-amber-600/50' : toastType === 'error' ? 'border-red-500/50' : 'border-blue-500/50' } text-sm items-center justify-between gap-2 z-50 absolute p-2 rounded-md shadow-xl top-16 w-96 bg-zinc-50 left-0 right-0 mx-auto border-2 `}
     >
       <span className="my-auto">
       {toastType === 'warning' ? <MdWarning size={35} color="orange"/> : toastType === 'error' ? <MdError size={35} color="red" /> : <IoMdCheckmark size={35} />}  
