@@ -1,22 +1,22 @@
-import {getConnection} from "../../db/ConnectionDB.js"
-import Joi from "joi";
-import bcrypt from "bcrypt";
-import {uuid} from "uuidv4";
-import sendMail from "../../services/sendMail.js"
+import { getConnection } from '../../db/ConnectionDB.js';
+import Joi from 'joi';
+import bcrypt from 'bcrypt';
+import { uuid } from 'uuidv4';
+import sendMail from '../../services/sendMail.js';
 
 const registerUser = async (req, res, next) => {
   let connect;
   try {
     let { mail, pwd, name } = req.body;
-       
+
     //validaciones básicas
     const schema = Joi.object({
       password: Joi.string().pattern(
-        new RegExp("^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,30}$")
+        new RegExp('^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,30}$')
       ),
       email: Joi.string().email({
         minDomainSegments: 2,
-        tlds: { allow: ["com", "net", "es", "org"] },
+        tlds: { allow: ['com', 'net', 'es', 'org'] },
       }),
     });
     try {
@@ -25,20 +25,24 @@ const registerUser = async (req, res, next) => {
         email: mail,
       });
     } catch (err) {
-      const error = new Error("La contraseña o el email no cumple con los estándares de seguridad propuestos");
+      const error = new Error(
+        'La contraseña o el email no cumple con los estándares de seguridad propuestos'
+      );
       error.httpStatus = 404;
       next(error);
     }
 
     connect = await getConnection();
-    
+
     const [userExist] = await connect.query(
-      `SELECT id_user FROM users WHERE email_usuario=?`,
+      `SELECT id_user FROM users WHERE user_email=?`,
       [mail]
     );
 
     if (userExist.length > 0) {
-      const error = new Error("El e-mail utilizado ya existe en la base de datos");
+      const error = new Error(
+        'El e-mail utilizado ya existe en la base de datos'
+      );
       error.httpStatus = 409;
       throw error;
     }
@@ -53,7 +57,7 @@ const registerUser = async (req, res, next) => {
         Pulsa el enlace para activar la cuenta: ${process.env.PUBLIC_HOST}${regCode}
         `;
     /**llamo a enviar mail */
-    
+
     //sendMail(mail, "Correo de verificación CoolMeetups.com", bodyMail); COMENTADO PARA MIENTRAS PROBAMOS NO ENVIE E-MAILS
 
     //hasear password
@@ -63,7 +67,7 @@ const registerUser = async (req, res, next) => {
           //SHA2 es un estandar de cifrado que recibe como parámetro la llave que se utilizara y el número de bits del HASH,
           //de esta forma el valor será cifrado y se almacenará en la base de datos
           //SHA --> Secure Hash Algorithm
-          `INSERT INTO users (email_usuario, password_usuario, regCode, nombre_usuario) VALUES (?,?,?,?)`,
+          `INSERT INTO users (user_email, user_password, regCode, user_name) VALUES (?,?,?,?)`,
           [mail, hash, regCode, name]
         );
       });
@@ -71,8 +75,8 @@ const registerUser = async (req, res, next) => {
 
     passToBd().then(() => {
       res.status(200).send({
-        status: "ok",
-        message: "Usuario registrado con éxito",
+        status: 'ok',
+        message: 'Usuario registrado con éxito',
       });
     });
   } catch (error) {
