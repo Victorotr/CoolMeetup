@@ -39,6 +39,9 @@ export const MyContextProvider = ({ children }) => {
     }
     isLogged();
   }, [])
+  useEffect(() => {
+   console.log(user)
+  }, [user])
   
   useEffect(() => {
     const handleUnload = async () => {

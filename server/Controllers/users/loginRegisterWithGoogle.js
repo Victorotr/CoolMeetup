@@ -1,13 +1,24 @@
+<<<<<<< HEAD
 import { getConnection } from '../../db/ConnectionDB.js';
 import { jwtDecode } from 'jwt-decode';
+=======
+import { getConnection } from "../../db/ConnectionDB.js"
+import { jwtDecode } from "jwt-decode";
+import jwt from 'jsonwebtoken';
+>>>>>>> origin/Matteos-Branch
 
 const loginRegisterWithGoogle = async (req, res, next) => {
   let connect;
   try {
     let { credential } = req.body;
+
     const user_credential = jwtDecode(credential.credential);
 
+<<<<<<< HEAD
     const { email, name, picture } = user_credential;
+=======
+    const { email, name, picture } = user_credential
+>>>>>>> origin/Matteos-Branch
 
     connect = await getConnection();
 
@@ -15,7 +26,11 @@ const loginRegisterWithGoogle = async (req, res, next) => {
       `SELECT id_user, user_name,user_email,user_picture FROM users WHERE user_email=?`,
       [email]
     );
+<<<<<<< HEAD
     console.log('exist', userExist);
+=======
+
+>>>>>>> origin/Matteos-Branch
     if (userExist.length > 0) {
       res.status(200).send({
         status: 'ok',
@@ -24,14 +39,36 @@ const loginRegisterWithGoogle = async (req, res, next) => {
           id: userExist[0].id_user,
           username: userExist[0].user_name,
           email: userExist[0].user_email,
+<<<<<<< HEAD
         },
+=======
+          avatar: userExist[0].user_picture || null
+        }
+>>>>>>> origin/Matteos-Branch
       });
     } else {
       const [users] = await connect.query(
-        `INSERT INTO users (user_email, user_name,user_picture, active) VALUES (?,?,?,1)`,
+        `INSERT INTO users (user_email, user_name,user_picture, active,google_registered) VALUES (?,?,?,1,1)`,
         [email, name, picture]
       );
       if (users.affectedRows > 0) {
+        const expiration = 1000 * 60 * 60 * 24 * 28;
+        const info = {
+          id: users.insertId,
+          username: name,
+          email: email,
+          avatar:picture || null
+        };
+        const token = jwt.sign(info, process.env.SECRET_TOKEN, {
+          expiresIn: '28d',
+        });
+        res.cookie('user_token', { token: token }, {
+          maxAge: expiration,
+          httpOnly: true,
+          secure: false,
+          sameSite: 'lax',
+          path: '/'
+        });
         res.status(200).send({
           status: 'ok',
           message: 'Estamos encantados de tenerte con nosotros ' + name,

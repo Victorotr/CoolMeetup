@@ -24,7 +24,8 @@ const SigninUpstance = axios.create({
         name: form_values.nombre_usuario
       });
       console.log(res);
-
+      settoast({on:true,type:'success',text:res.data.message});
+      navigate('/signin');
     } catch (error) {
       console.log(error)
     }
@@ -144,12 +145,14 @@ const SigninUpstance = axios.create({
                   o
                 </span>
               </div>
-              <div>
-              <GoogleLogin onSuccess={(credentialResponse) => {
+              <div className=" w-full flex justify-center items-center py-5">
+              <GoogleLogin 
+              size="large"
+              onSuccess={(credentialResponse) => {
             
                 loginRegisterWithGoogle(credentialResponse);
               }}
-              onError = {() => {console.log('Login Failed');}}
+              onError = {() => {settoast({on:true,type:'error',text:'Error al iniciar la sessión'})}}
               />
               </div>
             </form>
