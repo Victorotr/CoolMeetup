@@ -2,8 +2,8 @@ import { Handler } from "../context/Context";
 import { MdHome, MdPeople, MdMap, MdAdd, MdLogout } from "react-icons/md";
 import { LiaSignInAltSolid } from "react-icons/lia";
 import { useNavigate } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
 import { LogOut } from "../functions/LogOut";
+import nouser from '../assets/no_picture.png';
 
 const SideBar = () => {
   const { menuOn, user,setuser,settoast } = Handler();
@@ -52,8 +52,8 @@ const SideBar = () => {
         {user ? (
           <>
             <li className="p-4 border-y transition-all flex  items-center justify-start  shadow-inner text-zinc-900/90 gap-1 hover:scale-105">
-              <FaUser />
-              {user.username}
+            {user.avatar? <img className="w-8 rounded-full object-cover border border-zinc-400/80" src={user.avatar} />: <img className="w-8 rounded-full object-cover border border-zinc-400/80" src={nouser} />}
+            <div className="flex flex-col justify-center items-start"><span className="text-sm">{user.username}</span><span className="text-xs font-normal">Ir al perfíl</span> </div>
             </li>
             <li className="p-4 transition-all flex  items-center justify-start  shadow-inner text-zinc-900/90 gap-1">
              

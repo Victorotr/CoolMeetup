@@ -75,7 +75,7 @@ const registerUser = async (req, res, next) => {
     passToBd(mail, pwd, regCode, name).then(() => {
       res.status(200).send({
         status: "ok",
-        message: "Usuario registrado con éxito",
+        message: "Usuario registrado con éxito, revisa tu correo para activar tu cuenta",
       });
     });
   } catch (error) {
