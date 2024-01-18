@@ -28,6 +28,8 @@ const SigninUpstance = axios.create({
       navigate('/signin');
     } catch (error) {
       console.log(error)
+      settoast({on:true,type:'success',text:error.response.data.message});
+
     }
   //   axios.post(import.meta.env.VITE_API_URL+'/registerUser',
   //     {
