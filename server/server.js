@@ -32,12 +32,13 @@ app.use((req, res) => {
 
 // Middleware de gestión de errores
 app.use((error, req, res, next) => {
-  console.error(error);
+  console.error('app error catch',error);
 
   res.status(error.httpStatus || 500).send({
     status: 'error',
     message: error.message,
   });
+ 
 });
 
 // Lanzamos el servidor
