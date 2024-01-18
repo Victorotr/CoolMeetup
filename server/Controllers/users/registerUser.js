@@ -39,10 +39,12 @@ const registerUser = async (req, res, next) => {
         email: mail,
       });
     } catch (err) {
-      console.log(err)
+    
       const error = new Error("La contraseña o el email no cumple con los estándares de seguridad propuestos");
       error.httpStatus = 404;
-      next(error);
+      // envio el error y salgo de la función
+      return  next(error)
+
     }
 
     const [userExist] = await connect.query(
@@ -53,7 +55,9 @@ const registerUser = async (req, res, next) => {
     if (userExist.length > 0) {
       const error = new Error("El e-mail utilizado ya existe en la base de datos");
       error.httpStatus = 409;
-      throw error;
+      // envio el error y salgo de la función
+      return next(error)
+
     }
 
     /**preparo para mandar mail de confirmacion */
@@ -80,7 +84,8 @@ const registerUser = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    next(error);
+    res.status(403).send({ status: 'error', message: 'Hubo un error con la contraseña o el correo' })
+    return next(error);
   } finally {
     connect?.release();
   }
