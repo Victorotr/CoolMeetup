@@ -8,6 +8,7 @@ connect = await getConnection();
 
 async function passToBd(mail, pwd, regCode, name) {
   bcrypt.hash(pwd, 10, async function (err, hash) {
+    // eslint-disable-next-line no-unused-vars
     const [users] = await connect.query(
       //SHA2 es un estandar de cifrado que recibe como parámetro la llave que se utilizara y el número de bits del HASH,
       //de esta forma el valor será cifrado y se almacenará en la base de datos
@@ -15,6 +16,7 @@ async function passToBd(mail, pwd, regCode, name) {
       `INSERT INTO users (user_email, user_password, regCode, user_name) VALUES (?,?,?,?)`,
       [mail, hash, regCode, name]
     );
+   
   });
 }
 
@@ -38,12 +40,21 @@ const registerUser = async (req, res, next) => {
         email: mail,
       });
     } catch (err) {
+<<<<<<< HEAD
       console.log(err);
       const error = new Error(
         'La contraseña o el email no cumple con los estándares de seguridad propuestos'
       );
       error.httpStatus = 404;
       throw error;
+=======
+    
+      const error = new Error("La contraseña o el email no cumple con los estándares de seguridad propuestos");
+      error.httpStatus = 404;
+      // envio el error y salgo de la función
+      return  next(error)
+
+>>>>>>> origin/Matteos-Branch
     }
 
     const [userExist] = await connect.query(
@@ -56,7 +67,9 @@ const registerUser = async (req, res, next) => {
         'El e-mail utilizado ya existe en la base de datos'
       );
       error.httpStatus = 409;
-      throw error;
+      // envio el error y salgo de la función
+      return next(error)
+
     }
 
     /**preparo para mandar mail de confirmacion */
@@ -73,6 +86,10 @@ const registerUser = async (req, res, next) => {
     //sendMail(mail, "Correo de verificación CoolMeetups.com", bodyMail); COMENTADO PARA MIENTRAS PROBAMOS NO ENVIE E-MAILS
 
     //hasear password
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> origin/Matteos-Branch
 
     passToBd(mail, pwd, regCode, name).then(() => {
       res.status(200).send({
@@ -83,7 +100,8 @@ const registerUser = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    next(error);
+    res.status(403).send({ status: 'error', message: 'Hubo un error con la contraseña o el correo' })
+    return next(error);
   } finally {
     connect?.release();
   }

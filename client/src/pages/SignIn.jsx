@@ -26,12 +26,12 @@ const SignIn = () => {
     try {
       setloading(true);
       const res = await SigninInstance.post("/signin", formData);
-     
+      console.log(res)
       if (res && res.status === 200) {
         setloading(false);
         console.log("200", res);
         setuser(res.data.user);
-        navigate("/list/meetups");
+        navigate(`/user/details/${res.data.user.id}`);
       } else {
         
         setloading(false);

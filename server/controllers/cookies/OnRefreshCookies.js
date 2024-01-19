@@ -1,6 +1,7 @@
 import { v4 as randomId } from 'uuid';
 import { getConnection } from '../../db/ConnectionDB.js';
 
+
 export const OnRefreshCookies = async (req, res) => {
   const conexion = await getConnection();
 
@@ -23,6 +24,7 @@ export const OnRefreshCookies = async (req, res) => {
   } catch (error) {
     console.log(error);
   } finally {
-    conexion.release();
+    if(conexion){ conexion.release();}
+   
   }
 };

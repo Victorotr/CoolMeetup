@@ -8,6 +8,7 @@ export const Ping = async (req, res) => {
     res.send({ message: 'received' });
   } catch (error) {
     console.log(error);
+    connection.release();
     res.send('error');
   }
 };
