@@ -16,7 +16,6 @@ async function passToBd(mail, pwd, regCode, name) {
       `INSERT INTO users (user_email, user_password, regCode, user_name) VALUES (?,?,?,?)`,
       [mail, hash, regCode, name]
     );
-   
   });
 }
 
@@ -40,21 +39,12 @@ const registerUser = async (req, res, next) => {
         email: mail,
       });
     } catch (err) {
-<<<<<<< HEAD
-      console.log(err);
       const error = new Error(
         'La contraseña o el email no cumple con los estándares de seguridad propuestos'
       );
       error.httpStatus = 404;
-      throw error;
-=======
-    
-      const error = new Error("La contraseña o el email no cumple con los estándares de seguridad propuestos");
-      error.httpStatus = 404;
       // envio el error y salgo de la función
-      return  next(error)
-
->>>>>>> origin/Matteos-Branch
+      return next(error);
     }
 
     const [userExist] = await connect.query(
@@ -68,8 +58,7 @@ const registerUser = async (req, res, next) => {
       );
       error.httpStatus = 409;
       // envio el error y salgo de la función
-      return next(error)
-
+      return next(error);
     }
 
     /**preparo para mandar mail de confirmacion */
@@ -86,10 +75,6 @@ const registerUser = async (req, res, next) => {
     //sendMail(mail, "Correo de verificación CoolMeetups.com", bodyMail); COMENTADO PARA MIENTRAS PROBAMOS NO ENVIE E-MAILS
 
     //hasear password
-<<<<<<< HEAD
-=======
- 
->>>>>>> origin/Matteos-Branch
 
     passToBd(mail, pwd, regCode, name).then(() => {
       res.status(200).send({
@@ -100,7 +85,12 @@ const registerUser = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(403).send({ status: 'error', message: 'Hubo un error con la contraseña o el correo' })
+    res
+      .status(403)
+      .send({
+        status: 'error',
+        message: 'Hubo un error con la contraseña o el correo',
+      });
     return next(error);
   } finally {
     connect?.release();
