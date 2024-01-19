@@ -3,7 +3,6 @@ import morgan from 'morgan';
 import router from './routes/routes.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
 const app = express();
 
 app.use(morgan('dev'));

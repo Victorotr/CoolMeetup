@@ -8,6 +8,7 @@ connect = await getConnection();
 
 async function passToBd(mail, pwd, regCode, name) {
   bcrypt.hash(pwd, 10, async function (err, hash) {
+    // eslint-disable-next-line no-unused-vars
     const [users] = await connect.query(
       //SHA2 es un estandar de cifrado que recibe como parámetro la llave que se utilizara y el número de bits del HASH,
       //de esta forma el valor será cifrado y se almacenará en la base de datos
@@ -15,6 +16,7 @@ async function passToBd(mail, pwd, regCode, name) {
       `INSERT INTO users (user_email, user_password, regCode, user_name) VALUES (?,?,?,?)`,
       [mail, hash, regCode, name]
     );
+   
   });
 }
 
@@ -74,7 +76,7 @@ const registerUser = async (req, res, next) => {
     //sendMail(mail, "Correo de verificación CoolMeetups.com", bodyMail); COMENTADO PARA MIENTRAS PROBAMOS NO ENVIE E-MAILS
 
     //hasear password
-
+ 
 
     passToBd(mail, pwd, regCode, name).then(() => {
       res.status(200).send({

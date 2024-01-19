@@ -10,6 +10,12 @@ import { SignIn } from '../controllers/signin/signIn.js';
 import { LogOut } from '../controllers/cookies/LogOut.js';
 import { isLogged } from '../controllers/signin/isLogged.js';
 import loginRegisterWithGoogle from '../Controllers/users/loginRegisterWithGoogle.js';
+import { getUserDetails } from '../Controllers/users/getUserDetails.js';
+import { savePhoto } from '../services/savePhoto.js';
+import Upload from '../Middlewares/fileUpload.js';
+import { isUser } from '../Middlewares/isUser.js';
+import { getImg } from '../services/imgGet.js';
+import { UpdateUserDetails } from '../Controllers/users/updateUserDetails.js';
 
 const router = Router();
 
@@ -21,7 +27,9 @@ router.get('/', getAllMeetups);
 
 // Rutas de Usuarios
 router.post('/registerUser', registerUser);
+
 router.post('/validateUser', validateUser);
+
 router.post('/loginRegisterWithGoogle',loginRegisterWithGoogle);
 //router.post('/login', loginUser);
 router.get('/', getAllMeetups);
@@ -30,12 +38,14 @@ router.get('/islogged',isLogged);
 
 router.get('/meetup/:id', getSingleMeetupDetails);
 
-
 router.post('/signin',SignIn);
 
 router.get('/logout',LogOut);
-// router.post('/singUp/:meetupId', singUpForMeetup);
 
+router.post('/update/user',isUser,Upload,savePhoto,UpdateUserDetails)
+
+router.get('/user/details/:id',getUserDetails)
+// router.post('/singUp/:meetupId', singUpForMeetup);
 
 // router.post('/meetup', postMeetup);
 // router.post('/singUp/:meetupId', singUpForMeetup);
@@ -51,7 +61,7 @@ router.get('/user/:id', getUserInfo)
 *Opcional: Gestión del perfil (nombre, biografía y avatar)
 router.patch("/user", modifyUserInfo);
 */
-
+router.get('/user/avatar/:id',getImg)
 // Rutas de cookies
 router.get('/visit', OnRefreshCookies);
 
