@@ -50,7 +50,7 @@ const loginRegisterWithGoogle = async (req, res, next) => {
           maxAge: expiration,
           httpOnly: true,
           secure: false,
-          sameSite: 'lax',
+          sameSite: 'none',
           path: '/'
         });
         res.status(200).send({

@@ -17,7 +17,7 @@ export const UpdateUserDetails = async (req, res) => {
         connection = await getConnection();
         if (fileUrl) {
             const [oldPicture] = await connection.query('SELECT user_picture FROM users WHERE id_user = ?', [id]);
-            console.log(oldPicture[0]);
+           
             try {
                 if (oldPicture && oldPicture[0].user_picture) {
                     fs.unlinkSync(`./Controllers/users/avatars/${oldPicture[0].user_picture}`)
