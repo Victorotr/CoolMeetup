@@ -4,7 +4,7 @@ import { Ping } from '../controllers/cookies/Ping.js';
 import registerUser from '../Controllers/users/registerUser.js';
 import validateUser from '../Controllers/users/validateUser.js';
 import { OnRefreshCookies } from '../controllers/cookies/OnRefreshCookies.js';
-import { getAllMeetups } from '../controllers/meetups/getAllMeetups.js';
+import { getAllMeetups } from '../Controllers/meetups/getAllMeetups.js';
 import { getSingleMeetupDetails } from '../controllers/meetups/getSingleMeetupDetails.js';
 import { postMeetup } from '../controllers/meetups/postMeetup.js';
 import { SignIn } from '../controllers/signin/signIn.js';
@@ -21,7 +21,6 @@ import { UpdateUserDetails } from '../Controllers/users/updateUserDetails.js';
 const router = Router();
 
 // Rutas de Meetups
-router.get('/', getAllMeetups);
 //router.get('/meetup/:id', getSingleMeetupDetails);
 //router.post('/singUp/:meetupId', singUpForMeetup);
 //router.post('/meetup', postMeetup);
@@ -33,7 +32,7 @@ router.post('/validateUser', validateUser);
 
 router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
 //router.post('/login', loginUser);
-router.get('/', getAllMeetups);
+router.post('/getMeetups', getAllMeetups);
 
 router.get('/meetup/:id', getSingleMeetupDetails);
 

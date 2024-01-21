@@ -8,7 +8,7 @@ const app = express();
 app.use(morgan('dev'));
 
 app.use(cookieParser());
-
+app.use(express.static('public'));
 app.use(express.json());
 
 // Express cors
