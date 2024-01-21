@@ -33,7 +33,7 @@ router.post('/validateUser', validateUser);
 router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
 //router.post('/login', loginUser);
 router.post('/getMeetups', getAllMeetups);
-
+router.get('/islogged',isLogged);
 router.get('/meetup/:id', getSingleMeetupDetails);
 
 router.post('/signin', SignIn);
@@ -59,7 +59,7 @@ router.get('/user/:id', getUserInfo)
 *Opcional: Gestión del perfil (nombre, biografía y avatar)
 router.patch("/user", modifyUserInfo);
 */
-router.get('/user/avatar/:id', getImg);
+router.get('/getImage/:id/:fileType', getImg);
 // Rutas de cookies
 router.get('/visit', OnRefreshCookies);
 

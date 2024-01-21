@@ -90,7 +90,7 @@ const ListMeetups = () => {
               <div className="meetupCard p-4 max-w-sm">
                 <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <a href="#">
-                        <img className="rounded-t-lg" src={import.meta.env.VITE_API_URL+'/meetups_images/'+e.meetup_image} alt="" />
+                        <img className="rounded-t-lg" src={import.meta.env.VITE_API_URL+'/getImage/'+e.meetup_image+'/Meetup'} alt="" />
                     </a>
                     <div class="p-5">
                       <p>{moment(e.meetup_datetime).format('DD/MM/YYYY')} - {moment(e.meetup_time, 'HH:mm:ss').format('HH:mm')}</p>
