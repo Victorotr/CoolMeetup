@@ -8,14 +8,14 @@ import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 const EditUserProfile = () => {
   const navigate = useNavigate();
-  const { user,settoast} = Handler();
+  const { user,settoast,accessLoading} = Handler();
   const [userData, setuserData] = useState({
     bio:'',
   });
   const [DragActive, setDragActive] = useState(false);
   const [file, setfile] = useState(null);
   useEffect(() => {
-   if(!user){
+   if(!user && !accessLoading){
     navigate('/signin');
     settoast({on:true,type:'warning',text:'Accede para ver la info de usuarios'})
    }
@@ -74,13 +74,11 @@ const EditUserProfile = () => {
   });
   const getUser = async () => {
     try {
-      if (!user) {
+      if (!user && !accessLoading) {
         return;
       }
-        console.log(user)
-    
-        setuserData(user);
-      
+  setuserData(user);
+
     } catch (error) {
       console.log(error);
       settoast({on:true,type:'warning',text:'Hubo un problema al obtener los datos de usuario'})
@@ -88,8 +86,7 @@ const EditUserProfile = () => {
   };
   useEffect(() => {
     getUser();
-
-    console.log("userData", userData,);
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -183,7 +180,7 @@ const EditUserProfile = () => {
                 maxLength={500}
                 name="bio"
                 onChange={HandleChange}
-                value={userData.bio || ''}
+                value={userData?.bio || ''}
                 className="text-zinc-900/80 font-medium  p-2 bg-transparent resize-none border border-zinc-900/10 outline-none focus:outline-blue-600/40 rounded-md"
                 id="bio"
                 cols="30"

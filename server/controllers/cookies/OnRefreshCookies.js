@@ -16,7 +16,7 @@ export const OnRefreshCookies = async (req, res) => {
       res.cookie('visitId', userId, {
         maxAge: expiration,
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: 'none',
       });
     }
     res.send({ message: 'received' });
