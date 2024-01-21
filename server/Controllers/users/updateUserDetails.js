@@ -2,7 +2,7 @@ import { getConnection } from "../../db/ConnectionDB.js";
 import fs from 'fs'
 export const UpdateUserDetails = async (req, res) => {
     let connection;
-    const fileUrl = req.file && req.file.originalname ? process.env.IMAGE_URL + req.file.originalname : null;
+    const fileUrl = req.file && req.file.originalname ? process.env.IMAGE_URL + req.file.originalname +"/Avatar" : null;
     const fileName = req.file && req.file.originalname ? req.file.originalname : null;
     try {
         console.log(fileName)
