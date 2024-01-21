@@ -25,6 +25,7 @@ export const MyContextProvider = ({ children }) => {
   const [menuOn, setmenuOn] = useState(false);
   const [toast, settoast] = useState({on:false,type:'',text:''});
   const [user, setuser] = useState(null);
+  const [accessLoading, setaccessLoading] = useState(true)
 
   useEffect(() => {
     const isLogged = async ()=>{
@@ -32,13 +33,15 @@ export const MyContextProvider = ({ children }) => {
      
       if(res && res.data.user){
         setuser(res.data.user);
+        
        
       }else{
         setuser(null)
-     
       }
+      setaccessLoading(false)
     }
     isLogged();
+
   }, [])
  
   useEffect(() => {
@@ -51,7 +54,7 @@ export const MyContextProvider = ({ children }) => {
     };
   }, []);
   return (
-    <MyContext.Provider value={{ myData, setMyData, menuOn, setmenuOn,toast,settoast,user,setuser}}>
+    <MyContext.Provider value={{ myData, setMyData, menuOn, setmenuOn,toast,settoast,user,setuser,accessLoading}}>
       {children}
     </MyContext.Provider>
   );

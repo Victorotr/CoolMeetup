@@ -7,7 +7,7 @@ import { ImCamera } from "react-icons/im";
 import { FaGear } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 const UserProfile = () => {
-  const { setuser, user, settoast } = Handler();
+  const { setuser, user, settoast,accessLoading } = Handler();
   const navigate = useNavigate();
 
   const getUserInstance = axios.create({
@@ -20,7 +20,7 @@ const UserProfile = () => {
   const { id } = useParams();
   const [userData, setuserData] = useState(null);
   const getUser = async () => {
-    if (!user) {
+    if (!user && !accessLoading) {
       navigate("/signin");
       settoast({
         on: true,

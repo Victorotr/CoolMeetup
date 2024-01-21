@@ -14,6 +14,7 @@ import Signup from "./pages/Signup";
 import ValidateUser from "./pages/ValidateUser";
 import UserProfile from "./pages/UserProfile";
 import EditUserProfile from "./pages/EditUserProfile";
+import Loading from "./components/Loading";
 function App() {
   const { myData, setMyData,setmenuOn } = Handler();
 
@@ -27,6 +28,7 @@ function App() {
     onClick={(e)=>{e.stopPropagation();setmenuOn(false)}}
     className={` min-h-screen relative bg-zinc-50`}>
       <Nav />
+      <Loading />
       <ToastWindow />
       <SideBar />
       <Routes>
