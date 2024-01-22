@@ -28,6 +28,8 @@ const router = Router();
 // Rutas de Usuarios
 router.post('/registerUser', registerUser);
 
+router.get('/islogged',isLogged)
+
 router.post('/validateUser', validateUser);
 
 router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);

@@ -51,13 +51,13 @@ export const SignIn = async (req, res) => {
             maxAge: expiration,
             httpOnly: true,
             secure: false,
-            sameSite: 'none',
             path: '/'
         });
         res.status(200).send({ status: 'Logged', user: info });
 
     } catch (error) {
         res.clearCookie('user_token')
+        console.log(error)
         res.status(403).send({ message: 'Problemas con el servidor, por favor intentelo más tarde' })
         console.log(error)
     }finally{
