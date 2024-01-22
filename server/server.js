@@ -8,12 +8,13 @@ const app = express();
 app.use(morgan('dev'));
 
 app.use(cookieParser());
-
+app.use(express.static('public'));
 app.use(express.json());
 
 // Express cors
 app.use(cors({
     origin:[process.env.CLIENT_URL,'http://localhost:5173'],
+    origin:[process.env.CLIENT_URL,'http://172.16.183.28:5173'],
     credentials: true,
   })
 );

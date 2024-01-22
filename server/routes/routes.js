@@ -4,8 +4,9 @@ import { Ping } from '../controllers/cookies/Ping.js';
 import registerUser from '../Controllers/users/registerUser.js';
 import validateUser from '../Controllers/users/validateUser.js';
 import { OnRefreshCookies } from '../controllers/cookies/OnRefreshCookies.js';
-import { getAllMeetups } from '../controllers/meetups/getAllMeetups.js';
+import { getAllMeetups } from '../Controllers/meetups/getAllMeetups.js';
 import { getSingleMeetupDetails } from '../controllers/meetups/getSingleMeetupDetails.js';
+import { postMeetup } from '../controllers/meetups/postMeetup.js';
 import { SignIn } from '../controllers/signin/signIn.js';
 import { LogOut } from '../controllers/cookies/LogOut.js';
 import { isLogged } from '../controllers/signin/isLogged.js';
@@ -20,7 +21,6 @@ import { UpdateUserDetails } from '../Controllers/users/updateUserDetails.js';
 const router = Router();
 
 // Rutas de Meetups
-router.get('/', getAllMeetups);
 //router.get('/meetup/:id', getSingleMeetupDetails);
 //router.post('/singUp/:meetupId', singUpForMeetup);
 //router.post('/meetup', postMeetup);
@@ -30,21 +30,19 @@ router.post('/registerUser', registerUser);
 
 router.post('/validateUser', validateUser);
 
-router.post('/loginRegisterWithGoogle',loginRegisterWithGoogle);
+router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
 //router.post('/login', loginUser);
-router.get('/', getAllMeetups);
-
-router.get('/islogged',isLogged);
+router.post('/getMeetups', getAllMeetups);
 
 router.get('/meetup/:id', getSingleMeetupDetails);
 
-router.post('/signin',SignIn);
+router.post('/signin', SignIn);
 
-router.get('/logout',LogOut);
+router.get('/logout', LogOut);
 
-router.post('/update/user',isUser,Upload,savePhoto,UpdateUserDetails)
+router.post('/update/user', isUser, Upload, savePhoto, UpdateUserDetails);
 
-router.get('/user/details/:id',getUserDetails)
+router.get('/user/details/:id', getUserDetails);
 // router.post('/singUp/:meetupId', singUpForMeetup);
 
 // router.post('/meetup', postMeetup);
@@ -61,7 +59,7 @@ router.get('/user/:id', getUserInfo)
 *Opcional: Gestión del perfil (nombre, biografía y avatar)
 router.patch("/user", modifyUserInfo);
 */
-router.get('/user/avatar/:id',getImg)
+router.get('/user/avatar/:id', getImg);
 // Rutas de cookies
 router.get('/visit', OnRefreshCookies);
 

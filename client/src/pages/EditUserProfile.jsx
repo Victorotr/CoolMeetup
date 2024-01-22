@@ -102,8 +102,7 @@ const EditUserProfile = () => {
     let formData = new FormData();
    
     if(file){
-     
-       formData.append('avatar',file);
+     formData.append('avatar',file);
     }
     
     for (const key in userData) {

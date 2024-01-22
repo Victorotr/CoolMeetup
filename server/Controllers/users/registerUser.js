@@ -1,7 +1,7 @@
-import { getConnection } from "../../db/ConnectionDB.js"
-import Joi from "joi";
-import bcrypt from "bcrypt";
-import { uuid } from "uuidv4";
+import { getConnection } from '../../db/ConnectionDB.js';
+import Joi from 'joi';
+import bcrypt from 'bcrypt';
+import { uuid } from 'uuidv4';
 
 let connect;
 connect = await getConnection();
@@ -16,23 +16,21 @@ async function passToBd(mail, pwd, regCode, name) {
       `INSERT INTO users (user_email, user_password, regCode, user_name) VALUES (?,?,?,?)`,
       [mail, hash, regCode, name]
     );
-   
   });
 }
 
 const registerUser = async (req, res, next) => {
-
   try {
     let { mail, pwd, name } = req.body;
 
     //validaciones básicas
     const schema = Joi.object({
       password: Joi.string().pattern(
-        new RegExp("^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,30}$")
+        new RegExp('^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,30}$')
       ),
       email: Joi.string().email({
         minDomainSegments: 2,
-        tlds: { allow: ["com", "net", "es", "org"] },
+        tlds: { allow: ['com', 'net', 'es', 'org'] },
       }),
     });
     try {
@@ -41,12 +39,12 @@ const registerUser = async (req, res, next) => {
         email: mail,
       });
     } catch (err) {
-    
-      const error = new Error("La contraseña o el email no cumple con los estándares de seguridad propuestos");
+      const error = new Error(
+        'La contraseña o el email no cumple con los estándares de seguridad propuestos'
+      );
       error.httpStatus = 404;
       // envio el error y salgo de la función
-      return  next(error)
-
+      return next(error);
     }
 
     const [userExist] = await connect.query(
@@ -55,11 +53,12 @@ const registerUser = async (req, res, next) => {
     );
 
     if (userExist.length > 0) {
-      const error = new Error("El e-mail utilizado ya existe en la base de datos");
+      const error = new Error(
+        'El e-mail utilizado ya existe en la base de datos'
+      );
       error.httpStatus = 409;
       // envio el error y salgo de la función
-      return next(error)
-
+      return next(error);
     }
 
     /**preparo para mandar mail de confirmacion */
@@ -76,17 +75,22 @@ const registerUser = async (req, res, next) => {
     //sendMail(mail, "Correo de verificación CoolMeetups.com", bodyMail); COMENTADO PARA MIENTRAS PROBAMOS NO ENVIE E-MAILS
 
     //hasear password
- 
 
     passToBd(mail, pwd, regCode, name).then(() => {
       res.status(200).send({
-        status: "ok",
-        message: "Usuario registrado con éxito, revisa tu correo para activar tu cuenta",
+        status: 'ok',
+        message:
+          'Usuario registrado con éxito, revisa tu correo para activar tu cuenta',
       });
     });
   } catch (error) {
     console.log(error);
-    res.status(403).send({ status: 'error', message: 'Hubo un error con la contraseña o el correo' })
+    res
+      .status(403)
+      .send({
+        status: 'error',
+        message: 'Hubo un error con la contraseña o el correo',
+      });
     return next(error);
   } finally {
     connect?.release();
