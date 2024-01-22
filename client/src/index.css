@@ -61,25 +61,6 @@
   animation: lds-dual-ring 1.2s linear infinite;
 }
 
-.meetupsBoard 
-{
-  display:flex;
-}
-.meetupCard
-{
-  max-height:500px;
-  min-height:500px;
-}
-
-.resume-text
-{
-  text-overflow: ellipsis;
-  overflow:hidden;
-  max-height:150px;
-  font-size: 0.8rem;
-
-}
-
 @keyframes lds-dual-ring {
   0% {
     transform: rotate(0deg);
@@ -88,7 +69,6 @@
     transform: rotate(360deg);
   }
 }
-
 
 @keyframes menuon {
   0%{

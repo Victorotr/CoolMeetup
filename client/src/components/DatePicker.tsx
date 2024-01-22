@@ -1,9 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import Datepicker from "tailwind-datepicker-react";
-
+const months = ['ene','feb','mar','abr','may','jun','jul','ago','set','oct','nov','dic',]
+let now = new Date()
 const options = {
-	title: "",
+
 	autoHide: true,
 	todayBtn: false,
 	clearBtn: false,
@@ -23,8 +24,8 @@ const options = {
 	},
 	icons: {
 		// () => ReactElement | JSX.Element
-		prev: () => <span>Ant</span>,
-		next: () => <span>Sgt</span>,
+		prev: () => <span>{months[now.getMonth() -1 < 0 ? 11 : now.getMonth() -1]}</span>,
+		next: () => <span>{months[now.getMonth() +1 > 11 ? 0 : now.getMonth() +1 ]}</span>,
 	},
 	datepickerClassNames: "top-12",
 	defaultDate: new Date(),
@@ -44,15 +45,16 @@ const options = {
 const DatePickerComponent = () => {
 	const [show, setShow] = useState(false)
 	const handleChange = (selectedDate: Date) => {
-		console.log(selectedDate)
+		
+		now = new Date(selectedDate)
 	}
 	const handleClose = (state: boolean) => {
 		setShow(state)
 	}
 
 	return (
-		<div>
-			<Datepicker options={options} onChange={handleChange} show={show} setShow={handleClose} />
+		<div className="flex items-center justify-center ">
+		<Datepicker  options={options} onChange={handleChange} show={show} setShow={handleClose} />
 		</div>
 	)
 }
