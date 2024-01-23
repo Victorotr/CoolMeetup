@@ -7,42 +7,30 @@ import { OnRefreshCookies } from '../controllers/cookies/OnRefreshCookies.js';
 import { getAllMeetups } from '../controllers/meetups/getAllMeetups.js';
 import { getSingleMeetupDetails } from '../controllers/meetups/getSingleMeetupDetails.js';
 import { postMeetup } from '../controllers/meetups/postMeetup.js';
+import { signUpMeetup } from '../controllers/meetups/signUpMeetup.js';
 import { SignIn } from '../controllers/signin/signIn.js';
 import { LogOut } from '../controllers/cookies/LogOut.js';
 import { isLogged } from '../controllers/signin/isLogged.js';
+import { isUser } from '../Middlewares/isUser.js';
 import loginRegisterWithGoogle from '../Controllers/users/loginRegisterWithGoogle.js';
 
 const router = Router();
 
 // Rutas de Meetups
+
 router.get('/', getAllMeetups);
-//router.get('/meetup/:id', getSingleMeetupDetails);
-//router.post('/singUp/:meetupId', singUpForMeetup);
-//router.post('/meetup', postMeetup);
+router.get('/meetup/:id', getSingleMeetupDetails);
+router.post('/meetup', isUser, postMeetup);
+router.post('/singUp/:meetupId', isUser, signUpMeetup);
 
 // Rutas de Usuarios
 router.post('/registerUser', registerUser);
 router.post('/validateUser', validateUser);
 router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
-//router.post('/login', loginUser);
-router.get('/', getAllMeetups);
-
-router.get('/meetup/:id', getSingleMeetupDetails);
-
-router.post('/meetup', postMeetup);
-
 router.get('/islogged', isLogged);
-
 router.post('/signin', SignIn);
-
 router.get('/logout', LogOut);
-// router.post('/singUp/:meetupId', singUpForMeetup);
 
-// router.post('/singUp/:meetupId', singUpForMeetup);
-
-// Rutas de Usuarios
-// router.post('/user', registerUser);
-// router.post('/login', loginUser);
 /*
 *Opcional: Ver el perfil de un usuario y los meetups a los que se ha
 apuntado ordenados de más nuevo a más antiguo 
