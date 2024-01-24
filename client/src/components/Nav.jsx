@@ -4,8 +4,8 @@ import ImgMap from "../assets/map.png";
 import SignupButton from "../buttons/SignupButton";
 import { useNavigate } from "react-router-dom";
 import { Handler } from "../context/Context";
-
 import nouser from '../assets/no_picture.png';
+
 const Nav = () => {
   const navigate = useNavigate();
   const { user } = Handler();
@@ -48,7 +48,9 @@ const Nav = () => {
         </ul>
       </div>
       {user ? (
-        <div className="flex items-center gap-1">
+        <div 
+        onClick={()=>navigate(`/user/details/${user?.id}`)}
+        className="flex items-center gap-1">
           <div className="p-3  transition-all cursor-pointer flex items-center justify-start font-medium shadow-inner text-zinc-900/80 gap-1 hover:scale-105">
              {user.avatar? <img className="w-8 rounded-full object-cover border border-zinc-400/80" src={user.avatar} />: <img className="w-8 rounded-full object-cover border border-zinc-400/80" src={nouser} />}
             {user.username}

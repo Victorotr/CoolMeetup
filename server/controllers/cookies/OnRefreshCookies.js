@@ -1,6 +1,7 @@
 import { v4 as randomId } from 'uuid';
 import { getConnection } from '../../db/ConnectionDB.js';
 
+
 export const OnRefreshCookies = async (req, res) => {
   const conexion = await getConnection();
 
@@ -15,7 +16,7 @@ export const OnRefreshCookies = async (req, res) => {
       res.cookie('visitId', userId, {
         maxAge: expiration,
         httpOnly: true,
-        sameSite: 'lax',
+        secure: false,
       });
     }
     res.send({ message: 'received' });
@@ -23,6 +24,7 @@ export const OnRefreshCookies = async (req, res) => {
   } catch (error) {
     console.log(error);
   } finally {
-    conexion.release();
+    if(conexion){ conexion.release();}
+   
   }
 };

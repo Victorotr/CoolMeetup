@@ -8,6 +8,7 @@ connect = await getConnection();
 
 async function passToBd(mail, pwd, regCode, name) {
   bcrypt.hash(pwd, 10, async function (err, hash) {
+    // eslint-disable-next-line no-unused-vars
     const [users] = await connect.query(
       //SHA2 es un estandar de cifrado que recibe como parámetro la llave que se utilizara y el número de bits del HASH,
       //de esta forma el valor será cifrado y se almacenará en la base de datos

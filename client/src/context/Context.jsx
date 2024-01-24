@@ -25,24 +25,25 @@ export const MyContextProvider = ({ children }) => {
   const [menuOn, setmenuOn] = useState(false);
   const [toast, settoast] = useState({on:false,type:'',text:''});
   const [user, setuser] = useState(null);
+  const [accessLoading, setaccessLoading] = useState(true)
 
   useEffect(() => {
     const isLogged = async ()=>{
       const res = await LoggedInstance.get('/islogged');
-      console.log(res);
+     
       if(res && res.data.user){
         setuser(res.data.user);
+        
+       
       }else{
         setuser(null)
-        console.log(res)
       }
+      setaccessLoading(false)
     }
     isLogged();
+
   }, [])
-  useEffect(() => {
-   console.log(user)
-  }, [user])
-  
+ 
   useEffect(() => {
     const handleUnload = async () => {
       await HandleVisit();
@@ -53,7 +54,7 @@ export const MyContextProvider = ({ children }) => {
     };
   }, []);
   return (
-    <MyContext.Provider value={{ myData, setMyData, menuOn, setmenuOn,toast,settoast,user,setuser}}>
+    <MyContext.Provider value={{ myData, setMyData, menuOn, setmenuOn,toast,settoast,user,setuser,accessLoading}}>
       {children}
     </MyContext.Provider>
   );

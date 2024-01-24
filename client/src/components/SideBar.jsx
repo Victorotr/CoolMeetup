@@ -51,7 +51,9 @@ const SideBar = () => {
         </li>
         {user ? (
           <>
-            <li className="p-4 border-y transition-all flex  items-center justify-start  shadow-inner text-zinc-900/90 gap-1 hover:scale-105">
+            <li 
+             onClick={()=>navigate(`/user/details/${user?.id}`)}
+            className="p-4 border-y transition-all flex  items-center justify-start  shadow-inner text-zinc-900/90 gap-1 hover:scale-105">
             {user.avatar? <img className="w-8 rounded-full object-cover border border-zinc-400/80" src={user.avatar} />: <img className="w-8 rounded-full object-cover border border-zinc-400/80" src={nouser} />}
             <div className="flex flex-col justify-center items-start"><span className="text-sm">{user.username}</span><span className="text-xs font-normal">Ir al perfíl</span> </div>
             </li>
