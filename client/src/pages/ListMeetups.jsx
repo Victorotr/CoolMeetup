@@ -6,9 +6,11 @@ import { useState, useEffect } from "react";
 import MeetupCard from "../Cards/meetupCard";
 const ListMeetups = () => {
   const [meetupsList, setMeetupsList] = useState([]);
+  const [allMeetups, setAllMeetups] = useState([]);
   const [center, setcenter] = useState({ lat: 40.4165, lng: -3.70256 });
   const [zoom, setzoom] = useState(6);
   const [themeList, setthemeList] = useState([]);
+  const [pronviceList, setProvinceList] = useState([]);
   // const [map, setmap] = useState(null);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -47,22 +49,45 @@ const ListMeetups = () => {
     }
   };
   useEffect(() => {
-    if (meetupsList && meetupsList.length) {
+    //cargar lista completa de meetups próximos a celebrarse al dia de hoy
+    const getMeets = async () => {const res = await axios.post(
+      import.meta.env.VITE_API_URL + "/getMeetups",
+      {
+        date: new Date().toISOString().slice(0, 10).split('-').reverse().join('/'),
+      }
+    );
+    if (res && res.status === 200) {
+      setAllMeetups(res.data.data);
+    }
+  }
+    getMeets();
+  },[]);
+
+  useEffect(() => {
+    if (allMeetups && allMeetups.length) {
       console.log(meetupsList);
-      const themes = meetupsList.map((item) => {
+      const themes = allMeetups.map((item) => {
         return item.meetup_theme;
       });
+      const provinces = allMeetups.map((item) => {
+        return item.meetup_town;
+      });
+  
       const EliminateDuplicates = [...new Set(themes)];
+      const provinceEliminateDuplicates = [...new Set(provinces)];
       console.log(EliminateDuplicates);
       setthemeList(EliminateDuplicates);
-      const firstMeet = meetupsList[0];
+      setProvinceList(provinceEliminateDuplicates);
+      
+      const firstMeet = allMeetups[0];
       setcenter({
         lat: parseFloat(firstMeet.x_cordinate),
         lng: parseFloat(firstMeet.y_cordinate),
       });
       setzoom(10);
     }
-  }, [meetupsList]);
+  },[allMeetups])
+  
 
   return (
     <div className="">
@@ -121,7 +146,15 @@ const ListMeetups = () => {
                 name="provincia"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
-                <option>Sevilla</option>
+                <option>Todas</option>
+                {pronviceList &&
+                  pronviceList.map((item) => {
+                    return (
+                      <option key={item} className="w-full h-10">
+                        {item}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
           </div>

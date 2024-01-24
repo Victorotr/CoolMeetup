@@ -9,7 +9,7 @@ const MeetupCard = ({ meetup }) => {
           <img
             className="rounded-t-lg object-cover"
             src={
-              import.meta.env.VITE_API_URL + "/meetups_images/" + meetup.meetup_image
+              import.meta.env.VITE_API_URL + "/getImage/" + meetup.meetup_image + "/Meetup"
             }
             alt=""
           />
