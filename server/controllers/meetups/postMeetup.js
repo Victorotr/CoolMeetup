@@ -83,7 +83,7 @@ export const postMeetup = async (req, res, next) => {
     INSERT INTO meetups(id_main_user,meetup_title,meetup_description,meetup_country,meetup_town,x_cordinate,y_cordinate,meetup_datetime,meetup_theme,meetup_image) VALUES(?,?,?,?,?,?,?,?,?,?);`,[user_id,title,description,meetupObject.address.country,meetupObject.address.city,meetupObject.address.coordenades[0],meetupObject.address.coordenades[1],meetupObject.date,category,meetupObject.image])
     console.log(insert_meetup);
     if(insert_meetup.affectedRows>0){
-      res.status(200).send({status:'OK',message:'Meetup publicado correctamente'});
+      res.status(200).send({status:'OK',message:'Meetup publicado correctamente',meetupId:insert_meetup.insertId});
       return
     }else{
       res.status(403).send({status:'FAILED',message:'error al guardar el meetup'});
