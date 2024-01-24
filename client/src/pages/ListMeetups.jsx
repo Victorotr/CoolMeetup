@@ -121,7 +121,7 @@ const ListMeetups = () => {
         >
           <div className="py-3  flex-wrap flex items-start font-medium bg-zinc-50 relative  justify-center gap-2 ">
             <div className="flex flex-col max-w-[140px]">
-              <p className="text-center">Fecha del evento</p>
+              <p className="text-center">Eventos desde...</p>
               <DatePickerComponent />
             </div>
             <div className="flex flex-col">
