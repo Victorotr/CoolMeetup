@@ -7,7 +7,7 @@ import MeetupCard from "../Cards/meetupCard";
 const ListMeetups = () => {
   const [meetupsList, setMeetupsList] = useState([]);
   const [center, setcenter] = useState({ lat: 40.4165, lng: -3.70256 });
-  const [zoom, setzoom] = useState(6);
+  const [zoom, setzoom] = useState(5.5);
   const [themeList, setthemeList] = useState([]);
   // const [map, setmap] = useState(null);
   const { isLoaded } = useJsApiLoader({
@@ -53,7 +53,7 @@ const ListMeetups = () => {
         return item.meetup_theme;
       });
       const EliminateDuplicates = [...new Set(themes)];
-      console.log(EliminateDuplicates);
+      
       setthemeList(EliminateDuplicates);
       const firstMeet = meetupsList[0];
       setcenter({

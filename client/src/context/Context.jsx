@@ -29,24 +29,25 @@ export const MyContextProvider = ({ children }) => {
 
   useEffect(() => {
     const isLogged = async ()=>{
+     
       const res = await LoggedInstance.get('/islogged');
      
       if(res && res.data.user){
-        setuser(res.data.user);
-        
-       
+        console.log(res.data.user)
+        setuser(res.data.user); 
       }else{
         setuser(null)
       }
       setaccessLoading(false)
+      
     }
     isLogged();
-
+    
   }, [])
  
   useEffect(() => {
     const handleUnload = async () => {
-      await HandleVisit();
+    await HandleVisit();
     };
     window.addEventListener("beforeunload", handleUnload);
     return () => {

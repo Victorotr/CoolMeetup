@@ -53,10 +53,10 @@ const UserProfile = () => {
   return (
     <main>
       <section className="mx-auto w-full max-w-2xl py-5 ">
-        <div className="flex flex-col px-3 relative">
+        <div className="flex  px-3 relative">
           <div className="relative w-36 ">
             <img
-              className="w-24 h-24 sm:w-28 sm:h-28  rounded-full object-cover border-2 border-zinc-900/20 m-1"
+              className="w-24 h-24 min-w-24 min-h-24 sm:w-28 sm:h-28 sm:min-w-28 sm:min-h-28 rounded-full object-cover border-2 border-zinc-900/20 m-1"
               src={userData?.avatar ? userData?.avatar : nouser}
               alt="User picture"
             />
@@ -64,13 +64,13 @@ const UserProfile = () => {
               onClick={() => navigate("/edit/user/details")}
               className={`${
                 userData?.id != user?.id && "hidden"
-              } absolute top-16 right-9 sm:top-20 sm:right-5 border-2 border-zinc-900/40 bg-zinc-50 p-1 flex items-center justify-center rounded-full`}
+              } absolute top-14 right-[-3px] sm:top-[70px] sm:right-[-4px] border-2 border-zinc-900/40 bg-zinc-50 p-1 flex items-center justify-center rounded-full`}
             >
               <ImCamera className="text-zinc-900/80" />
             </div>
           </div>
           <div className="mx-3 flex flex-col gap-2">
-            <h1 className="text-xl font-medium mt-5 ">{userData?.username}</h1>
+            <h1 className="text-xl font-medium mt-1 ">{userData?.username}</h1>
             <div className="">
               <p>{userData?.bio}</p>
             </div>
@@ -78,7 +78,7 @@ const UserProfile = () => {
               <button
                 disabled={userData?.id != user?.id}
                 onClick={() => navigate("/edit/user/details")}
-                className="border px-2.5 py-1.5 flex items-center gap-2 text-zinc-900/80 rounded-lg"
+                className="border px-20 py-1 flex items-center gap-2 text-zinc-900/80 rounded-lg"
               >
                 <span>
                   <FaGear />

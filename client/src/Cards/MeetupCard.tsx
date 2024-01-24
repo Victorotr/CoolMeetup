@@ -8,9 +8,7 @@ const MeetupCard = ({ meetup }) => {
         <a href="#">
           <img
             className="rounded-t-lg object-cover"
-            src={
-              import.meta.env.VITE_API_URL + "/meetups_images/" + meetup.meetup_image
-            }
+            src={import.meta.env.VITE_API_URL + "/meetups_images/" + meetup.meetup_image}
             alt=""
           />
         </a>
