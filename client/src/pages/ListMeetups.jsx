@@ -8,7 +8,7 @@ const ListMeetups = () => {
   const [meetupsList, setMeetupsList] = useState([]);
   const [allMeetups, setAllMeetups] = useState([]);
   const [center, setcenter] = useState({ lat: 40.4165, lng: -3.70256 });
-  const [zoom, setzoom] = useState(6);
+  const [zoom, setzoom] = useState(5.5);
   const [themeList, setthemeList] = useState([]);
   const [pronviceList, setProvinceList] = useState([]);
   // const [map, setmap] = useState(null);
@@ -76,6 +76,7 @@ const ListMeetups = () => {
       const EliminateDuplicates = [...new Set(themes)];
       const provinceEliminateDuplicates = [...new Set(provinces)];
       console.log(EliminateDuplicates);
+      
       setthemeList(EliminateDuplicates);
       setProvinceList(provinceEliminateDuplicates);
       
