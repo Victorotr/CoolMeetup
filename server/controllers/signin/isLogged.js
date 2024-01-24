@@ -23,9 +23,8 @@ export const isLogged = async (req, res) => {
                 bio: user[0].bio,
                 avatar: user[0].avatar
             }
-            res.status(200).send({ user: userInfo })
+        res.status(200).send({ user: userInfo })
         } else {
-
             res.status(200).send({ user: null })
         }
 
