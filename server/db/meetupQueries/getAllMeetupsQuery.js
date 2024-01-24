@@ -10,7 +10,7 @@ export const getAllMeetupsQuery = async (filters) => {
   try {
     connection = await getConnection();
     const [allMeetups] = await connection.query(`
-        SELECT m.* FROM meetups m  WHERE m.meetup_datetime = ?`,[mysqlDate]);
+        SELECT m.* FROM meetups m  WHERE m.meetup_datetime  >= ?`,[mysqlDate]);
 
     allMeetups.sort((a, b) => {
       return b.meetup_datetime - a.meetup_datetime;
