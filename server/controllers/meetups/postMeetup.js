@@ -22,7 +22,7 @@ export const postMeetup = async (req, res, next) => {
       meetup_datetime,
     } = req.body;
 
-    const { id } = req.userInfo;
+    const { id } = req.isUser.id; // ¿? Puede que haya que modificarlo *
 
     // Joi validation
     const schema = newMeetupJoi;
