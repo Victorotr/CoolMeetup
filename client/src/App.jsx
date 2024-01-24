@@ -15,6 +15,7 @@ import ValidateUser from "./pages/ValidateUser";
 import UserProfile from "./pages/UserProfile";
 import EditUserProfile from "./pages/EditUserProfile";
 import Loading from "./components/Loading";
+import MeetupDetails from "./pages/MeetupDetails";
 function App() {
   const { myData, setMyData,setmenuOn } = Handler();
 
@@ -41,6 +42,7 @@ function App() {
         <Route path="/new/meetup" element={<CreateMeetUp />} />
         <Route path="/user/details/:id" element={<UserProfile />} />
         <Route path="/edit/user/details" element={<EditUserProfile />} />
+        <Route path="/meetups/details/:id" element={<MeetupDetails />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </main>
