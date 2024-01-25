@@ -93,6 +93,38 @@
 
 }
 
+.owner
+{
+  font-size: 0.9rem;
+  color: gray;
+  border: 1px solid gray;
+  padding: 0 5px;
+  border-radius: 20px;
+}
+
+.cardHeader
+{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dateTime
+{
+  flex-grow:1;
+}
+
+.meetupAttendees
+{
+  font-size:0.7rem;
+  background-color:red;
+  padding: 5px;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+
+}
+
 @keyframes lds-dual-ring {
   0% {
     transform: rotate(0deg);
