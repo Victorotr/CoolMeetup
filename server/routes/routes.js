@@ -36,15 +36,15 @@ router.post('/singUp/:meetupId', isUser, signUpMeetup);
 // Rutas de Usuarios
 router.post('/registerUser', registerUser);
 
-router.get('/islogged',isLogged)
+router.get('/islogged', isLogged);
 
 router.post('/validateUser', validateUser);
 
 router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
-router.get('/islogged', isLogged);
 //router.post('/login', loginUser);
+
 router.post('/getMeetups', getAllMeetups);
-router.get('/islogged',isLogged);
+router.get('/islogged', isLogged);
 router.get('/meetup/:id', getSingleMeetupDetails);
 
 router.post('/signin', SignIn);
@@ -54,10 +54,9 @@ router.post('/update/user', isUser, Upload, savePhoto, UpdateUserDetails);
 
 router.get('/user/details/:id', getUserDetails);
 
-
 // router.post('/singUp/:meetupId', singUpForMeetup);
 
- router.post('/create/meetup',isUser,Upload,saveMeetupPhoto, postMeetup);
+router.post('/create/meetup', isUser, Upload, saveMeetupPhoto, postMeetup);
 // router.post('/singUp/:meetupId', singUpForMeetup);
 
 // Rutas de Usuarios
@@ -75,7 +74,6 @@ router.get('/getImage/:id/:fileType', getImg);
 router.get('/user/avatar/:id', getImg);
 
 router.get('/meetup/image/:id', getMeetupImg);
-
 
 // Rutas de cookies
 router.get('/visit', OnRefreshCookies);

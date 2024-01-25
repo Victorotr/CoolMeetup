@@ -50,20 +50,26 @@ const ListMeetups = () => {
   };
   useEffect(() => {
     //cargar lista completa de meetups próximos a celebrarse al dia de hoy
-    const getMeets = async () => {const res = await axios.post(
-      import.meta.env.VITE_API_URL + "/getMeetups",
-      {
-        date: new Date().toISOString().slice(0, 10).split('-').reverse().join('/'),
-        tematica: "Todas",
-        provincia: "Todas"        
+    const getMeets = async () => {
+      const res = await axios.post(
+        import.meta.env.VITE_API_URL + "/getMeetups",
+        {
+          date: new Date()
+            .toISOString()
+            .slice(0, 10)
+            .split("-")
+            .reverse()
+            .join("/"),
+          tematica: "Todas",
+          provincia: "Todas",
+        }
+      );
+      if (res && res.status === 200) {
+        setAllMeetups(res.data.data);
       }
-    );
-    if (res && res.status === 200) {
-      setAllMeetups(res.data.data);
-    }
-  }
+    };
     getMeets();
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (allMeetups && allMeetups.length) {
@@ -74,14 +80,14 @@ const ListMeetups = () => {
       const provinces = allMeetups.map((item) => {
         return item.meetup_town;
       });
-  
+
       const EliminateDuplicates = [...new Set(themes)];
       const provinceEliminateDuplicates = [...new Set(provinces)];
       console.log(EliminateDuplicates);
-      
+
       setthemeList(EliminateDuplicates);
       setProvinceList(provinceEliminateDuplicates);
-      
+
       const firstMeet = allMeetups[0];
       setcenter({
         lat: parseFloat(firstMeet.x_cordinate),
@@ -89,8 +95,7 @@ const ListMeetups = () => {
       });
       setzoom(10);
     }
-  },[allMeetups])
-  
+  }, [allMeetups]);
 
   return (
     <div className="">
