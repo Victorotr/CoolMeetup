@@ -54,6 +54,8 @@ const ListMeetups = () => {
       import.meta.env.VITE_API_URL + "/getMeetups",
       {
         date: new Date().toISOString().slice(0, 10).split('-').reverse().join('/'),
+        tematica: "Todas",
+        provincia: "Todas"        
       }
     );
     if (res && res.status === 200) {
