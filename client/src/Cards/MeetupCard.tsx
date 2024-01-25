@@ -8,17 +8,19 @@ const MeetupCard = ({ meetup }) => {
         <a href="#">
           <img
             className="rounded-t-lg object-cover"
-            src={
-              import.meta.env.VITE_API_URL + "/meetups_images/" + meetup.meetup_image
-            }
+            src={meetup.meetup_image}
             alt=""
           />
         </a>
         <div className="p-5">
-          <p>
-            {moment(meetup.meetup_datetime).format("DD/MM/YYYY")} -{" "}
-            {moment(meetup.meetup_time, "HH:mm:ss").format("HH:mm")}
-          </p>
+          <div className="cardHeader">
+            <p className="dateTime">
+              {moment(meetup.meetup_datetime).format("DD/MM/YYYY")} -{" "}
+              {moment(meetup.meetup_time, "HH:mm:ss").format("HH:mm")}
+            </p>
+            <span className="meetupAttendees">{meetup.meetup_attendees} {`Asistente`+ (meetup.meetup_attendees > 1 ? 's':'')}</span>
+          </div>
+          <p className="owner">Organizado por {meetup.user_name}</p>
           <a href="#">
             <h4 className="mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
               {meetup.meetup_title}
@@ -27,27 +29,30 @@ const MeetupCard = ({ meetup }) => {
           <p className="max-h-[130px] overflow-y-scroll mb-3 font-normal text-gray-700 dark:text-gray-400">
             {meetup.meetup_description}
           </p>
-          <a
-            href="#"
-            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Más detalles
-            <svg
-              className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
+          <div className="cardButtons">
+            <a
+              href="#"
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </a>
+              Más detalles
+              <svg
+                className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
+                />
+              </svg>
+            </a>
+            <a href="#" className="inline-flex float-right items-center px-3 py-2 text-sm font-medium text-center text-white bg-orange-700 rounded-lg hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Asistir</a>
+          </div>
         </div>
       </div>
     </div>

@@ -2,7 +2,8 @@ import React from "react";
 import { useState } from "react";
 import Datepicker from "tailwind-datepicker-react";
 const months = ['ene','feb','mar','abr','may','jun','jul','ago','set','oct','nov','dic',]
-let now = new Date()
+const minDate = new Date();
+let now = new Date();
 const options = {
 
 	autoHide: true,
@@ -42,18 +43,22 @@ const options = {
 	}
 }
 
-const DatePickerComponent = () => {
+const DatePickerComponent = ({onDateChange}) => {
 	const [show, setShow] = useState(false)
 	const handleChange = (selectedDate: Date) => {
 		
-		now = new Date(selectedDate)
+		now = new Date(selectedDate);
+		if(onDateChange){
+			onDateChange(selectedDate);
+		}
+		
 	}
 	const handleClose = (state: boolean) => {
 		setShow(state)
 	}
 
 	return (
-		<div className="flex items-center justify-center ">
+		<div className="flex items-center justify-center shadow-md ">
 		<Datepicker  options={options} onChange={handleChange} show={show} setShow={handleClose} />
 		</div>
 	)

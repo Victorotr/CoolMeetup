@@ -18,6 +18,8 @@ import { savePhoto } from '../services/savePhoto.js';
 import Upload from '../Middlewares/fileUpload.js';
 import { getImg } from '../services/imgGet.js';
 import { UpdateUserDetails } from '../Controllers/users/updateUserDetails.js';
+import { saveMeetupPhoto } from '../services/saveMeetupPhoto.js';
+import { getMeetupImg } from '../services/meetupImgGet.js';
 
 const router = Router();
 
@@ -27,6 +29,12 @@ router.get('/', getAllMeetups);
 router.get('/meetup/:id', getSingleMeetupDetails);
 router.post('/meetup', isUser, postMeetup);
 router.post('/singUp/:meetupId', isUser, signUpMeetup);
+<<<<<<< HEAD
+=======
+//router.get('/meetup/:id', getSingleMeetupDetails);
+//router.post('/singUp/:meetupId', singUpForMeetup);
+//router.post('/meetup', postMeetup);
+>>>>>>> origin/Mario-branch
 
 // Rutas de Usuarios
 router.post('/registerUser', registerUser);
@@ -36,7 +44,11 @@ router.get('/islogged', isLogged);
 router.post('/validateUser', validateUser);
 
 router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
+<<<<<<< HEAD
 
+=======
+router.get('/islogged', isLogged);
+>>>>>>> origin/Mario-branch
 //router.post('/login', loginUser);
 
 router.post('/getMeetups', getAllMeetups);
@@ -49,9 +61,11 @@ router.get('/logout', LogOut);
 router.post('/update/user', isUser, Upload, savePhoto, UpdateUserDetails);
 
 router.get('/user/details/:id', getUserDetails);
+
+
 // router.post('/singUp/:meetupId', singUpForMeetup);
 
-// router.post('/meetup', postMeetup);
+ router.post('/create/meetup',isUser,Upload,saveMeetupPhoto, postMeetup);
 // router.post('/singUp/:meetupId', singUpForMeetup);
 
 // Rutas de Usuarios
@@ -66,6 +80,11 @@ router.get('/user/:id', getUserInfo)
 router.patch("/user", modifyUserInfo);
 */
 router.get('/getImage/:id/:fileType', getImg);
+router.get('/user/avatar/:id', getImg);
+
+router.get('/meetup/image/:id', getMeetupImg);
+
+
 // Rutas de cookies
 router.get('/visit', OnRefreshCookies);
 
