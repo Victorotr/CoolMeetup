@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Handler } from "../context/Context";
+import { GoogleLogin } from '@react-oauth/google';
+
 
 const SigninInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -24,13 +26,14 @@ const SignIn = () => {
     try {
       setloading(true);
       const res = await SigninInstance.post("/signin", formData);
-      console.log(res);
+      console.log(res)
       if (res && res.status === 200) {
         setloading(false);
         console.log("200", res);
         setuser(res.data.user);
-        navigate("/list/meetups");
+        navigate(`/user/details/${res.data.user.id}`);
       } else {
+        
         setloading(false);
         settoast({
           on: true,
@@ -63,8 +66,26 @@ const SignIn = () => {
       return;
     }
     setformData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData);
+    
   };
+
+
+  const loginRegisterWithGoogle = async(credential) => {
+    try {
+      const res = await  axios.post(import.meta.env.VITE_API_URL+'/loginRegisterWithGoogle', {
+        credential:credential
+      });
+    if(res && res.status === 200){
+      setuser(res.data.user);
+      settoast({on:true,type:'success',text:res.data.message});
+      navigate('/list/meetups')
+    }
+    } catch (error) {
+      console.log(error);
+      settoast({on:true,type:'error',text:error.message});
+    }
+ 
+  }
 
   return (
     <section className="bg-zinc-50">
@@ -156,9 +177,16 @@ const SignIn = () => {
                   o
                 </span>
               </div>
-              <button className="mx-auto p-2 border w-full text-zinc-900/90 font-semibold rounded-md">
-                Google
-              </button>
+              <div className=" w-full flex justify-center items-center py-5">
+              <GoogleLogin 
+              size="large"
+              onSuccess={(credentialResponse) => {
+            
+                loginRegisterWithGoogle(credentialResponse);
+              }}
+              onError = {() => {settoast({on:true,type:'error',text:'Error al iniciar la sessión'})}}
+              />
+              </div>
             </form>
           </div>
         </div>

@@ -10,6 +10,12 @@ import MapMeetups from "./pages/MapMeetups";
 import CreateMeetUp from "./pages/CreateMeetUp";
 import ListMeetups from "./pages/ListMeetups";
 import ToastWindow from "./components/ToastWindow";
+import Signup from "./pages/Signup";
+import ValidateUser from "./pages/ValidateUser";
+import UserProfile from "./pages/UserProfile";
+import EditUserProfile from "./pages/EditUserProfile";
+import Loading from "./components/Loading";
+import MeetupDetails from "./pages/MeetupDetails";
 function App() {
   const { myData, setMyData,setmenuOn } = Handler();
 
@@ -23,14 +29,20 @@ function App() {
     onClick={(e)=>{e.stopPropagation();setmenuOn(false)}}
     className={` min-h-screen relative bg-zinc-50`}>
       <Nav />
+      {/* <Loading /> */}
       <ToastWindow />
       <SideBar />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/validateUser/:regCode" element={<ValidateUser />} />
         <Route path="/list/meetups" element={<ListMeetups />} />
         <Route path="/meetups/map" element={<MapMeetups />} />
         <Route path="/new/meetup" element={<CreateMeetUp />} />
+        <Route path="/user/details/:id" element={<UserProfile />} />
+        <Route path="/edit/user/details" element={<EditUserProfile />} />
+        <Route path="/meetups/details/:id" element={<MeetupDetails />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </main>

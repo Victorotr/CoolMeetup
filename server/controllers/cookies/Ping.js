@@ -1,4 +1,4 @@
-import { getConnection } from '../../db/connectionDB.js';
+import { getConnection } from '../../db/ConnectionDB.js';
 
 export const Ping = async (req, res) => {
   const connection = await getConnection();
@@ -8,6 +8,7 @@ export const Ping = async (req, res) => {
     res.send({ message: 'received' });
   } catch (error) {
     console.log(error);
+    connection.release();
     res.send('error');
   }
 };

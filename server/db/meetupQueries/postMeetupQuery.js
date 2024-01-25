@@ -1,6 +1,6 @@
 // Function require ↓
 
-import { getConnection } from '../connectionDB.js';
+import { getConnection } from '../ConnectionDB.js';
 
 // Query ↓
 
@@ -18,7 +18,7 @@ export const postMeetupQuery = async (
     const connection = await getConnection();
 
     // Insert data
-    const [offer] = await connection.query(
+    const [meetup] = await connection.query(
       `INSERT INTO meetups (id_main_user, meetup_title, meetup_description, meetup_province, meetup_town, meetup_datetime)
        VALUES(?, ?, ?, ?, ?, ?)`,
       [
@@ -32,7 +32,7 @@ export const postMeetupQuery = async (
     );
 
     // Return ID
-    return offer.insertId;
+    return meetup.insertId;
   } finally {
     if (connection) connection.release();
   }

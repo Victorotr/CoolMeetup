@@ -30,10 +30,10 @@ const ToastWindow = () => {
         toast.on ? "slidedown" : "slideup"
       } ${
         toast.type
-      }  ${toastType === 'warning' ? 'border-amber-600/50' : toastType === 'error' ? 'border-red-500/50' : 'border-blue-500/50' } items-center justify-between gap-2 z-50 absolute p-2 rounded-md shadow-xl top-16 w-96 bg-zinc-50 left-0 right-0 mx-auto border-2 `}
+      }  ${toastType === 'warning' ? 'border-amber-600/50' : toastType === 'error' ? 'border-red-500/50' : 'border-blue-500/50' } text-sm items-center justify-between gap-2 z-50 fixed p-2 rounded-md shadow-xl top-16 w-96 bg-zinc-50 left-0 right-0 mx-auto border-2 `}
     >
       <span className="my-auto">
-      {toastType === 'warning' ? <MdWarning size={35} color="orange"/> : toastType === 'error' ? <MdError size={35} color="red" /> : <IoMdCheckmark size={35} />}  
+      {toastType === 'warning' ? <MdWarning size={30} color="orange"/> : toastType === 'error' ? <MdError size={35} color="red" /> : <IoMdCheckmark size={35} />}  
       </span>
       <p className="text-zinc-900/80 font-medium">{toast.text}</p>
       <span
@@ -43,7 +43,7 @@ const ToastWindow = () => {
         className="  h-full rounded-sm"
       >
         {" "}
-        <MdOutlineClose className="text-zinc-900/90" size={30} />
+        <MdOutlineClose className="text-zinc-900/80" size={25} />
       </span>
     </div>
   );

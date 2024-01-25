@@ -6,6 +6,7 @@ import axios from "axios";
 const LoggedInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
+  
 });
 
 export const MyContext = createContext();
@@ -24,24 +25,29 @@ export const MyContextProvider = ({ children }) => {
   const [menuOn, setmenuOn] = useState(false);
   const [toast, settoast] = useState({on:false,type:'',text:''});
   const [user, setuser] = useState(null);
+  const [accessLoading, setaccessLoading] = useState(true)
 
   useEffect(() => {
     const isLogged = async ()=>{
+     
       const res = await LoggedInstance.get('/islogged');
-      console.log(res);
+     
       if(res && res.data.user){
-        setuser(res.data.user);
+        console.log(res.data.user)
+        setuser(res.data.user); 
       }else{
         setuser(null)
       }
+      setaccessLoading(false)
+      
     }
     isLogged();
+    
   }, [])
-  
+ 
   useEffect(() => {
     const handleUnload = async () => {
-      await HandleVisit();
-      
+    await HandleVisit();
     };
     window.addEventListener("beforeunload", handleUnload);
     return () => {
@@ -49,7 +55,7 @@ export const MyContextProvider = ({ children }) => {
     };
   }, []);
   return (
-    <MyContext.Provider value={{ myData, setMyData, menuOn, setmenuOn,toast,settoast,user,setuser}}>
+    <MyContext.Provider value={{ myData, setMyData, menuOn, setmenuOn,toast,settoast,user,setuser,accessLoading}}>
       {children}
     </MyContext.Provider>
   );

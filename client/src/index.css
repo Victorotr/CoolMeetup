@@ -4,10 +4,20 @@
 @tailwind components;
 @tailwind utilities;
 
-.custom-drop-shadow{
-  
-  filter: drop-shadow(20px 30px 10px #00000059);
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
+}
 
+.custom-drop-shadow{
+  filter: drop-shadow(20px 30px 10px #00000059);
 }
 .text-shadow-soft{
   text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.103);
@@ -18,12 +28,10 @@
 .text-shadow{
   text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.486);
 }
-
 .menubutton span {
   width: 100%;
   height: 2.5px;
   background-color: rgba(0, 0, 0, 0.568);
-  
   border-radius: 15px;
 }
 .menubutton {
@@ -32,7 +40,6 @@
   justify-content: space-between;
   align-items: center;
 }
-
 .menuon{
   animation: menuon 0.3s forwards;
 }
@@ -44,7 +51,9 @@
 }
 .slideup{
   animation: slideup .5s forwards;
-
+}
+.generalButton {
+  cursor:pointer;
 }
 
 .lds-dual-ring {
@@ -63,6 +72,59 @@
   border-color: #fff transparent #fff transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
+
+.meetupsBoard 
+{
+  display:flex;
+  justify-content: center;
+}
+.meetupCard
+{
+  max-height:500px;
+  min-height:500px;
+}
+
+.resume-text
+{
+  text-overflow: ellipsis;
+  overflow:hidden;
+  max-height:150px;
+  font-size: 0.8rem;
+
+}
+
+.owner
+{
+  font-size: 0.9rem;
+  color: gray;
+  border: 1px solid gray;
+  padding: 0 5px;
+  border-radius: 20px;
+}
+
+.cardHeader
+{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dateTime
+{
+  flex-grow:1;
+}
+
+.meetupAttendees
+{
+  font-size:0.7rem;
+  background-color:red;
+  padding: 5px;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+
+}
+
 @keyframes lds-dual-ring {
   0% {
     transform: rotate(0deg);
@@ -71,7 +133,6 @@
     transform: rotate(360deg);
   }
 }
-
 
 @keyframes menuon {
   0%{
@@ -119,5 +180,213 @@
   to{
     opacity: 0;
     transform: translateY(-10px);
+  }
+}
+
+
+
+
+.pl {
+  width: 6em;
+  height: 6em;
+}
+
+.pl__ring {
+  animation: ringA 2s linear infinite;
+}
+
+.pl__ring--a {
+  stroke: #f42f25;
+}
+
+.pl__ring--b {
+  animation-name: ringB;
+  stroke: #f49725;
+}
+
+.pl__ring--c {
+  animation-name: ringC;
+  stroke: #255ff4;
+}
+
+.pl__ring--d {
+  animation-name: ringD;
+  stroke: #f42582;
+}
+
+/* Animations */
+@keyframes ringA {
+  from, 4% {
+    stroke-dasharray: 0 660;
+    stroke-width: 20;
+    stroke-dashoffset: -330;
+  }
+
+  12% {
+    stroke-dasharray: 60 600;
+    stroke-width: 30;
+    stroke-dashoffset: -335;
+  }
+
+  32% {
+    stroke-dasharray: 60 600;
+    stroke-width: 30;
+    stroke-dashoffset: -595;
+  }
+
+  40%, 54% {
+    stroke-dasharray: 0 660;
+    stroke-width: 20;
+    stroke-dashoffset: -660;
+  }
+
+  62% {
+    stroke-dasharray: 60 600;
+    stroke-width: 30;
+    stroke-dashoffset: -665;
+  }
+
+  82% {
+    stroke-dasharray: 60 600;
+    stroke-width: 30;
+    stroke-dashoffset: -925;
+  }
+
+  90%, to {
+    stroke-dasharray: 0 660;
+    stroke-width: 20;
+    stroke-dashoffset: -990;
+  }
+}
+
+@keyframes ringB {
+  from, 12% {
+    stroke-dasharray: 0 220;
+    stroke-width: 20;
+    stroke-dashoffset: -110;
+  }
+
+  20% {
+    stroke-dasharray: 20 200;
+    stroke-width: 30;
+    stroke-dashoffset: -115;
+  }
+
+  40% {
+    stroke-dasharray: 20 200;
+    stroke-width: 30;
+    stroke-dashoffset: -195;
+  }
+
+  48%, 62% {
+    stroke-dasharray: 0 220;
+    stroke-width: 20;
+    stroke-dashoffset: -220;
+  }
+
+  70% {
+    stroke-dasharray: 20 200;
+    stroke-width: 30;
+    stroke-dashoffset: -225;
+  }
+
+  90% {
+    stroke-dasharray: 20 200;
+    stroke-width: 30;
+    stroke-dashoffset: -305;
+  }
+
+  98%, to {
+    stroke-dasharray: 0 220;
+    stroke-width: 20;
+    stroke-dashoffset: -330;
+  }
+}
+
+@keyframes ringC {
+  from {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: 0;
+  }
+
+  8% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -5;
+  }
+
+  28% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -175;
+  }
+
+  36%, 58% {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: -220;
+  }
+
+  66% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -225;
+  }
+
+  86% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -395;
+  }
+
+  94%, to {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: -440;
+  }
+}
+
+@keyframes ringD {
+  from, 8% {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: 0;
+  }
+
+  16% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -5;
+  }
+
+  36% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -175;
+  }
+
+  44%, 50% {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: -220;
+  }
+
+  58% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -225;
+  }
+
+  78% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -395;
+  }
+
+  86%, to {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: -440;
   }
 }
