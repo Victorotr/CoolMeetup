@@ -28,7 +28,7 @@ function App() {
     onClick={(e)=>{e.stopPropagation();setmenuOn(false)}}
     className={` min-h-screen relative bg-zinc-50`}>
       <Nav />
-      <Loading />
+      {/* <Loading /> */}
       <ToastWindow />
       <SideBar />
       <Routes>

@@ -4,16 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
-.custom-drop-shadow{
+.custom-drop-shadow {
   filter: drop-shadow(20px 30px 10px #00000059);
 }
-.text-shadow-soft{
+.text-shadow-soft {
   text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.103);
 }
-.text-shadow-medium{
+.text-shadow-medium {
   text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.303);
 }
-.text-shadow{
+.text-shadow {
   text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.486);
 }
 .menubutton span {
@@ -28,20 +28,20 @@
   justify-content: space-between;
   align-items: center;
 }
-.menuon{
+.menuon {
   animation: menuon 0.3s forwards;
 }
-.menuoff{
+.menuoff {
   animation: menuoff 0.3s forwards;
 }
-.slidedown{
-  animation: slidedown .5s forwards;
+.slidedown {
+  animation: slidedown 0.5s forwards;
 }
-.slideup{
-  animation: slideup .5s forwards;
+.slideup {
+  animation: slideup 0.5s forwards;
 }
 .generalButton {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .lds-dual-ring {
@@ -61,6 +61,22 @@
   animation: lds-dual-ring 1.2s linear infinite;
 }
 
+.meetupsBoard {
+  display: flex;
+  justify-content: center;
+}
+.meetupCard {
+  max-height: 500px;
+  min-height: 500px;
+}
+
+.resume-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-height: 150px;
+  font-size: 0.8rem;
+}
+
 @keyframes lds-dual-ring {
   0% {
     transform: rotate(0deg);
@@ -71,56 +87,53 @@
 }
 
 @keyframes menuon {
-  0%{
+  0% {
     opacity: 1;
     transform: translateY(0px);
   }
-  50%{
+  50% {
     opacity: 0;
     transform: translateY(-5px);
   }
-  100%{
+  100% {
     opacity: 1;
     transform: translateY(0px);
   }
 }
 @keyframes menuoff {
-  0%{
+  0% {
     opacity: 1;
     transform: translateY(0px);
   }
-  50%{
+  50% {
     opacity: 0;
     transform: translateY(-5px);
   }
-  100%{
+  100% {
     opacity: 1;
     transform: translateY(0px);
   }
 }
 @keyframes slidedown {
-  from{
+  from {
     opacity: 0;
     transform: translateY(-10px);
   }
-  to{
+  to {
     opacity: 1;
     transform: translateY(0px);
   }
 }
 @keyframes slideup {
-  from{
+  from {
     opacity: 1;
     transform: translateY(0px);
   }
-  to{
+  to {
     opacity: 0;
     transform: translateY(-10px);
   }
 }
-
-
-
 
 .pl {
   width: 6em;
@@ -152,7 +165,8 @@
 
 /* Animations */
 @keyframes ringA {
-  from, 4% {
+  from,
+  4% {
     stroke-dasharray: 0 660;
     stroke-width: 20;
     stroke-dashoffset: -330;
@@ -170,7 +184,8 @@
     stroke-dashoffset: -595;
   }
 
-  40%, 54% {
+  40%,
+  54% {
     stroke-dasharray: 0 660;
     stroke-width: 20;
     stroke-dashoffset: -660;
@@ -188,7 +203,8 @@
     stroke-dashoffset: -925;
   }
 
-  90%, to {
+  90%,
+  to {
     stroke-dasharray: 0 660;
     stroke-width: 20;
     stroke-dashoffset: -990;
@@ -196,7 +212,8 @@
 }
 
 @keyframes ringB {
-  from, 12% {
+  from,
+  12% {
     stroke-dasharray: 0 220;
     stroke-width: 20;
     stroke-dashoffset: -110;
@@ -214,7 +231,8 @@
     stroke-dashoffset: -195;
   }
 
-  48%, 62% {
+  48%,
+  62% {
     stroke-dasharray: 0 220;
     stroke-width: 20;
     stroke-dashoffset: -220;
@@ -232,7 +250,8 @@
     stroke-dashoffset: -305;
   }
 
-  98%, to {
+  98%,
+  to {
     stroke-dasharray: 0 220;
     stroke-width: 20;
     stroke-dashoffset: -330;
@@ -258,7 +277,8 @@
     stroke-dashoffset: -175;
   }
 
-  36%, 58% {
+  36%,
+  58% {
     stroke-dasharray: 0 440;
     stroke-width: 20;
     stroke-dashoffset: -220;
@@ -276,7 +296,8 @@
     stroke-dashoffset: -395;
   }
 
-  94%, to {
+  94%,
+  to {
     stroke-dasharray: 0 440;
     stroke-width: 20;
     stroke-dashoffset: -440;
@@ -284,7 +305,8 @@
 }
 
 @keyframes ringD {
-  from, 8% {
+  from,
+  8% {
     stroke-dasharray: 0 440;
     stroke-width: 20;
     stroke-dashoffset: 0;
@@ -302,7 +324,8 @@
     stroke-dashoffset: -175;
   }
 
-  44%, 50% {
+  44%,
+  50% {
     stroke-dasharray: 0 440;
     stroke-width: 20;
     stroke-dashoffset: -220;
@@ -320,7 +343,8 @@
     stroke-dashoffset: -395;
   }
 
-  86%, to {
+  86%,
+  to {
     stroke-dasharray: 0 440;
     stroke-width: 20;
     stroke-dashoffset: -440;

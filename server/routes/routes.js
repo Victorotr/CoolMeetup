@@ -16,47 +16,35 @@ import loginRegisterWithGoogle from '../Controllers/users/loginRegisterWithGoogl
 import { getUserDetails } from '../Controllers/users/getUserDetails.js';
 import { savePhoto } from '../services/savePhoto.js';
 import Upload from '../Middlewares/fileUpload.js';
-import { isUser } from '../Middlewares/isUser.js';
 import { getImg } from '../services/imgGet.js';
 import { UpdateUserDetails } from '../Controllers/users/updateUserDetails.js';
 
 const router = Router();
 
 // Rutas de Meetups
-<<<<<<< HEAD
 
 router.get('/', getAllMeetups);
 router.get('/meetup/:id', getSingleMeetupDetails);
 router.post('/meetup', isUser, postMeetup);
 router.post('/singUp/:meetupId', isUser, signUpMeetup);
-=======
-//router.get('/meetup/:id', getSingleMeetupDetails);
-//router.post('/singUp/:meetupId', singUpForMeetup);
-//router.post('/meetup', postMeetup);
->>>>>>> origin/Matteos-Branch
 
 // Rutas de Usuarios
 router.post('/registerUser', registerUser);
 
-router.get('/islogged',isLogged)
+router.get('/islogged', isLogged);
 
 router.post('/validateUser', validateUser);
 
 router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
-<<<<<<< HEAD
-router.get('/islogged', isLogged);
-=======
-//router.post('/login', loginUser);
-router.post('/getMeetups', getAllMeetups);
 
+//router.post('/login', loginUser);
+
+router.post('/getMeetups', getAllMeetups);
+router.get('/islogged', isLogged);
 router.get('/meetup/:id', getSingleMeetupDetails);
 
->>>>>>> origin/Matteos-Branch
 router.post('/signin', SignIn);
 router.get('/logout', LogOut);
-<<<<<<< HEAD
-
-=======
 
 router.post('/update/user', isUser, Upload, savePhoto, UpdateUserDetails);
 
@@ -69,7 +57,6 @@ router.get('/user/details/:id', getUserDetails);
 // Rutas de Usuarios
 // router.post('/user', registerUser);
 // router.post('/login', loginUser);
->>>>>>> origin/Matteos-Branch
 /*
 *Opcional: Ver el perfil de un usuario y los meetups a los que se ha
 apuntado ordenados de más nuevo a más antiguo 
@@ -78,7 +65,7 @@ router.get('/user/:id', getUserInfo)
 *Opcional: Gestión del perfil (nombre, biografía y avatar)
 router.patch("/user", modifyUserInfo);
 */
-router.get('/user/avatar/:id', getImg);
+router.get('/getImage/:id/:fileType', getImg);
 // Rutas de cookies
 router.get('/visit', OnRefreshCookies);
 

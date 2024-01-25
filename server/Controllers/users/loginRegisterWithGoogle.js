@@ -44,14 +44,18 @@ const loginRegisterWithGoogle = async (req, res, next) => {
         const token = jwt.sign(info, process.env.SECRET_TOKEN, {
           expiresIn: '28d',
         });
-    
-        res.cookie('user_token', { token: token }, {
-          maxAge: expiration,
-          httpOnly: true,
-          secure: false,
-          sameSite: 'none',
-          path: '/'
-        });
+
+        res.cookie(
+          'user_token',
+          { token: token },
+          {
+            maxAge: expiration,
+            httpOnly: true,
+            secure: false,
+            sameSite: 'none',
+            path: '/',
+          }
+        );
         res.status(200).send({
           status: 'ok',
           message: 'Estamos encantados de tenerte con nosotros ' + name,
