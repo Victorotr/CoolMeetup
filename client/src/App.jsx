@@ -6,7 +6,6 @@ import Nav from "./components/Nav";
 import SideBar from "./components/SideBar";
 import NotFound from "./pages/NotFound";
 import SignIn from "./pages/SignIn";
-import MapMeetups from "./pages/MapMeetups";
 import CreateMeetUp from "./pages/CreateMeetUp";
 import ListMeetups from "./pages/ListMeetups";
 import ToastWindow from "./components/ToastWindow";
@@ -27,9 +26,9 @@ function App() {
   return (
     <main 
     onClick={(e)=>{e.stopPropagation();setmenuOn(false)}}
-    className={` min-h-screen relative bg-zinc-50`}>
+    className={` min-h-screen  relative `}>
       <Nav />
-      {/* <Loading /> */}
+      <Loading />
       <ToastWindow />
       <SideBar />
       <Routes>
@@ -38,7 +37,6 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/validateUser/:regCode" element={<ValidateUser />} />
         <Route path="/list/meetups" element={<ListMeetups />} />
-        <Route path="/meetups/map" element={<MapMeetups />} />
         <Route path="/new/meetup" element={<CreateMeetUp />} />
         <Route path="/user/details/:id" element={<UserProfile />} />
         <Route path="/edit/user/details" element={<EditUserProfile />} />

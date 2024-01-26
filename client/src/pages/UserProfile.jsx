@@ -1,11 +1,11 @@
-import { useParams } from "react-router-dom";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import nouser from "../assets/no_picture.png";
 import { Handler } from "../context/Context";
 import { ImCamera } from "react-icons/im";
 import { FaGear } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,useParams} from "react-router-dom";
 const UserProfile = () => {
   const { setuser, user, settoast,accessLoading } = Handler();
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ const UserProfile = () => {
               onClick={() => navigate("/edit/user/details")}
               className={`${
                 userData?.id != user?.id && "hidden"
-              } absolute top-14 right-[-3px] sm:top-[70px] sm:right-[-4px] border-2 border-zinc-900/40 bg-zinc-50 p-1 flex items-center justify-center rounded-full`}
+              } absolute top-14 right-[30px] sm:top-[70px] sm:right-[20px] border-2 border-zinc-900/40 bg-zinc-50 p-1 flex items-center justify-center rounded-full`}
             >
               <ImCamera className="text-zinc-900/80" />
             </div>
@@ -78,7 +78,7 @@ const UserProfile = () => {
               <button
                 disabled={userData?.id != user?.id}
                 onClick={() => navigate("/edit/user/details")}
-                className="border px-20 py-1 flex items-center gap-2 text-zinc-900/80 rounded-lg"
+                className="border px-5 sm:px-20 py-1 flex items-center gap-2 text-zinc-900/80 rounded-lg"
               >
                 <span>
                   <FaGear />

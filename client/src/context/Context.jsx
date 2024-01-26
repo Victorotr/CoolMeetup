@@ -33,7 +33,7 @@ export const MyContextProvider = ({ children }) => {
       const res = await LoggedInstance.get('/islogged');
      
       if(res && res.data.user){
-        console.log(res.data.user)
+    
         setuser(res.data.user); 
       }else{
         setuser(null)

@@ -170,7 +170,7 @@ const Map = () => {
         });
         return;
       }
-      console.log(meetupForm)
+      
       let formData = new FormData();
       if (file) {
         formData.append("avatar", file);
@@ -197,15 +197,16 @@ const Map = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+    
       if(res.status === 200 && res.data){
         settoast({
         on:true,type:'success',text:res.data.message
         })
         navigate('/meetup/details/'+ res.data.meetupId)
       }
-      console.log(res);
+   
     } catch (error) {
-    
+    console.log(error)
       if (error && error.response.data.message) {
         settoast({
           on: true,

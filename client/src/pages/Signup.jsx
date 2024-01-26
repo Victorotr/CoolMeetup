@@ -31,25 +31,7 @@ const SigninUpstance = axios.create({
       settoast({on:true,type:'success',text:error.response.data.message});
 
     }
-  //   axios.post(import.meta.env.VITE_API_URL+'/registerUser',
-  //     {
-  //       mail: form_values.email,
-  //       pwd: form_values.password,
-  //       name: form_values.nombre_usuario
-  //     },
-  //     {
-  //     headers: {
-  //       'Access-Control-Allow-Origin': '*',
-  //       'origin':'x-requested-with',
-  //       'Access-Control-Allow-Headers': 'POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin',
-  //       'Content-Type': 'application/json',
-  //     },
-  //   }).then(function(response){
-  //     settoast({on:true,type:'success',text:'Te has registrado con éxito, consulta tu e-mail para validar tu cuenta y empezar a usar Coolmeetups. ¡Gracias!'});
-  //     navigate('/signin');
-  //   }).catch(function (error){
-  //     settoast({on:true,type:'error',text:error.response.data.message});
-  //   })
+  
   };
 
   const loginRegisterWithGoogle = async(credential) => {

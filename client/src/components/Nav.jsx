@@ -9,6 +9,7 @@ import nouser from '../assets/no_picture.png';
 const Nav = () => {
   const navigate = useNavigate();
   const { user } = Handler();
+  
 
   return (
     <header className=" max-w-4xl mx-auto h-14 flex items-center justify-between px-3">
@@ -33,12 +34,7 @@ const Nav = () => {
           >
             Meetups
           </li>
-          <li
-            onClick={() => navigate("/meetups/map")}
-            className="p-3 text-shadow-medium  transition-all flex items-center justify-start  gap-1 hover:scale-105"
-          >
-            Mapa
-          </li>
+         
           <li
             onClick={() => navigate("/new/meetup")}
             className="p-3 text-shadow-medium transition-all flex items-center justify-start   gap-1 hover:scale-105"

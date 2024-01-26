@@ -26,10 +26,10 @@ const SignIn = () => {
     try {
       setloading(true);
       const res = await SigninInstance.post("/signin", formData);
-      console.log(res)
+    
       if (res && res.status === 200) {
         setloading(false);
-        console.log("200", res);
+        
         setuser(res.data.user);
         navigate(`/user/details/${res.data.user.id}`);
       } else {
@@ -44,7 +44,7 @@ const SignIn = () => {
     } catch (error) {
       setloading(false);
       if (error && error.response.data.message) {
-        console.log("error message", error.response.data.message);
+     
         settoast({
           on: true,
           type: "error",

@@ -112,7 +112,7 @@ const EditUserProfile = () => {
     const res = await getUserInstance.post('/update/user',formData, {headers: {
       'Content-Type': 'multipart/form-data',
     }});
-    console.log(res);
+   
     if(res && res.status === 200){
     navigate(`/user/details/${user.id}`)
     }
