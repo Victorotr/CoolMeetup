@@ -7,14 +7,15 @@ import { OnRefreshCookies } from '../controllers/cookies/OnRefreshCookies.js';
 import { getAllMeetups } from '../Controllers/meetups/getAllMeetups.js';
 import { getSingleMeetupDetails } from '../controllers/meetups/getSingleMeetupDetails.js';
 import { postMeetup } from '../controllers/meetups/postMeetup.js';
+import { signUpMeetup } from '../controllers/meetups/signUpMeetup.js';
 import { SignIn } from '../controllers/signin/signIn.js';
 import { LogOut } from '../controllers/cookies/LogOut.js';
 import { isLogged } from '../controllers/signin/isLogged.js';
+import { isUser } from '../Middlewares/isUser.js';
 import loginRegisterWithGoogle from '../Controllers/users/loginRegisterWithGoogle.js';
 import { getUserDetails } from '../Controllers/users/getUserDetails.js';
 import { savePhoto } from '../services/savePhoto.js';
 import Upload from '../Middlewares/fileUpload.js';
-import { isUser } from '../Middlewares/isUser.js';
 import { getImg } from '../services/imgGet.js';
 import { UpdateUserDetails } from '../Controllers/users/updateUserDetails.js';
 import { saveMeetupPhoto } from '../services/saveMeetupPhoto.js';
@@ -23,6 +24,11 @@ import { getMeetupImg } from '../services/meetupImgGet.js';
 const router = Router();
 
 // Rutas de Meetups
+
+router.get('/', getAllMeetups);
+router.get('/meetup/:id', getSingleMeetupDetails);
+router.post('/meetup', isUser, postMeetup);
+router.post('/singUp/:meetupId', isUser, signUpMeetup);
 //router.get('/meetup/:id', getSingleMeetupDetails);
 //router.post('/singUp/:meetupId', singUpForMeetup);
 //router.post('/meetup', postMeetup);
@@ -30,28 +36,27 @@ const router = Router();
 // Rutas de Usuarios
 router.post('/registerUser', registerUser);
 
-router.get('/islogged',isLogged)
+router.get('/islogged', isLogged);
 
 router.post('/validateUser', validateUser);
 
 router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
 //router.post('/login', loginUser);
-router.post('/getMeetups', getAllMeetups);
 
+router.post('/getMeetups', getAllMeetups);
+router.get('/islogged', isLogged);
 router.get('/meetup/:id', getSingleMeetupDetails);
 
 router.post('/signin', SignIn);
-
 router.get('/logout', LogOut);
 
 router.post('/update/user', isUser, Upload, savePhoto, UpdateUserDetails);
 
 router.get('/user/details/:id', getUserDetails);
 
-
 // router.post('/singUp/:meetupId', singUpForMeetup);
 
- router.post('/create/meetup',isUser,Upload,saveMeetupPhoto, postMeetup);
+router.post('/create/meetup', isUser, Upload, saveMeetupPhoto, postMeetup);
 // router.post('/singUp/:meetupId', singUpForMeetup);
 
 // Rutas de Usuarios
@@ -65,10 +70,10 @@ router.get('/user/:id', getUserInfo)
 *Opcional: Gestión del perfil (nombre, biografía y avatar)
 router.patch("/user", modifyUserInfo);
 */
+router.get('/getImage/:id/:fileType', getImg);
 router.get('/user/avatar/:id', getImg);
 
 router.get('/meetup/image/:id', getMeetupImg);
-
 
 // Rutas de cookies
 router.get('/visit', OnRefreshCookies);

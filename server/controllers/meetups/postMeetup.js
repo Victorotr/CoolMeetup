@@ -22,6 +22,14 @@ export const postMeetup = async (req, res, next) => {
     if (!user_id || !title || !description || !category || !meetupDate) {
       console.log(req.body)
 
+    const { id } = req.isUser.id; // ¿? Puede que haya que modificarlo *
+
+    // Joi validation
+    const schema = newMeetupJoi;
+    const validation = schema.validate(req.body);
+
+    if (validation.error) {
+      throw generateError(validation.error.message, 401);
       res.status(403).send({ status: 'FAILED', message: 'Faltan datos obligatorios!' });
       return
     }
@@ -81,6 +89,14 @@ export const postMeetup = async (req, res, next) => {
       res.status(403).send({status:'FAILED',message:'error al guardar el meetup'});
       return
     } 
+  }
+}
+catch
+{
+
+}
+}
+
     
     // const {
     //   meetup_title,
@@ -129,8 +145,8 @@ export const postMeetup = async (req, res, next) => {
     //   },
     // });
    
-  } catch (error) {
-    res.status(403).send({ status: 'FAILED', message: 'Error al processar los datos ' })
-    next(error);
-  }
-};
+  // } catch (error) {
+  //   res.status(403).send({ status: 'FAILED', message: 'Error al processar los datos ' })
+  //   next(error);
+  // }
+
