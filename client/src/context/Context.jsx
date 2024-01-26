@@ -29,9 +29,13 @@ export const MyContextProvider = ({ children }) => {
 
   useEffect(() => {
     const isLogged = async ()=>{
-     
+     const timeout =  setTimeout(() => {
+        setuser(null);
+        settoast({on:true,type:'warning',text:'No ha sido posible conectarse al servidor...'});
+        setaccessLoading(false)
+      }, 5000);
       const res = await LoggedInstance.get('/islogged');
-     
+      
       if(res && res.data.user){
     
         setuser(res.data.user); 
@@ -39,7 +43,7 @@ export const MyContextProvider = ({ children }) => {
         setuser(null)
       }
       setaccessLoading(false)
-      
+      clearTimeout(timeout)
     }
     isLogged();
     
