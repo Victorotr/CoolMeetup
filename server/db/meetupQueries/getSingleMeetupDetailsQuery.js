@@ -11,13 +11,15 @@ export const getSingleMeetupDetailsQuery = async (id) => {
 
     const [meetupDetails] = await connection.query(
       `
-    SELECT m.* FROM meetups m
-    GROUP BY m.id
+   SELECT meetups.*, users.id_user,user_name,picture_url FROM meetups INNER JOIN users ON meetups.id_main_user = users.id_user WHERE id_meetup= ? ;
     `,
       [id]
     );
-
-    return meetupDetails;
+    if(meetupDetails.length){
+      return meetupDetails[0];
+    }
+    return null
+    
   } catch (error) {
     console.error(error);
   } finally {

@@ -45,6 +45,7 @@ router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
 
 router.post('/getMeetups', getAllMeetups);
 router.get('/islogged', isLogged);
+
 router.get('/meetup/:id', getSingleMeetupDetails);
 
 router.post('/signin', SignIn);

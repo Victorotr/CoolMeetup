@@ -8,6 +8,7 @@ export const saveMeetupPhoto = async (req, res, next) => {
    
 
     if (!req.file) {
+      console.log('!file')
       return next()
     }
     try {
@@ -22,7 +23,8 @@ export const saveMeetupPhoto = async (req, res, next) => {
       const resizedImageBuffer = await resizedImage.toBuffer();
 
       fs.writeFileSync(`./Controllers/users/meetup/${meetupPic.originalname}`,resizedImageBuffer);
-      next();
+      console.log('foto saved')
+      return next();
     } catch (error) {
       console.log(error) 
       throw new Error('Error al procesar la imagen')
