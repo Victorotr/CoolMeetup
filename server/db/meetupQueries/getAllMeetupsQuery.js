@@ -29,9 +29,9 @@ export const getAllMeetupsQuery = async (filters) => {
       [mysqlDate]
     );
 
-    console.log(allMeetups);
+  
     const parsedArray = allMeetups.map((item)=>{return {...item,main_user_details: JSON.parse(item.main_user_details)}});
-    console.log(parsedArray)
+    
 
     allMeetups.sort((a, b) => {
       return b.meetup_datetime - a.meetup_datetime;

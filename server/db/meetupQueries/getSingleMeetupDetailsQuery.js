@@ -26,7 +26,7 @@ export const getSingleMeetupDetailsQuery = async (id) => {
       INNER JOIN users ON meetups.id_main_user = users.id_user 
       LEFT JOIN users_meetups ON users_meetups.id_meetup = meetups.id_meetup 
       LEFT JOIN users u ON users_meetups.id_user = u.id_user
-      WHERE meetups.id_meetup = 32
+      WHERE meetups.id_meetup = ?
       GROUP BY meetups.id_meetup, users.id_user, users.user_name, users.picture_url;
 
 
