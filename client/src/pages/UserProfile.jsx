@@ -72,7 +72,7 @@ const UserProfile = () => {
           <div className="mx-3 flex flex-col gap-2">
             <h1 className="text-xl font-medium mt-1 ">{userData?.username}</h1>
             <div className="">
-              <p>{userData?.bio}</p>
+              <p>{userData?.bio ? userData.bio : 'esta historia es un secreto por ahora..'}</p>
             </div>
             <div className={`${userData?.id != user?.id && "hidden"}`}>
               <button

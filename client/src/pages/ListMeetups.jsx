@@ -28,7 +28,7 @@ const ListMeetups = () => {
   const { settoast } = Handler();
   const submitForm = async (e) => {
     e.preventDefault();
-   
+
     const formData = new FormData(e.target);
     const form_values = Object.fromEntries(formData);
     //llamada al endpoint de listar meetups
@@ -48,8 +48,6 @@ const ListMeetups = () => {
           text: "Meetups listados con éxito",
         });
         setMeetupsList(res.data.data);
-        
-      
       }
     } catch (error) {
       settoast({
@@ -79,14 +77,15 @@ const ListMeetups = () => {
         setAllMeetups(res.data.data);
         setMeetupsList(res.data.data);
       }
-     
     };
     getMeets();
   }, []);
 
   useEffect(() => {
-    if (allMeetups && allMeetups.length || meetupsList && meetupsList.length) {
-   
+    if (
+      (allMeetups && allMeetups.length) ||
+      (meetupsList && meetupsList.length)
+    ) {
       const themes = allMeetups.map((item) => {
         return item.meetup_theme;
       });
@@ -96,32 +95,31 @@ const ListMeetups = () => {
 
       const EliminateDuplicates = [...new Set(themes)];
       const provinceEliminateDuplicates = [...new Set(provinces)];
-    
 
       setthemeList(EliminateDuplicates);
       setProvinceList(provinceEliminateDuplicates);
 
-      const firstMeet =meetupsList[0]|| allMeetups[0];
+      const firstMeet = meetupsList[0] || allMeetups[0];
       setcenter({
-        lat: parseFloat(firstMeet.x_cordinate),
-        lng: parseFloat(firstMeet.y_cordinate),
+        lat: firstMeet.x_cordinate,
+        lng: firstMeet.y_cordinate,
       });
       setzoom(10);
     }
   }, [allMeetups, meetupsList]);
   const handleMarkerClick = (marker) => {
     setSelectedMarker(marker);
-  
   };
   const handleInfoWindowClose = () => {
     setSelectedMarker(null);
   };
   return (
     <div className="">
+    
+      <div className="w-full h-72  max-w-4xl mx-auto">  
       <h1 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
         Mapa Meetups
       </h1>
-      <div className="w-full h-72 border max-w-4xl mx-auto">
         {isLoaded && (
           <GoogleMap
             mapContainerStyle={{ height: "100%", width: "100%" }}
@@ -146,21 +144,25 @@ const ListMeetups = () => {
                   selectedMarker.lng === item.y_cordinate && (
                     <InfoWindow
                       position={{
-                        lat: parseFloat(item.x_cordinate),
-                        lng: parseFloat(item.y_cordinate),
+                        lat: item.x_cordinate,
+                        lng: item.y_cordinate,
                       }}
                       onCloseClick={handleInfoWindowClose}
                     >
                       <div className="p-1 flex flex-col justify-center gap-2 max-w-xs ">
-                      <img 
-                      className='w-[200px] h-20 object-cover'
-                      src={item.meetup_image || nopicture} alt="marker image" />
-                      
-                      <div className="max-w-[200px]">
-                        <p className="font-medium">{item.meetup_title}</p>
-                       <p className="">{item.meetup_description}</p></div> 
-                       <button 
-                       className="border w-full rounded-md bg-blue-500 h-10 text-zinc-50 font-medium shadow-md">Detalles</button>
+                        <img
+                          className="w-[200px] h-20 object-cover"
+                          src={item.meetup_image || nopicture}
+                          alt="marker image"
+                        />
+
+                        <div className="max-w-[200px]">
+                          <p className="font-medium">{item.meetup_title}</p>
+                          <p className="">{item.meetup_description}</p>
+                        </div>
+                        <button className="border w-full rounded-md bg-blue-500 h-10 text-zinc-50 font-medium shadow-md">
+                          Detalles
+                        </button>
                       </div>
                     </InfoWindow>
                   )}
@@ -173,16 +175,16 @@ const ListMeetups = () => {
           className="mt-2 p-3 rounded-md dark:text-white"
           onSubmit={submitForm}
         >
-          <div className="py-3  flex-wrap flex items-start font-medium bg-zinc-50 relative  justify-center gap-2 ">
-            <div className="flex flex-col max-w-[140px]">
-              <p className="text-center">Eventos desde...</p>
+          <div className="py-3 flex-wrap flex items-start font-medium  relative  justify-between gap-2 max-w-xl mx-auto">
+            <div className="flex flex-col max-w-[120px] ">
+              <p className="text-left">Eventos desde...</p>
               <DatePickerComponent />
             </div>
             <div className="flex flex-col">
-              <p className="text-center">Temática</p>
+              <p className="text-left">Temática</p>
               <select
                 name="tematica"
-                className="bg-gray-50 border shadow-md border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-slate-50/10 border shadow-md border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
               >
                 <option className="w-full h-10">Todas</option>
                 {themeList &&
@@ -196,10 +198,10 @@ const ListMeetups = () => {
               </select>
             </div>
             <div className="flex flex-col">
-              <p className="text-center">Provincia</p>
+              <p className="text-left">Provincia</p>
               <select
                 name="provincia"
-                className="bg-gray-50 shadow-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-slate-50/10 shadow-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option>Todas</option>
                 {pronviceList &&
@@ -212,10 +214,21 @@ const ListMeetups = () => {
                   })}
               </select>
             </div>
+            <div className="flex flex-col">
+              <p className="text-left">Ordenar por</p>
+              <select
+                name="provincia"
+                className="bg-slate-50/10 shadow-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option>Fecha</option>
+                <option>Asistentes</option>
+               
+              </select>
+            </div>
           </div>
           <button
             type="submit"
-            className="mx-auto w-full max-w-sm bg-blue-500 text-zinc-50  border border-blue-300  text-sm font-semibold rounded-lg focus:ring-blue-500  block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="mx-auto w-full max-w-xl bg-blue-500 text-zinc-50  border border-blue-300  text-sm font-semibold rounded-lg focus:ring-blue-500  block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
             Aplicar Filtro
           </button>

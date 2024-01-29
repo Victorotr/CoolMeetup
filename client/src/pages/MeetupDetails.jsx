@@ -9,10 +9,17 @@ import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 
 import HandleDate from "../functions/HandleDate";
 const MeetupDetails = () => {
-  const {toast,settoast} = Handler()
+  const [JoinLoading, setJoinLoading] = useState(false);
+  const { toast, settoast,user,accessLoading } = Handler();
   const { id } = useParams();
   const [meetup, setmeetup] = useState(null);
   const navigate = useNavigate();
+  useEffect(() => {
+  if(!user && !accessLoading){
+    settoast({on:true,type:'warning',text:'Accede o registrate para ver los detalles de un meetup'});
+    navigate('/signin')
+  }
+  }, []);
   const MeetupInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     withCredentials: true,
@@ -23,38 +30,41 @@ const MeetupDetails = () => {
     googleMapsApiKey: import.meta.env.VITE_MAPS_TOKEN,
   });
 
-  useEffect(() => {
+  useEffect(() => {  
+    if(JoinLoading){return}
     const getDetails = async () => {
       try {
         const res = await MeetupInstance.get("/meetup/" + id);
 
         if (res && res.status === 200) {
           setmeetup(res.data.data);
-          console.log(res.data.data)
-         
+          console.log(res.data.data);
         }
       } catch (error) {
         console.log(error);
       }
     };
+  
     getDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-  const HandleJoin = async ()=>{
-    console.log('clicked');
+  }, [id,JoinLoading]);
+  const HandleJoin = async () => {
     try {
-       if(!meetup && !meetup.id_meetup){return}
-    console.log(meetup)
-    const res = await MeetupInstance.get('/signUp/'+ meetup?.id_meetup);
-    if(res && res.status === 200 && res.data.message);
-      settoast({...toast,on:true,text:res.data.message})
+      if (!meetup && !meetup.id_meetup){
+        return;
+      }
+
+      setJoinLoading(true)
+      const res = await MeetupInstance.get("/signUp/" + meetup?.id_meetup);
+      if (res && res.status === 200 && res.data.message);
+      settoast({ ...toast, on: true, text: res.data.message });
+      setJoinLoading(false)
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-   
-  }
+  };
   return (
-    <div className="w-full max-w-xl text-lg flex flex-col mx-auto py-10">
+    <div className="w-full max-w-lg text-lg flex flex-col mx-auto py-10">
       <img
         className="w-full h-60  object-cover"
         src={meetup?.meetup_image || nopicture}
@@ -65,19 +75,20 @@ const MeetupDetails = () => {
           {meetup?.meetup_title}
         </h1>
         <p className="font-Lora">{meetup?.meetup_description}</p>
-        <div className=" py-2 flex flex-col gap-2">
+        <div className=" py-2 flex flex-col gap-3">
           <p className="font-Lora font-lg font-semibold">Cuando?</p>
-          <p className=" flex  font-medium gap-2">
-           {HandleDate(meetup?.meetup_datetime)}
+          <p className=" flex  font-medium gap-2 text-sm">
+            {HandleDate(meetup?.meetup_datetime)}
           </p>
+          <p className="font-Lora font-lg font-semibold">Temática</p>
+          <p className="font-Lora">{meetup?.meetup_theme}</p>
         </div>
         <p className="font-Lora font-lg font-semibold">Donde?</p>
-        <div className="w-full h-52 max-w-md">
+        <div className="w-full h-52 max-w-lg">
           {isLoaded && (
             <GoogleMap
-           
               mapContainerStyle={{ height: "100%", width: "100%" }}
-              options={{controlSize:25}}
+              options={{ controlSize: 25 }}
               zoom={14}
               center={{
                 lat: meetup?.x_cordinate,
@@ -94,14 +105,17 @@ const MeetupDetails = () => {
               )}
             </GoogleMap>
           )}
-        </div> 
+        </div>
         <a
-            href={`https://www.google.com/maps?q=${meetup?.x_cordinate},${meetup?.y_cordinate}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <button className="border font-semibold my-5 border-zinc-900/50 rounded-md text-zinc-50 shadow-md bg-blue-500 px-2 py-2 w-full max-w-md">Abrir en Google Maps</button>
-          </a>
+          href={`https://www.google.com/maps?q=${meetup?.x_cordinate},${meetup?.y_cordinate}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="shadow-xl border my-5 w-full max-w-lg rounded-md"
+        >
+          <button className="border text-sm font-semibold w-full  border-blue-600/50 rounded-md text-zinc-50 shadow-md bg-blue-500 px-2 py-2 ">
+            Abrir en Google Maps
+          </button>
+        </a>
         <div
           className="flex w-full flex-col items-start justify-start gap-1 p-2 cursor-pointer font-semibold text-md font-Lora"
           onClick={(e) => {
@@ -109,21 +123,43 @@ const MeetupDetails = () => {
             navigate(`/user/details/${meetup?.id_main_user}`);
           }}
         >
-          <p>Meetup publicado por </p>
-          <div className="flex items-center gap-2">
-            <img
-              className="w-14 h-14 object-cover rounded-full"
+          <div className="flex items-center justify-between w-full">
+         <p>Meetup publicado por </p> 
+          <div className="flex items-center justify-start gap-2 border pr-3 rounded-full shadow-md">
+            
+             <img
+              className="w-10 h-10 object-cover rounded-full drop-shadow-md"
               src={meetup?.picture_url || nouserpicure}
               alt="user picture"
             />
-            <p className="font-sans text-lg">{meetup?.user_name}</p>
+            <p className="font-sans text-sm">{meetup?.user_name}</p>
           </div>
-       
         </div>
-        <div className="my-4 w-full max-w-md">
-          <button
-          onClick={HandleJoin} className=" w-full text-center px-3 py-2 text-md font-semibold  text-white bg-indigo-500 rounded-lg hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Me Apunto!</button>
+        </div>
+        <div className="flex flex-col justify-start items-start py-3  px-2">
+        <p className="flex items-center justify-start gap-2 font-semibold">
+    
+          {meetup?.assistants?.length? meetup.assistants.length :'0'} personas {meetup?.assistants?.length?  meetup.assistants.length === 0 || meetup.assistants.length> 1  ? 'parteciparán' : 'participará' : 'partciparán'} 
+          </p>
+          <div className="w-full flex flex-wrap gap-2 mt-2">
+          {meetup?.assistants?.length && meetup?.assistants.map((item)=>( 
+          <span key={item.id_user} className="h-10  flex items-center justify-start gap-1 border rounded-full  shadow-md pr-3">
+            <img className="w-8 h-8 rounded-full object-cover " src={item.picture_url} alt="user image"  />
+            <span className="font-medium text-sm">{item.user_name}</span>
+            </span>
+          ))}
          </div>
+
+        </div>
+        <div className="my-4 w-full max-w-lg shadow-lg">
+          <button
+            onClick={HandleJoin}
+            disabled={JoinLoading}
+            className="text-sm w-full flex items-center justify-center gap-2 text-center px-2 py-2.5 text-md font-semibold  text-white bg-indigo-500 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-indigo-700 dark:focus:ring-blue-800"
+          >
+            Me Apunto!  {JoinLoading && <div className="lds-dual-ring"></div>}
+          </button>
+        </div>
       </div>
     </div>
   );
