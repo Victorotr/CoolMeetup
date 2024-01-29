@@ -18,7 +18,7 @@ const Nav = () => {
         className="font-semibold text-xl flex items-center gap-2 font-Lora"
       >
         <img className="w-10 h-10" src={ImgMap} alt="mapa" />
-        <p className="hidden sm:flex">Cool Meetups</p>
+        <p className="text-zinc-900/80 text-m">Cool Meetups</p>
       </div>
       <div className="hidden md:flex ">
         <ul className="w-full font-Lora text-md font-semibold flex  text-zinc-900/80">

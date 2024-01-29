@@ -133,13 +133,13 @@ const ListMeetups = () => {
                 key={item.id_meetup}
                 onClick={() => {
                   handleMarkerClick({
-                    lat: parseFloat(item.x_cordinate),
-                    lng: parseFloat(item.y_cordinate),
+                    lat: item.x_cordinate,
+                    lng: item.y_cordinate,
                   });
                 }}
                 position={{
-                  lat: parseFloat(item.x_cordinate),
-                  lng: parseFloat(item.y_cordinate),
+                  lat: item.x_cordinate,
+                  lng: item.y_cordinate,
                 }}
               >
                 {selectedMarker?.lat === item.x_cordinate &&

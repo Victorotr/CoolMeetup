@@ -225,7 +225,7 @@ const Map = () => {
     });
   };
   return (
-    <section className="w-full max-w-xl mx-auto py-10 ">
+    <section className="w-full max-w-xl mx-auto py-10 border rounded-lg sm:px-2">
       <h1 className="font-Lora text-xl font-semibold px-3 mx-auto">
         Crear Meetup
       </h1>
