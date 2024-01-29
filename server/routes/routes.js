@@ -58,7 +58,7 @@ router.get('/user/details/:id', getUserDetails);
 // router.post('/singUp/:meetupId', singUpForMeetup);
 
 router.post('/create/meetup', isUser, Upload, saveMeetupPhoto, postMeetup);
-// router.post('/singUp/:meetupId', singUpForMeetup);
+router.get('/signUp/:meetupId',isUser, signUpMeetup);
 
 // Rutas de Usuarios
 // router.post('/user', registerUser);

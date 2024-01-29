@@ -8,7 +8,7 @@ const Joi = require('joi');
 
 const newMeetupJoi = Joi.object().keys({
   user_id: Joi.any().required(),
-  title: Joi.string().max(30).required(),
+  title: Joi.string().max(40).required(),
   description: Joi.string().max(500).required(),
   category: Joi.string().max(30).required(),
   meetupDate:Joi.date().required(),

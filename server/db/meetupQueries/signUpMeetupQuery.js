@@ -15,12 +15,12 @@ export const signUpMeetupQuery = async (meetupId, userId) => {
       `
       SELECT *
       FROM meetups
-      WHERE id = ?
+      WHERE id_meetup = ?
     `,
       [meetupId]
     );
-
-    if (meetup.length === 0) {
+    console.log('meetmup',meetup)
+    if (meetup.length < 1) {
       throw generateError('No existe un meetup con ese id', 409);
     }
 
@@ -30,13 +30,14 @@ export const signUpMeetupQuery = async (meetupId, userId) => {
         `
           SELECT id
           FROM users_meetups
-          WHERE user_id = ? AND meetup_id = ?
+          WHERE id_user = ? AND id_meetup = ?
         `,
         [userId, meetupId]
       );
 
-      if (signupInfo === null) {
+      if (!signupInfo.length) {
         // Add user for a meetup
+        console.log('adding to meetup ')
         await connection.query(
           `
             INSERT INTO users_meetups (id_user, id_meetup)
@@ -44,22 +45,20 @@ export const signUpMeetupQuery = async (meetupId, userId) => {
           `,
           [userId, meetupId]
         );
-        // Add user in user list of the meetup
-        const [userId] = await connection.query(
-          `
-            INSERT INTO meetups (meetup_attendees)
-            VALUES (?)
-        `,
-          [userId]
-        );
+        return {action:'added',title:meetup[0].meetup_title}
+      
       } else {
-        throw generateError(
-          'El usuario ya está registrado en este meetup',
-          403
-        );
+        const [deleteJoin]= await connection.query(`DELETE FROM users_meetups WHERE id_user = ? AND id_meetup = ?`,[userId,meetupId]);
+        
+        console.log(deleteJoin)
+        return  {action:'deleted',title:meetup[0].meetup_title}
+        
+        
       }
     } catch (error) {
-      console.error(error);
+      console.log(error)
+      throw generateError('Algo ha ido mal ', 409);
+    
     }
   } finally {
     if (connection) connection.release();
