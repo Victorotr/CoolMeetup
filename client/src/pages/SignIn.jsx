@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Handler } from "../context/Context";
-import { GoogleLogin } from '@react-oauth/google';
-
+import { GoogleLogin } from "@react-oauth/google";
 
 const SigninInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -26,14 +25,13 @@ const SignIn = () => {
     try {
       setloading(true);
       const res = await SigninInstance.post("/signin", formData);
-    
+
       if (res && res.status === 200) {
         setloading(false);
-        
+
         setuser(res.data.user);
         navigate(`/user/details/${res.data.user.id}`);
       } else {
-        
         setloading(false);
         settoast({
           on: true,
@@ -44,7 +42,6 @@ const SignIn = () => {
     } catch (error) {
       setloading(false);
       if (error && error.response.data.message) {
-     
         settoast({
           on: true,
           type: "error",
@@ -66,26 +63,26 @@ const SignIn = () => {
       return;
     }
     setformData({ ...formData, [e.target.name]: e.target.value });
-    
   };
 
-
-  const loginRegisterWithGoogle = async(credential) => {
+  const loginRegisterWithGoogle = async (credential) => {
     try {
-      const res = await  axios.post(import.meta.env.VITE_API_URL+'/loginRegisterWithGoogle', {
-        credential:credential
-      });
-    if(res && res.status === 200){
-      setuser(res.data.user);
-      settoast({on:true,type:'success',text:res.data.message});
-      navigate('/list/meetups')
-    }
+      const res = await axios.post(
+        import.meta.env.VITE_API_URL + "/loginRegisterWithGoogle",
+        {
+          credential: credential,
+        }
+      );
+      if (res && res.status === 200) {
+        setuser(res.data.user);
+        settoast({ on: true, type: "success", text: res.data.message });
+        navigate("/list/meetups");
+      }
     } catch (error) {
       console.log(error);
-      settoast({on:true,type:'error',text:error.message});
+      settoast({ on: true, type: "error", text: error.message });
     }
- 
-  }
+  };
 
   return (
     <section className="bg-zinc-50">
@@ -93,7 +90,7 @@ const SignIn = () => {
         <div className="w-full bg-zinc-50 border rounded-lg  md:mt-0 sm:max-w-md xl:p-0 shadow-md">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-              Acceso a tu perfíl
+              Acceso a tu perfil
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={handleSignIn}>
               <div>
@@ -178,14 +175,19 @@ const SignIn = () => {
                 </span>
               </div>
               <div className=" w-full flex justify-center items-center py-5">
-              <GoogleLogin 
-              size="large"
-              onSuccess={(credentialResponse) => {
-            
-                loginRegisterWithGoogle(credentialResponse);
-              }}
-              onError = {() => {settoast({on:true,type:'error',text:'Error al iniciar la sessión'})}}
-              />
+                <GoogleLogin
+                  size="large"
+                  onSuccess={(credentialResponse) => {
+                    loginRegisterWithGoogle(credentialResponse);
+                  }}
+                  onError={() => {
+                    settoast({
+                      on: true,
+                      type: "error",
+                      text: "Error al iniciar la sessión",
+                    });
+                  }}
+                />
               </div>
             </form>
           </div>
