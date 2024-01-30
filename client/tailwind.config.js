@@ -8,8 +8,10 @@ export default {
   ],
 
   theme: {
-    extend: { fontFamily: {
+    extend: { 
+      fontFamily: {
       Lora: ['Lora', "sans-serif"],
+      Inter:["Inter","sans-serif"]
       // Add more custom font families as needed
     },
     animation: {

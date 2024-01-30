@@ -8,7 +8,7 @@ import DatePickerComponent from "../components/DatePicker";
 import axios from "axios";
 import { Handler } from "../context/Context";
 import { useState, useEffect } from "react";
-import MeetupCard from "../Cards/meetupCard";
+import MeetupCard from "../Cards/MeetupCard";
 import nopicture from "../assets/no_meetup_image.png";
 
 const ListMeetups = () => {
@@ -31,6 +31,7 @@ const ListMeetups = () => {
 
     const formData = new FormData(e.target);
     const form_values = Object.fromEntries(formData);
+    console.log(form_values,formData)
     //llamada al endpoint de listar meetups
     try {
       const res = await axios.post(
@@ -39,9 +40,12 @@ const ListMeetups = () => {
           date: form_values.date,
           tematica: form_values.tematica,
           provincia: form_values.provincia,
+          order:form_values.order
         }
       );
+      console.log(res)
       if (res && res.status === 200) {
+       
         settoast({
           on: true,
           type: "success",
@@ -125,6 +129,7 @@ const ListMeetups = () => {
             mapContainerStyle={{ height: "100%", width: "100%" }}
             zoom={zoom}
             center={center}
+            options={{ controlSize: 25 }}
           >
             {meetupsList?.map((item) => (
               <Marker
@@ -177,7 +182,7 @@ const ListMeetups = () => {
         >
           <div className="py-3 flex-wrap flex items-start font-medium  relative  justify-between gap-2 max-w-xl mx-auto">
             <div className="flex flex-col max-w-[120px] ">
-              <p className="text-left">Eventos desde...</p>
+              <p className="text-left">Eventos desde</p>
               <DatePickerComponent />
             </div>
             <div className="flex flex-col">
@@ -196,7 +201,9 @@ const ListMeetups = () => {
                     );
                   })}
               </select>
-            </div>
+           
+            </div> 
+           
             <div className="flex flex-col">
               <p className="text-left">Provincia</p>
               <select
@@ -214,17 +221,17 @@ const ListMeetups = () => {
                   })}
               </select>
             </div>
-            <div className="flex flex-col">
+          <div className="flex flex-col">
               <p className="text-left">Ordenar por</p>
               <select
-                name="provincia"
-                className="bg-slate-50/10 shadow-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                name="order"
+                className="bg-slate-50/10 border shadow-md border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
               >
-                <option>Fecha</option>
-                <option>Asistentes</option>
+                <option className="w-full h-10">Fecha</option>
+                <option className="w-full h-10">Asistentes</option>
                
               </select>
-            </div>
+              </div>
           </div>
           <button
             type="submit"
@@ -234,7 +241,7 @@ const ListMeetups = () => {
           </button>
         </form>
         <div className=" flex flex-wrap justify-center items-start gap-4 p-1 py-3">
-          {meetupsList.length ? (
+          {meetupsList?.length ? (
             meetupsList?.map((item) => {
               return <MeetupCard key={item.id_meetup} meetup={item} />;
             })

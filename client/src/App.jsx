@@ -26,7 +26,7 @@ function App() {
   return (
     <main 
     onClick={(e)=>{e.stopPropagation();setmenuOn(false)}}
-    className={` min-h-screen  relative `}>
+    className={` min-h-screen  relative font-Inter `}>
       <Nav />
       <Loading />
       <ToastWindow />

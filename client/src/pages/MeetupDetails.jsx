@@ -13,13 +13,15 @@ const MeetupDetails = () => {
   const { toast, settoast,user,accessLoading } = Handler();
   const { id } = useParams();
   const [meetup, setmeetup] = useState(null);
+  const [userJoined, setuserJoined] = useState(false)
   const navigate = useNavigate();
   useEffect(() => {
   if(!user && !accessLoading){
     settoast({on:true,type:'warning',text:'Accede o registrate para ver los detalles de un meetup'});
     navigate('/signin')
   }
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessLoading, user]);
   const MeetupInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     withCredentials: true,
@@ -38,7 +40,7 @@ const MeetupDetails = () => {
 
         if (res && res.status === 200) {
           setmeetup(res.data.data);
-          console.log(res.data.data);
+         
         }
       } catch (error) {
         console.log(error);
@@ -61,8 +63,20 @@ const MeetupDetails = () => {
       setJoinLoading(false)
     } catch (error) {
       console.log(error);
+      settoast({ ...toast, on: true, type: 'error',text:'Algo ha ido mal' });
     }
   };
+  useEffect(() => {
+    if(!user){ return }
+    if(JoinLoading){return }
+    if(meetup && meetup.assistants){
+      const assistants = meetup.assistants || null
+      const userIsIn = assistants.some(item => item.id_user === user.id);
+      userIsIn ? setuserJoined(true) : setuserJoined(false);
+    }
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [meetup,user,JoinLoading]);
   return (
     <div className="w-full max-w-lg text-lg flex flex-col mx-auto py-10">
       <img
@@ -155,9 +169,9 @@ const MeetupDetails = () => {
           <button
             onClick={HandleJoin}
             disabled={JoinLoading}
-            className="text-sm w-full flex items-center justify-center gap-2 text-center px-2 py-2.5 text-md font-semibold  text-white bg-indigo-500 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-indigo-700 dark:focus:ring-blue-800"
+            className={`text-sm w-full flex items-center justify-center gap-2 text-center px-2 py-2.5 text-md font-semibold rounded-lg transition-all text-white ${userJoined ? 'bg-amber-500  hover:bg-amber-600': 'bg-indigo-500  hover:bg-indigo-800'}  focus:ring-4 focus:outline-none focus:ring-blue-300 `}
           >
-            Me Apunto!  {JoinLoading && <div className="lds-dual-ring"></div>}
+          {userJoined? 'Ya no quiero ir' : 'Me apunto!'} {JoinLoading && <div className="lds-dual-ring"></div>}
           </button>
         </div>
       </div>
