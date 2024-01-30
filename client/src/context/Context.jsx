@@ -6,7 +6,6 @@ import axios from "axios";
 const LoggedInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
-  
 });
 
 export const MyContext = createContext();
@@ -23,43 +22,71 @@ export const Handler = () => {
 export const MyContextProvider = ({ children }) => {
   const [myData, setMyData] = useState("inital Data");
   const [menuOn, setmenuOn] = useState(false);
-  const [toast, settoast] = useState({on:false,type:'',text:''});
+  const [toast, settoast] = useState({ on: false, type: "", text: "" });
   const [user, setuser] = useState(null);
-  const [accessLoading, setaccessLoading] = useState(true)
+  const [accessLoading, setaccessLoading] = useState(true);
 
   useEffect(() => {
-    const isLogged = async ()=>{
-     const timeout =  setTimeout(() => {
+    const isLogged = async () => {
+      const timeout = setTimeout(() => {
         setuser(null);
-        settoast({on:true,type:'warning',text:'No ha sido posible conectarse al servidor...'});
-        setaccessLoading(false)
+        settoast({
+          on: true,
+          type: "warning",
+          text: "No ha sido posible conectarse al servidor...",
+        });
+        setaccessLoading(false);
       }, 5000);
-      const res = await LoggedInstance.get('/islogged');
-      
-      if(res && res.data.user){
-    
-        setuser(res.data.user); 
-      }else{
-        setuser(null)
+      const res = await LoggedInstance.get("/islogged");
+
+      if (res && res.data.user) {
+        setuser(res.data.user);
+      } else {
+        setuser(null);
       }
-      setaccessLoading(false)
-      clearTimeout(timeout)
-    }
+      setaccessLoading(false);
+      clearTimeout(timeout);
+    };
     isLogged();
-    
-  }, [])
- 
+  }, []);
+
+  // Get geolocation
+  useEffect(() => {
+    const success = (position) => {
+      const { latitude, longitude } = position.coords;
+      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    };
+
+    const error = (err) => {
+      console.error(`Error getting geolocation: ${err.message}`);
+    };
+
+    navigator.geolocation.getCurrentPosition(success, error);
+  }, []);
+
   useEffect(() => {
     const handleUnload = async () => {
-    await HandleVisit();
+      await HandleVisit();
     };
     window.addEventListener("beforeunload", handleUnload);
     return () => {
-    window.removeEventListener("beforeunload", handleUnload);
+      window.removeEventListener("beforeunload", handleUnload);
     };
   }, []);
   return (
-    <MyContext.Provider value={{ myData, setMyData, menuOn, setmenuOn,toast,settoast,user,setuser,accessLoading}}>
+    <MyContext.Provider
+      value={{
+        myData,
+        setMyData,
+        menuOn,
+        setmenuOn,
+        toast,
+        settoast,
+        user,
+        setuser,
+        accessLoading,
+      }}
+    >
       {children}
     </MyContext.Provider>
   );
