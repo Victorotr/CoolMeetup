@@ -41,7 +41,7 @@ const Homepage = () => {
       </div>
 
       <div 
-      onClick={()=>{settoast({on:true,type:'warning',text:'Este mapa es un mapa explicativo, para ver los meetups haz click en el botón arriba :)'});console.log('clicked')}}
+      onClick={()=>{settoast({on:true,type:'warning',text:'Este mapa es un mapa explicativo, para ver los meetups haz click en el botón arriba :)'})}}
       className="z-50 shadow-lg bg-[url('./assets/madridmap.png')] w-full h-96 bg-center bg-cover mt-10 relative">
       <img className="w-6 absolute top-20 right-32" src={Marker} alt="marker" />
       <img className="w-6 absolute bottom-20 left-52" src={Marker} alt="marker" />

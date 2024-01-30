@@ -4,10 +4,15 @@ const Joi = require('joi');
 
 // Schemas ↓
 
+
+
 const newMeetupJoi = Joi.object().keys({
-  nombre_meetup: Joi.string().max(30).required(),
-  descripcion_meetup: Joi.string().max(1000).required(),
-  meetup_theme: Joi.string().max(30).required(),
+  user_id: Joi.any().required(),
+  title: Joi.string().max(40).required(),
+  description: Joi.string().max(500).required(),
+  category: Joi.string().max(30).required(),
+  meetupDate:Joi.date().required(),
+  address:Joi.string().required()
 });
 
 /*

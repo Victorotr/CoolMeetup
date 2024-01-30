@@ -45,6 +45,7 @@ router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
 
 router.post('/getMeetups', getAllMeetups);
 router.get('/islogged', isLogged);
+
 router.get('/meetup/:id', getSingleMeetupDetails);
 
 router.post('/signin', SignIn);
@@ -57,7 +58,7 @@ router.get('/user/details/:id', getUserDetails);
 // router.post('/singUp/:meetupId', singUpForMeetup);
 
 router.post('/create/meetup', isUser, Upload, saveMeetupPhoto, postMeetup);
-// router.post('/singUp/:meetupId', singUpForMeetup);
+router.get('/signUp/:meetupId',isUser, signUpMeetup);
 
 // Rutas de Usuarios
 // router.post('/user', registerUser);

@@ -8,6 +8,7 @@ export const getAllMeetups = async (req, res, next) => {
   try {
     // Query: get all meetups filtered
     const filters = req.body;
+    console.log(filters)
     const meetups = await getAllMeetupsQuery(filters);
 
     // Res.send

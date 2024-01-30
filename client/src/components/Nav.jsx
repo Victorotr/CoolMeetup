@@ -9,6 +9,7 @@ import nouser from '../assets/no_picture.png';
 const Nav = () => {
   const navigate = useNavigate();
   const { user } = Handler();
+  
 
   return (
     <header className=" max-w-4xl mx-auto h-14 flex items-center justify-between px-3">
@@ -17,7 +18,7 @@ const Nav = () => {
         className="font-semibold text-xl flex items-center gap-2 font-Lora"
       >
         <img className="w-10 h-10" src={ImgMap} alt="mapa" />
-        <p className="hidden sm:flex">Cool Meetups</p>
+        <p className="text-zinc-900/80 text-m">Cool Meetups</p>
       </div>
       <div className="hidden md:flex ">
         <ul className="w-full font-Lora text-md font-semibold flex  text-zinc-900/80">
@@ -33,12 +34,7 @@ const Nav = () => {
           >
             Meetups
           </li>
-          <li
-            onClick={() => navigate("/meetups/map")}
-            className="p-3 text-shadow-medium  transition-all flex items-center justify-start  gap-1 hover:scale-105"
-          >
-            Mapa
-          </li>
+         
           <li
             onClick={() => navigate("/new/meetup")}
             className="p-3 text-shadow-medium transition-all flex items-center justify-start   gap-1 hover:scale-105"

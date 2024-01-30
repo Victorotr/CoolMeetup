@@ -1,5 +1,5 @@
 import { Handler } from "../context/Context";
-import { MdHome, MdPeople, MdMap, MdAdd, MdLogout } from "react-icons/md";
+import { MdHome, MdPeople, MdAdd, MdLogout } from "react-icons/md";
 import { LiaSignInAltSolid } from "react-icons/lia";
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "../functions/LogOut";
@@ -28,13 +28,7 @@ const SideBar = () => {
           <MdHome />
           Home
         </li>
-        <li
-          onClick={() => navigate("/meetups/map")}
-          className="p-4 border-y transition-all flex items-center justify-start shadow-inner text-zinc-900/90 gap-1 hover:scale-105"
-        >
-          <MdMap />
-          Mapa
-        </li>
+       
         <li
           onClick={() => navigate("/list/meetups")}
           className="p-4 border-y transition-all flex items-center justify-start  shadow-inner text-zinc-900/90 gap-1 hover:scale-105"

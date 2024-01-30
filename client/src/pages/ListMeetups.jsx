@@ -1,9 +1,16 @@
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  Marker,
+  useJsApiLoader,
+  InfoWindow,
+} from "@react-google-maps/api";
 import DatePickerComponent from "../components/DatePicker";
 import axios from "axios";
 import { Handler } from "../context/Context";
 import { useState, useEffect } from "react";
-import MeetupCard from "../Cards/meetupCard";
+import MeetupCard from "../Cards/MeetupCard";
+import nopicture from "../assets/no_meetup_image.png";
+
 const ListMeetups = () => {
   const [meetupsList, setMeetupsList] = useState([]);
   const [allMeetups, setAllMeetups] = useState([]);
@@ -11,6 +18,8 @@ const ListMeetups = () => {
   const [zoom, setzoom] = useState(5.5);
   const [themeList, setthemeList] = useState([]);
   const [pronviceList, setProvinceList] = useState([]);
+  const [selectedMarker, setSelectedMarker] = useState(null);
+
   // const [map, setmap] = useState(null);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -19,8 +28,10 @@ const ListMeetups = () => {
   const { settoast } = Handler();
   const submitForm = async (e) => {
     e.preventDefault();
+
     const formData = new FormData(e.target);
     const form_values = Object.fromEntries(formData);
+    console.log(form_values,formData)
     //llamada al endpoint de listar meetups
     try {
       const res = await axios.post(
@@ -29,16 +40,18 @@ const ListMeetups = () => {
           date: form_values.date,
           tematica: form_values.tematica,
           provincia: form_values.provincia,
+          order:form_values.order
         }
       );
+      console.log(res)
       if (res && res.status === 200) {
+       
         settoast({
           on: true,
           type: "success",
           text: "Meetups listados con éxito",
         });
         setMeetupsList(res.data.data);
-        console.log(res.data.data);
       }
     } catch (error) {
       settoast({
@@ -66,14 +79,17 @@ const ListMeetups = () => {
       );
       if (res && res.status === 200) {
         setAllMeetups(res.data.data);
+        setMeetupsList(res.data.data);
       }
     };
     getMeets();
   }, []);
 
   useEffect(() => {
-    if (allMeetups && allMeetups.length) {
-      console.log(meetupsList);
+    if (
+      (allMeetups && allMeetups.length) ||
+      (meetupsList && meetupsList.length)
+    ) {
       const themes = allMeetups.map((item) => {
         return item.meetup_theme;
       });
@@ -83,41 +99,79 @@ const ListMeetups = () => {
 
       const EliminateDuplicates = [...new Set(themes)];
       const provinceEliminateDuplicates = [...new Set(provinces)];
-      console.log(EliminateDuplicates);
 
       setthemeList(EliminateDuplicates);
       setProvinceList(provinceEliminateDuplicates);
 
-      const firstMeet = allMeetups[0];
+      const firstMeet = meetupsList[0] || allMeetups[0];
       setcenter({
-        lat: parseFloat(firstMeet.x_cordinate),
-        lng: parseFloat(firstMeet.y_cordinate),
+        lat: firstMeet.x_cordinate,
+        lng: firstMeet.y_cordinate,
       });
       setzoom(10);
     }
-  }, [allMeetups]);
-
+  }, [allMeetups, meetupsList]);
+  const handleMarkerClick = (marker) => {
+    setSelectedMarker(marker);
+  };
+  const handleInfoWindowClose = () => {
+    setSelectedMarker(null);
+  };
   return (
     <div className="">
+    
+      <div className="w-full h-72  max-w-4xl mx-auto">  
       <h1 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
         Mapa Meetups
       </h1>
-      <div className="w-full h-96 border max-w-4xl mx-auto">
         {isLoaded && (
           <GoogleMap
-            onClick={(e) => console.log(e.latLng.lat(), e.latLng.lng())}
             mapContainerStyle={{ height: "100%", width: "100%" }}
             zoom={zoom}
             center={center}
+            options={{ controlSize: 25 }}
           >
             {meetupsList?.map((item) => (
               <Marker
                 key={item.id_meetup}
-                position={{
-                  lat: parseFloat(item.x_cordinate),
-                  lng: parseFloat(item.y_cordinate),
+                onClick={() => {
+                  handleMarkerClick({
+                    lat: item.x_cordinate,
+                    lng: item.y_cordinate,
+                  });
                 }}
-              ></Marker>
+                position={{
+                  lat: item.x_cordinate,
+                  lng: item.y_cordinate,
+                }}
+              >
+                {selectedMarker?.lat === item.x_cordinate &&
+                  selectedMarker.lng === item.y_cordinate && (
+                    <InfoWindow
+                      position={{
+                        lat: item.x_cordinate,
+                        lng: item.y_cordinate,
+                      }}
+                      onCloseClick={handleInfoWindowClose}
+                    >
+                      <div className="p-1 flex flex-col justify-center gap-2 max-w-xs ">
+                        <img
+                          className="w-[200px] h-20 object-cover"
+                          src={item.meetup_image || nopicture}
+                          alt="marker image"
+                        />
+
+                        <div className="max-w-[200px]">
+                          <p className="font-medium">{item.meetup_title}</p>
+                          <p className="">{item.meetup_description}</p>
+                        </div>
+                        <button className="border w-full rounded-md bg-blue-500 h-10 text-zinc-50 font-medium shadow-md">
+                          Detalles
+                        </button>
+                      </div>
+                    </InfoWindow>
+                  )}
+              </Marker>
             ))}
           </GoogleMap>
         )}
@@ -126,16 +180,16 @@ const ListMeetups = () => {
           className="mt-2 p-3 rounded-md dark:text-white"
           onSubmit={submitForm}
         >
-          <div className="py-3  flex-wrap flex items-start font-medium bg-zinc-50 relative  justify-center gap-2 ">
-            <div className="flex flex-col max-w-[140px]">
-              <p className="text-center">Eventos desde...</p>
+          <div className="py-3 flex-wrap flex items-start font-medium  relative  justify-between gap-2 max-w-xl mx-auto">
+            <div className="flex flex-col max-w-[120px] ">
+              <p className="text-left">Eventos desde</p>
               <DatePickerComponent />
             </div>
             <div className="flex flex-col">
-              <p className="text-center">Temática</p>
+              <p className="text-left">Temática</p>
               <select
                 name="tematica"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-slate-50/10 border shadow-md border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
               >
                 <option className="w-full h-10">Todas</option>
                 {themeList &&
@@ -147,12 +201,14 @@ const ListMeetups = () => {
                     );
                   })}
               </select>
-            </div>
+           
+            </div> 
+           
             <div className="flex flex-col">
-              <p className="text-center">Provincia</p>
+              <p className="text-left">Provincia</p>
               <select
                 name="provincia"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-slate-50/10 shadow-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option>Todas</option>
                 {pronviceList &&
@@ -165,18 +221,36 @@ const ListMeetups = () => {
                   })}
               </select>
             </div>
+          <div className="flex flex-col">
+              <p className="text-left">Ordenar por</p>
+              <select
+                name="order"
+                className="bg-slate-50/10 border shadow-md border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+              >
+                <option className="w-full h-10">Fecha</option>
+                <option className="w-full h-10">Asistentes</option>
+               
+              </select>
+              </div>
           </div>
           <button
             type="submit"
-            className="mx-auto w-full max-w-sm bg-blue-500 text-zinc-50  border border-blue-300  text-sm font-semibold rounded-lg focus:ring-blue-500  block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="mx-auto w-full max-w-xl bg-blue-500 text-zinc-50  border border-blue-300  text-sm font-semibold rounded-lg focus:ring-blue-500  block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
             Aplicar Filtro
           </button>
         </form>
-        <div className="border flex flex-wrap justify-center items-start gap-3 p-1 py-3">
-          {meetupsList?.map((item) => {
-            return <MeetupCard key={item.meetup} meetup={item} />;
-          })}
+        <div className=" flex flex-wrap justify-center items-start gap-4 p-1 py-3">
+          {meetupsList?.length ? (
+            meetupsList?.map((item) => {
+              return <MeetupCard key={item.id_meetup} meetup={item} />;
+            })
+          ) : (
+            <div className="my-10 px-5 text-lg font-Lora text-center font-medium">
+              No se han encontrado meetups! <br /> Crea uno o cambia los
+              filtros.
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ export const UpdateUserDetails = async (req, res) => {
     let connection;
     const fileUrl = req.file && req.file.originalname ? process.env.IMAGE_URL + req.file.originalname +"/Avatar" : null;
     const fileName = req.file && req.file.originalname ? req.file.originalname : null;
+    console.log('fileurl',fileUrl)
     try {
         console.log(fileName)
 
