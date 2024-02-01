@@ -20,6 +20,8 @@ import { getImg } from '../services/imgGet.js';
 import { UpdateUserDetails } from '../Controllers/users/updateUserDetails.js';
 import { saveMeetupPhoto } from '../services/saveMeetupPhoto.js';
 import { getMeetupImg } from '../services/meetupImgGet.js';
+import { getUserMeetups } from '../Controllers/meetups/getUserMeetups.js';
+import { getUserMeetupsAttendees } from '../Controllers/meetups/getUserMeetupsAttendees.js';
 
 const router = Router();
 
@@ -54,6 +56,8 @@ router.get('/logout', LogOut);
 router.post('/update/user', isUser, Upload, savePhoto, UpdateUserDetails);
 
 router.get('/user/details/:id', getUserDetails);
+router.get('/user/meetups/:id', getUserMeetups);
+router.get('/user/meetupsAttendees/:id',getUserMeetupsAttendees);
 
 // router.post('/singUp/:meetupId', singUpForMeetup);
 
