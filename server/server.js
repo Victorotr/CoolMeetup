@@ -12,9 +12,14 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Express cors
-app.use(cors({
-    origin:[process.env.CLIENT_URL,'http://localhost:5173'],
-    
+app.use(
+  cors({
+    origin: [
+      process.env.CLIENT_URL,
+      'http://localhost:5173',
+      'http://192.168.1.65:5173',
+    ],
+
     credentials: true,
   })
 );
@@ -32,13 +37,12 @@ app.use((req, res) => {
 
 // Middleware de gestión de errores
 app.use((error, req, res, next) => {
-  console.error('app error catch',error);
+  console.error('app error catch', error);
 
   res.status(error.httpStatus || 500).send({
     status: 'error',
     message: error.message,
   });
- 
 });
 
 // Lanzamos el servidor
