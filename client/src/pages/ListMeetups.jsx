@@ -41,7 +41,7 @@ const ListMeetups = () => {
           tematica: form_values.tematica,
           provincia: form_values.provincia,
           order:form_values.order
-        }
+        },
       );
       console.log(res)
       if (res && res.status === 200) {

@@ -88,7 +88,7 @@ const Map = () => {
       if (status === window.google.maps.GeocoderStatus.OK) {
         setqueryResults(results);
       } else {
-        setqueryResults(null);
+        setqueryResults(null); 
       }
     });
   };

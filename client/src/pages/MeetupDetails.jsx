@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import nouserpicure from "../assets/no_picture.png";
 import { Handler } from "../context/Context";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-
 import HandleDate from "../functions/HandleDate";
 const MeetupDetails = () => {
   const [JoinLoading, setJoinLoading] = useState(false);
@@ -40,7 +39,6 @@ const MeetupDetails = () => {
 
         if (res && res.status === 200) {
           setmeetup(res.data.data);
-         
         }
       } catch (error) {
         console.log(error);
