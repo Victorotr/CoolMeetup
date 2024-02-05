@@ -1,35 +1,48 @@
-import React, { useState, useEffect } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HandleDate from "../functions/HandleDate";
 import { FaUsers } from "react-icons/fa";
 import { FaPersonWalkingArrowRight, FaArrowRight } from "react-icons/fa6";
+import { Meetup } from "../Interfaces/TypesInterfaces";
 
-const MeetupCardMin = ({ meetup }) => {
+interface MeetupCardMinProps {
+  meetup: Meetup;
+}
+
+const MeetupCardMin: React.FC<MeetupCardMinProps> = ({ meetup }: MeetupCardMinProps): ReactElement => {
   const navigate = useNavigate();
   const [isOutDated, setisOutDated] = useState(false);
-  
-  useEffect(() => {
-    const now = new Date()
-    const meetupDate = new Date(meetup.meetup_datetime);
-    if(now > meetupDate){
-      setisOutDated(true)
-    }
 
-  }, [])
-  
+  useEffect(() => {
+    const now = new Date();
+    const meetupDate = new Date(meetup.meetup_datetime);
+    if (now > meetupDate) {
+      setisOutDated(true);
+    }
+  }, [meetup.meetup_datetime]);
+
+  const handleDetailsClick = () => {
+    navigate("/meetups/details/" + meetup.id_meetup);
+  };
+
+  const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    navigate(`/user/details/${meetup.main_user_details.user_id}`);
+  };
+
   return (
     <div
-      onClick={() => navigate("/meetups/details/" + meetup.id_meetup)}
+      onClick={handleDetailsClick}
       className="flex relative max-w-md sm:max-w-sm w-full flex-col border border-zinc-900/10 rounded-md overflow-hidden justify-between shadow-md hover:scale-105 transition-all "
     >
-       <span className={`${ meetup?.cancelled  ? 'flex' : isOutDated ? 'flex' : 'hidden'}  bg-zinc-500/10 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}>
-       <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">MEETUP <br /> FINALIZADO O CANCELADO</p>
-        </span>
-      
-      
+      <span className={`${meetup?.cancelled ? 'flex' : isOutDated ? 'flex' : 'hidden'}  bg-zinc-500/10 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}>
+        <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">MEETUP <br /> FINALIZADO O CANCELADO</p>
+      </span>
+
       <span className="absolute top-2 right-2 shadow-md font-semibold text-xs bg-zinc-50 rounded-full px-2 py-0.5">
         {meetup.meetup_theme}
       </span>
+
       <img
         className={`${meetup.meetup_image ? 'object-cover' : 'object-contain opacity-70'} max-h-52 w-full  hover:scale-105 transition-all`}
         src={meetup.meetup_image || "/src/assets/no_meetup_image.png"}
@@ -48,8 +61,6 @@ const MeetupCardMin = ({ meetup }) => {
               <span className="absolute top-0 left-0 w-full h-full  bg-gradient-to-b from-transparent via-transparent to-white/70"></span>
             </p>
           </div>
-
-       
         </div>
         <div className="px-2 py-2">
           <p className=" flex  font-medium gap-7">
@@ -73,16 +84,11 @@ const MeetupCardMin = ({ meetup }) => {
           </span>
           <div
             className=" px-1 py-0 cursor-pointer h-10  flex items-center justify-start gap-1 border rounded-full  shadow-md pr-3"
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/user/details/${meetup.main_user_details.user_id}`);
-            }}
+            onClick={handleUserClick}
           >
             <img
               className="w-8 h-8 rounded-full object-cover "
-              src={
-                meetup.main_user_details.avatar || "/src/assets/no_picture.png"
-              }
+              src={meetup.main_user_details.avatar || "/src/assets/no_picture.png"}
               alt="user picture"
             />
             <p className="font-medium text-sm">
