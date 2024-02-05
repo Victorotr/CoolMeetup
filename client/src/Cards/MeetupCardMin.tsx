@@ -20,11 +20,12 @@ const MeetupCardMin = ({ meetup }) => {
   return (
     <div
       onClick={() => navigate("/meetups/details/" + meetup.id_meetup)}
-      className="flex relative max-w-md sm:max-w-sm w-full flex-col border border-zinc-900/30 rounded-md overflow-hidden justify-between shadow-md hover:scale-105 transition-all "
+      className="flex relative max-w-md sm:max-w-sm w-full flex-col border border-zinc-900/10 rounded-md overflow-hidden justify-between shadow-md hover:scale-105 transition-all "
     >
-      <span className={`${!isOutDated ? 'hidden' : 'flex'} bg-zinc-600/20 z-50 absolute top-0 left-0 w-full h-full items-center justify-center`}>
-       <p className="text-zinc-50 text-shadow font-bold text-4xl text-center font-Lora">MEETUP <br /> FINALIZADO</p>
+       <span className={`${ meetup?.cancelled  ? 'flex' : isOutDated ? 'flex' : 'hidden'}  bg-zinc-500/10 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}>
+       <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">MEETUP <br /> FINALIZADO O CANCELADO</p>
         </span>
+      
       
       <span className="absolute top-2 right-2 shadow-md font-semibold text-xs bg-zinc-50 rounded-full px-2 py-0.5">
         {meetup.meetup_theme}

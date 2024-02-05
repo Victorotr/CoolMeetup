@@ -1,22 +1,15 @@
 
 import { useEffect, useState } from "react";
-import axios from "axios";
 import nouser from "../assets/no_picture.png";
 import { Handler } from "../context/Context";
 import { ImCamera } from "react-icons/im";
 import { FaGear } from "react-icons/fa6";
 import { useNavigate ,useParams} from "react-router-dom";
 import MeetupCardMin from "../Cards/MeetupCardMin";
+import { Instance } from "../axios/Instance";
 const UserProfile = () => {
   const { setuser, user, settoast,accessLoading } = Handler();
   const navigate = useNavigate();
-
-  const getUserInstance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true,
-  });
-
-  
 
   const { id } = useParams();
   const [userData, setuserData] = useState(null);
@@ -33,7 +26,7 @@ const UserProfile = () => {
       });
     }
     try {
-      const res = await getUserInstance.get(`/user/details/${id}`);
+      const res = await Instance.get(`/user/details/${id}`);
       if (res.status === 200 && res.data.user) {
         setuserData(res.data.user);
         if (res.data.user.id === user.id) {
@@ -56,7 +49,7 @@ const UserProfile = () => {
       });
     }
     try {
-      const res = await getUserInstance.get(`/user/meetups/${id}`);
+      const res = await Instance.get(`/user/meetups/${id}`);
       if (res.status === 200 && res.data.data) {
         setUserMeetups(res.data.data);
       }
@@ -75,10 +68,9 @@ const UserProfile = () => {
       });
     }
     try {
-      const res = await getUserInstance.get(`/user/meetupsAttendees/${id}`);
+      const res = await Instance.get(`/user/meetupsAttendees/${id}`);
       if (res.status === 200 && res.data.data) {
 
-        console.log(res.data)
         setUserMeetupsAttendees(res.data.data);
       }
     } catch (error) {

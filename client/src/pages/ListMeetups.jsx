@@ -5,7 +5,7 @@ import {
   InfoWindow,
 } from "@react-google-maps/api";
 import DatePickerComponent from "../components/DatePicker";
-import axios from "axios";
+import { Instance } from "../axios/Instance";
 import { Handler } from "../context/Context";
 import { useState, useEffect } from "react";
 import MeetupCard from "../Cards/MeetupCard";
@@ -31,11 +31,10 @@ const ListMeetups = () => {
 
     const formData = new FormData(e.target);
     const form_values = Object.fromEntries(formData);
-    console.log(form_values,formData)
+   
     //llamada al endpoint de listar meetups
     try {
-      const res = await axios.post(
-        import.meta.env.VITE_API_URL + "/getMeetups",
+      const res = await Instance.post("/getMeetups",
         {
           date: form_values.date,
           tematica: form_values.tematica,
@@ -64,15 +63,10 @@ const ListMeetups = () => {
   useEffect(() => {
     //cargar lista completa de meetups próximos a celebrarse al dia de hoy
     const getMeets = async () => {
-      const res = await axios.post(
-        import.meta.env.VITE_API_URL + "/getMeetups",
+      const res = await Instance.post(
+        "/getMeetups",
         {
-          date: new Date()
-            .toISOString()
-            .slice(0, 10)
-            .split("-")
-            .reverse()
-            .join("/"),
+          date: new Date(),
           tematica: "Todas",
           provincia: "Todas",
         }

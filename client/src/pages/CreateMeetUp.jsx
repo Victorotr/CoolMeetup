@@ -8,21 +8,14 @@ import {
 import { IoMdClose } from "react-icons/io";
 import { ImCamera } from "react-icons/im";
 import nopicture from "../assets/no_meetup_image.png";
-import axios from "axios";
 import { MdSearch, MdDelete, MdEmojiEmotions } from "react-icons/md";
 import { Handler } from "../context/Context";
 import { useNavigate } from "react-router-dom";
 import { categories } from "../../categories";
 import DatePickerComponent from "../components/DatePicker";
 import CustomTimePicker from "../components/CustomTimePicker";
+import { formDataInstance } from "../axios/Instance";
 
-const createMeetupInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true,
-  headers: {
-    "Content-Type": "multipart/form-data",
-  },
-});
 const Map = () => {
   const { user, settoast, accessLoading } = Handler();
   const navigate = useNavigate();
@@ -130,9 +123,9 @@ const Map = () => {
         type === "peg"
       ) {
         setfile(e.dataTransfer.files[0]);
-        // setfileErr("");
+        
       } else {
-        // setfileErr("Not allowed file extention");
+       settoast({on:true,type:'warning',text:'Extensión no permitida'})
       }
     }
   };
@@ -194,11 +187,7 @@ const Map = () => {
         }
       }
 
-      const res = await createMeetupInstance.post("/create/meetup", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await formDataInstance.post("/create/meetup", formData);
 
       if (res.status === 200 && res.data) {
         settoast({
@@ -248,7 +237,7 @@ const Map = () => {
           value={meetupForm.title}
           required
         />
-        <div className="relative w-full justify-center border">
+        <div className="relative w-full justify-center">
           <label htmlFor="title" className="font-semibold px-1">
             Descripción
           </label>
@@ -263,14 +252,28 @@ const Map = () => {
             value={meetupForm.description}
           />
           <div
-            className={`${emojiOn ? 'h-full' : 'h-0 '} transition-all absolute bottom-6 max-h-48 overflow-y-scroll left-0 mx-1 z-50 px-3  w-full text-xl flex flex-wrap gap-2 bg-zinc-50`}
+            className={`${
+              emojiOn ? "h-full" : "h-0 "
+            } transition-all absolute bottom-6 max-h-48 overflow-y-scroll left-0 mx-1 z-50 px-3  w-full text-xl flex flex-wrap gap-2 bg-zinc-50`}
           >
             {emojis.map((item, index) => (
-              <span className="hover:bg-zinc-900/10" onClick={()=>{setmeetupForm({...meetupForm,description:meetupForm.description + item});setemojiOn(false)}} key={index}>{item}</span>
+              <span
+                className="hover:bg-zinc-900/10"
+                onClick={() => {
+                  setmeetupForm({
+                    ...meetupForm,
+                    description: meetupForm.description + item,
+                  });
+                  setemojiOn(false);
+                }}
+                key={index}
+              >
+                {item}
+              </span>
             ))}
           </div>
-          <span className="absolute flex item-center justify-between px-3 bottom-1 w-full border font-medium text-xs">
-            <span onClick={()=>setemojiOn(!emojiOn)}>
+          <span className="absolute flex item-center justify-between px-3 bottom-1 w-full font-medium text-xs">
+            <span onClick={() => setemojiOn(!emojiOn)}>
               <MdEmojiEmotions className="text-zinc-900/70" size={20} />
             </span>
             {meetupForm.description.length || 0}/500

@@ -1,9 +1,10 @@
-import axios from "axios";
+
+import { Instance } from "../axios/Instance";
 export const LogOut = async () => {
 
   
   //it doesnt work if the url in the browser is localhost:5173 configure an .env.local with VITE_API_URL=youripaddress:3000
-  const res = await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
+  const res = await Instance.get(`/logout`, {
     withCredentials: true,
   });
   

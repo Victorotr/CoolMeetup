@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import nopicture from "../assets/no_meetup_image.png";
@@ -7,7 +6,10 @@ import nouserpicure from "../assets/no_picture.png";
 import { Handler } from "../context/Context";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import HandleDate from "../functions/HandleDate";
+import { Instance } from "../axios/Instance";
+
 const MeetupDetails = () => {
+
   const [JoinLoading, setJoinLoading] = useState(false);
   const { toast, settoast, user, accessLoading } = Handler();
   const { id } = useParams();
@@ -15,6 +17,7 @@ const MeetupDetails = () => {
   const [userJoined, setuserJoined] = useState(false);
   const [isOutDated, setisOutDated] = useState(false);
   const navigate = useNavigate();
+  
   useEffect(() => {
     if (!user && !accessLoading) {
       settoast({
@@ -26,10 +29,7 @@ const MeetupDetails = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessLoading, user]);
-  const MeetupInstance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true,
-  });
+
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -42,7 +42,7 @@ const MeetupDetails = () => {
     }
     const getDetails = async () => {
       try {
-        const res = await MeetupInstance.get("/meetup/" + id);
+        const res = await Instance.get("/meetup/" + id);
 
         if (res && res.status === 200) {
           setmeetup(res.data.data);
@@ -62,7 +62,7 @@ const MeetupDetails = () => {
       }
 
       setJoinLoading(true);
-      const res = await MeetupInstance.get("/signUp/" + meetup?.id_meetup);
+      const res = await Instance.get("/signUp/" + meetup?.id_meetup);
       if (res && res.status === 200 && res.data.message);
       settoast({ ...toast, on: true, text: res.data.message });
       setJoinLoading(false);
@@ -94,7 +94,7 @@ const MeetupDetails = () => {
     }
     try {
       setJoinLoading(true)
-      const res = await MeetupInstance.post("/cancel/meetup", {
+      const res = await Instance.post("/cancel/meetup", {
         meetup_id: meetup.id_meetup,
       });
  
