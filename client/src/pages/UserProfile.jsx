@@ -6,7 +6,7 @@ import { Handler } from "../context/Context";
 import { ImCamera } from "react-icons/im";
 import { FaGear } from "react-icons/fa6";
 import { useNavigate ,useParams} from "react-router-dom";
-import MeetupCard from "../Cards/MeetupCard";
+import MeetupCardMin from "../Cards/MeetupCardMin";
 const UserProfile = () => {
   const { setuser, user, settoast,accessLoading } = Handler();
   const navigate = useNavigate();
@@ -77,6 +77,8 @@ const UserProfile = () => {
     try {
       const res = await getUserInstance.get(`/user/meetupsAttendees/${id}`);
       if (res.status === 200 && res.data.data) {
+
+        console.log(res.data)
         setUserMeetupsAttendees(res.data.data);
       }
     } catch (error) {
@@ -88,13 +90,14 @@ const UserProfile = () => {
     getUser();
     getMeetupsUser();
     getMeetupsAttendeesUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
 
 
   return (
-    <main>
-      <section className="mx-auto w-full max-w-2xl py-5 ">
+    <main className="mx-auto w-full max-w-4xl ">
+      <section className=" py-5 border rounded-lg shadow-md">
         <div className="flex  px-3 relative">
           <div className="relative w-36 ">
             <img
@@ -112,7 +115,7 @@ const UserProfile = () => {
             </div>
           </div>
           <div className="mx-3 flex flex-col gap-2">
-            <h1 className="text-xl font-medium mt-1 ">{userData?.username}</h1>
+            <h1 className="text-xl font-semibold mt-1 ">{userData?.username}</h1>
             <div className="">
               <p>{userData?.bio ? userData.bio : 'esta historia es un secreto por ahora..'}</p>
             </div>
@@ -131,15 +134,15 @@ const UserProfile = () => {
           </div>
         </div>
       </section>
-      <section>
-      <div className="w-full h-72  max-w-4xl mx-auto">  
+      <section className="w-full ">
+      <div className="w-full h-72  max-w-5xl mx-auto">  
         <h2 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
           Mis Meetups
         </h2>
-        <div className=" flex flex-wrap justify-center items-start gap-4 p-1 py-3">
+        <div className=" flex flex-wrap justify-start items-start gap-4 p-1 py-3">
           {userMeetups?.length ? (
             userMeetups?.map((item) => {
-              return <MeetupCard key={item.id_meetup} meetup={item} />;
+              return <MeetupCardMin key={item.id_meetup} meetup={item} />;
             })
           ) : (
             <div className="my-10 px-5 text-lg font-Lora text-center font-medium">
@@ -147,14 +150,14 @@ const UserProfile = () => {
             </div>
           )}
         </div>
-          <div className="w-full h-72  max-w-4xl mx-auto">  
+          <div className="w-full h-72   mx-auto ">  
             <h2 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
               Meetups a los que estoy inscrito
             </h2>
-            <div className=" flex flex-wrap justify-center items-start gap-4 p-1 py-3">
+            <div className=" flex flex-wrap justify-start items-start gap-4 p-1 py-3 ">
             {userMeetupsAttendees?.length ? (
               userMeetupsAttendees?.map((item) => {
-                return <MeetupCard key={item.id_meetup} meetup={item} />;
+                return <MeetupCardMin key={item.id_meetup} meetup={item} />;
               })
             ) : (
               <div className="my-10 px-5 text-lg font-Lora text-center font-medium">
