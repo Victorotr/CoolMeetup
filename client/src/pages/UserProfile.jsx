@@ -6,6 +6,7 @@ import { Handler } from "../context/Context";
 import { ImCamera } from "react-icons/im";
 import { FaGear } from "react-icons/fa6";
 import { useNavigate ,useParams} from "react-router-dom";
+import MeetupCard from "../Cards/MeetupCard";
 const UserProfile = () => {
   const { setuser, user, settoast,accessLoading } = Handler();
   const navigate = useNavigate();
@@ -19,6 +20,9 @@ const UserProfile = () => {
 
   const { id } = useParams();
   const [userData, setuserData] = useState(null);
+  const [userMeetups, setUserMeetups] = useState(null);
+  const [userMeetupsAttendees, setUserMeetupsAttendees] = useState(null);
+
   const getUser = async () => {
     if (!user && !accessLoading) {
       navigate("/signin");
@@ -41,11 +45,49 @@ const UserProfile = () => {
       console.log(error);
     }
   };
-  useEffect(() => {
-   
-    getUser();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getMeetupsUser = async () => {
+    if (!user && !accessLoading) {
+      navigate("/signin");
+      settoast({
+        on: true,
+        type: "warning",
+        text: "Accede para ver la info de usuarios",
+      });
+    }
+    try {
+      const res = await getUserInstance.get(`/user/meetups/${id}`);
+      if (res.status === 200 && res.data.data) {
+        setUserMeetups(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const getMeetupsAttendeesUser = async () => {
+    if (!user && !accessLoading) {
+      navigate("/signin");
+      settoast({
+        on: true,
+        type: "warning",
+        text: "Accede para ver la info de usuarios",
+      });
+    }
+    try {
+      const res = await getUserInstance.get(`/user/meetupsAttendees/${id}`);
+      if (res.status === 200 && res.data.data) {
+        setUserMeetupsAttendees(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+    getMeetupsUser();
+    getMeetupsAttendeesUser();
   }, [id]);
 
 
@@ -89,6 +131,41 @@ const UserProfile = () => {
           </div>
         </div>
       </section>
+      <section>
+      <div className="w-full h-72  max-w-4xl mx-auto">  
+        <h2 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
+          Mis Meetups
+        </h2>
+        <div className=" flex flex-wrap justify-center items-start gap-4 p-1 py-3">
+          {userMeetups?.length ? (
+            userMeetups?.map((item) => {
+              return <MeetupCard key={item.id_meetup} meetup={item} />;
+            })
+          ) : (
+            <div className="my-10 px-5 text-lg font-Lora text-center font-medium">
+              No se han encontrado meetups! <br /> Crea tu primer meetup!
+            </div>
+          )}
+        </div>
+          <div className="w-full h-72  max-w-4xl mx-auto">  
+            <h2 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
+              Meetups a los que estoy inscrito
+            </h2>
+            <div className=" flex flex-wrap justify-center items-start gap-4 p-1 py-3">
+            {userMeetupsAttendees?.length ? (
+              userMeetupsAttendees?.map((item) => {
+                return <MeetupCard key={item.id_meetup} meetup={item} />;
+              })
+            ) : (
+              <div className="my-10 px-5 text-lg font-Lora text-center font-medium">
+                No estás apuntado a ningún Meetup! <br /> Apúntate a alguno!
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      </section>
+
     </main>
   );
 };
