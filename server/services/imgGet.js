@@ -14,7 +14,10 @@ export const getImg = async (req, res) => {
         
         if (img) {
             res.end(img)
-        } 
+        }else{
+            const img = fs.readFileSync('./Controllers/users/avatars/no_picture.png');
+            res.end(img)
+        }
     } catch (error) {
         console.log(error)
         const img = fs.readFileSync('./Controllers/users/avatars/no_picture.png');

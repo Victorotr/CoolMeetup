@@ -8,20 +8,14 @@ import {
 import { IoMdClose } from "react-icons/io";
 import { ImCamera } from "react-icons/im";
 import nopicture from "../assets/no_meetup_image.png";
-import axios from "axios";
-import { MdSearch, MdDelete } from "react-icons/md";
+import { MdSearch, MdDelete, MdEmojiEmotions } from "react-icons/md";
 import { Handler } from "../context/Context";
 import { useNavigate } from "react-router-dom";
 import { categories } from "../../categories";
 import DatePickerComponent from "../components/DatePicker";
 import CustomTimePicker from "../components/CustomTimePicker";
-const createMeetupInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true,
-  headers: {
-    "Content-Type": "multipart/form-data",
-  },
-});
+import { formDataInstance } from "../axios/Instance";
+
 const Map = () => {
   const { user, settoast, accessLoading } = Handler();
   const navigate = useNavigate();
@@ -36,6 +30,7 @@ const Map = () => {
   const [DragActive, setDragActive] = useState(false);
   const [meetupTime, setMeetupTime] = useState(null);
   const [meetupDate, setmeetupDate] = useState(null);
+  const [emojiOn, setemojiOn] = useState(false);
   const [meetupForm, setmeetupForm] = useState({
     user_id: null,
     title: "",
@@ -49,20 +44,20 @@ const Map = () => {
       return;
     }
     if (!user && !user.id) {
-    
       navigate("/signin");
       settoast({
         on: true,
         type: "warning",
         text: "Accede para poder crear meetups",
       });
-      return; 
-    } 
-  
-    
+      return;
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, accessLoading]);
-
+  let emojis =
+    "😀😄😁😆😅😂🤣🥲🥹😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎🥸🤩🥳😏😒😞😔😟😕🙁☹️😣😖😫😩🥺😢😭😮‍💨😤😠😡🤬🤯😳🥵🥶😱😨😰😥😓🫣🤗🫡🤔🫢🤭🤫🤥😶😶‍🌫️😐😑😬🫨🫠🙄😯😦😧😮😲🥱😴🤤😪😵😵‍💫🫥🤐🥴🤢🤮🤧😷🤒🤕🤑🤠😈👿👹👺🤡💩👻💀☠️👽👾🤖🎃😺😸😹😻😼😽🙀😿😾";
+  emojis = [...emojis];
   const onMapLoad = (mapInstance) => {
     setMap(mapInstance);
   };
@@ -128,9 +123,9 @@ const Map = () => {
         type === "peg"
       ) {
         setfile(e.dataTransfer.files[0]);
-        // setfileErr("");
+        
       } else {
-        // setfileErr("Not allowed file extention");
+       settoast({on:true,type:'warning',text:'Extensión no permitida'})
       }
     }
   };
@@ -156,8 +151,8 @@ const Map = () => {
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
-    
-    setmeetupForm({...meetupForm,user_id:user.id})
+
+    setmeetupForm({ ...meetupForm, user_id: user.id });
     try {
       const now = new Date();
       now.setHours(now.getHours() + 1);
@@ -170,7 +165,7 @@ const Map = () => {
         });
         return;
       }
-      
+
       let formData = new FormData();
       if (file) {
         formData.append("avatar", file);
@@ -192,21 +187,18 @@ const Map = () => {
         }
       }
 
-      const res = await createMeetupInstance.post("/create/meetup", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-    
-      if(res.status === 200 && res.data){
+      const res = await formDataInstance.post("/create/meetup", formData);
+
+      if (res.status === 200 && res.data) {
         settoast({
-        on:true,type:'success',text:res.data.message
-        })
-        navigate('/meetup/details/'+ res.data.meetupId)
+          on: true,
+          type: "success",
+          text: res.data.message,
+        });
+        navigate("/meetups/details/" + res.data.meetupId);
       }
-   
     } catch (error) {
-    console.log(error)
+      console.log(error);
       if (error && error.response.data.message) {
         settoast({
           on: true,
@@ -245,19 +237,49 @@ const Map = () => {
           value={meetupForm.title}
           required
         />
-        <label htmlFor="title" className="font-semibold px-1">
-          Descripción
-        </label>
-        <textarea
-          required
-          name="description"
-          rows={5}
-          cols={10}
-          onChange={HandleForm}
-          className="resize-none shadow-sm mx-1 px-2 w-full rounded-md  flex items-center font-normal bg-zinc-50 relative border border-zinc-900/20 justify-between py-2"
-          placeholder="De que se trata?"
-          value={meetupForm.description}
-        />
+        <div className="relative w-full justify-center">
+          <label htmlFor="title" className="font-semibold px-1">
+            Descripción
+          </label>
+          <textarea
+            required
+            name="description"
+            rows={5}
+            cols={10}
+            onChange={HandleForm}
+            className="resize-none shadow-sm mx-1 px-2 w-full rounded-md  flex items-center font-normal bg-zinc-50 relative border border-zinc-900/20 justify-between py-2"
+            placeholder="De que se trata?"
+            value={meetupForm.description}
+          />
+          <div
+            className={`${
+              emojiOn ? "h-full" : "h-0 "
+            } transition-all absolute bottom-6 max-h-48 overflow-y-scroll left-0 mx-1 z-50 px-3  w-full text-xl flex flex-wrap gap-2 bg-zinc-50`}
+          >
+            {emojis.map((item, index) => (
+              <span
+                className="hover:bg-zinc-900/10"
+                onClick={() => {
+                  setmeetupForm({
+                    ...meetupForm,
+                    description: meetupForm.description + item,
+                  });
+                  setemojiOn(false);
+                }}
+                key={index}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+          <span className="absolute flex item-center justify-between px-3 bottom-1 w-full font-medium text-xs">
+            <span onClick={() => setemojiOn(!emojiOn)}>
+              <MdEmojiEmotions className="text-zinc-900/70" size={20} />
+            </span>
+            {meetupForm.description.length || 0}/500
+          </span>
+        </div>
+
         <label htmlFor="categoria" className="font-semibold px-1">
           Categoría
         </label>

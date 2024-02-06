@@ -67,12 +67,12 @@ const registerUser = async (req, res, next) => {
 
     /**armamos el body del mail */
     // const bodyMail = `
-    //     Te registraste en CoolMeetups.com.
+    //    Te registraste en CoolMeetups.com.
     //     Pulsa el enlace para activar la cuenta: ${process.env.PUBLIC_HOST}${regCode}
     //     `;
     /**llamo a enviar mail */
 
-    //sendMail(mail, "Correo de verificación CoolMeetups.com", bodyMail); COMENTADO PARA MIENTRAS PROBAMOS NO ENVIE E-MAILS
+    //sendMail(mail, "Correo de verificación CoolMeetups.com", bodyMail);
 
     //hasear password
 
