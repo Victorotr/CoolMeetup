@@ -112,7 +112,7 @@ const ListMeetups = () => {
     setSelectedMarker(null);
   };
   return (
-    <div className="">
+    <div className="bg-zinc-100">
     
       <div className="w-full h-72  max-w-4xl mx-auto">  
       <h1 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
@@ -199,7 +199,7 @@ const ListMeetups = () => {
             </div> 
            
             <div className="flex flex-col">
-              <p className="text-left">Provincia</p>
+              <p className="text-left">Ciudad</p>
               <select
                 name="provincia"
                 className="bg-slate-50/10 shadow-md border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

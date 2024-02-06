@@ -69,8 +69,7 @@ const UserProfile = () => {
     }
     try {
       const res = await Instance.get(`/user/meetupsAttendees/${id}`);
-      if (res.status === 200 && res.data.data) {
-
+      if (res.status === 200 && res.data.data){
         setUserMeetupsAttendees(res.data.data);
       }
     } catch (error) {
@@ -85,13 +84,11 @@ const UserProfile = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-
-
   return (
     <main className="mx-auto w-full max-w-4xl ">
       <section className=" py-5 border rounded-lg shadow-md">
         <div className="flex  px-3 relative">
-          <div className="relative w-36 ">
+          <div className="relative w-32 max-w-32">
             <img
               className="w-24 h-24 min-w-24 min-h-24 sm:w-28 sm:h-28 sm:min-w-28 sm:min-h-28 rounded-full object-cover border-2 border-zinc-900/20 m-1"
               src={userData?.avatar ? userData?.avatar : nouser}
@@ -101,7 +98,7 @@ const UserProfile = () => {
               onClick={() => navigate("/edit/user/details")}
               className={`${
                 userData?.id != user?.id && "hidden"
-              } absolute top-14 right-[30px] sm:top-[70px] sm:right-[20px] border-2 border-zinc-900/40 bg-zinc-50 p-1 flex items-center justify-center rounded-full`}
+              } absolute top-14 right-[0px] sm:top-[70px] sm:right-[0px] border-2 border-zinc-900/40 bg-zinc-50 p-1 flex items-center justify-center rounded-full`}
             >
               <ImCamera className="text-zinc-900/80" />
             </div>
@@ -131,14 +128,14 @@ const UserProfile = () => {
         <h2 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
           Mis Meetups
         </h2>
-        <div className=" flex flex-wrap justify-start items-start gap-4 p-1 py-3">
+        <div className=" flex flex-wrap justify-start items-start gap-4 p-1 py-3 max-h-[500px] overflow-y-scroll">
           {userMeetups?.length ? (
             userMeetups?.map((item) => {
               return <MeetupCardMin key={item.id_meetup} meetup={item} />;
             })
           ) : (
-            <div className="my-10 px-5 text-lg font-Lora text-center font-medium">
-              No se han encontrado meetups! <br /> Crea tu primer meetup!
+            <div className="my-10 px-3 text-lg font-Lora text-center font-medium">
+           Todavía no has creado ningun Meetup
             </div>
           )}
         </div>
@@ -146,14 +143,14 @@ const UserProfile = () => {
             <h2 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
               Meetups a los que estoy inscrito
             </h2>
-            <div className=" flex flex-wrap justify-start items-start gap-4 p-1 py-3 ">
+            <div className=" flex flex-wrap justify-start items-start gap-4 p-1 py-3 max-h-[500px] overflow-y-scroll">
             {userMeetupsAttendees?.length ? (
               userMeetupsAttendees?.map((item) => {
                 return <MeetupCardMin key={item.id_meetup} meetup={item} />;
               })
             ) : (
-              <div className="my-10 px-5 text-lg font-Lora text-center font-medium">
-                No estás apuntado a ningún Meetup! <br /> Apúntate a alguno!
+              <div className="my-10 px-3 text-lg font-Lora text-center font-medium">
+                 Todavia no te has apuntado a ningun Meetup
               </div>
             )}
           </div>
