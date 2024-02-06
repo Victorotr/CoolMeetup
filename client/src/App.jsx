@@ -15,6 +15,9 @@ import UserProfile from "./pages/UserProfile";
 import EditUserProfile from "./pages/EditUserProfile";
 import Loading from "./components/Loading";
 import MeetupDetails from "./pages/MeetupDetails";
+import RecoverPwd from "./pages/RecoverPwd";
+import ResetPwd from "./pages/RecoverPwd";
+
 function App() {
   const { myData, setMyData, setmenuOn } = Handler();
 
@@ -45,8 +48,8 @@ function App() {
         <Route path="/user/details/:id" element={<UserProfile />} />
         <Route path="/edit/user/details" element={<EditUserProfile />} />
         <Route path="/user/recovercode/" element={<MeetupDetails />} />
-        <Route path="/user/recoverpwd/" element={<RecoverCode />} />
-        <Route path="/user/resetpwd/" element={<ResetPwd />} />
+        <Route path="/recoverpwd/" element={<RecoverPwd />} />
+        <Route path="/resetpwd/" element={<ResetPwd />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </main>
