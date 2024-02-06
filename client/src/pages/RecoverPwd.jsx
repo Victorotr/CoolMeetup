@@ -15,18 +15,17 @@ const RecoverPwdinstance = axios.create({
 const RecoverPwd = () => {
   const navigate = useNavigate();
   const { settoast } = Handler();
-
-  const [formData, setformData] = useState({
-    email: "",
-  });
+  const [email, setEmail] = useState("");
 
   const handleRecoverPwd = async (e) => {
     e.preventDefault();
     try {
-      const res = await RecoverPwdinstance.post("/recoverpwd", formData);
-
+      const res = await RecoverPwdinstance.post("/recoverpwd", {
+        email: email,
+      });
+      console.log(res);
       if (res && res.status === 200) {
-        navigate("/resetpwd/");
+        navigate("/resetpwd");
       } else {
         settoast({
           on: true,
@@ -49,10 +48,6 @@ const RecoverPwd = () => {
         });
       }
     }
-  };
-
-  const handleForm = (e) => {
-    setformData({ ...formData, [e.target.email]: e.target.value });
   };
 
   return (
@@ -78,10 +73,10 @@ const RecoverPwd = () => {
                   type="text"
                   name="email"
                   id="email"
-                  onChange={handleForm}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5  "
                   placeholder="ejemplo@mail.com"
-                  required={true}
                 />
               </div>
               <button

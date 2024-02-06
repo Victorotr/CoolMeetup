@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 // Llamada a la API para envío de recovercode al email
 
 const ResetPwd = () => {
-  const RecoverPwdstance = axios.create({
+  const ResetPwdIstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     withCredentials: true,
   });
@@ -21,8 +21,9 @@ const ResetPwd = () => {
     const formData = new FormData(e.target);
     const form_values = Object.fromEntries(formData);
     try {
-      const res = await RecoverPwdstance.post("/recoverpwd", {
-        mail: form_values.email,
+      const res = await ResetPwdIstance.post("/recoverpwd", {
+        recoverCode: form_values.recoverCode,
+        newPassword: newPassword,
       });
       console.log(res);
       settoast({ on: true, type: "success", text: res.data.message });
@@ -69,7 +70,7 @@ const ResetPwd = () => {
                   Introduce tu nueva contraseña
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   name="recover_code"
                   id="recover_code"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5  "
@@ -85,7 +86,7 @@ const ResetPwd = () => {
                   Repite la nueva contraseña
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   name="recover_code"
                   id="recover_code"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5  "

@@ -65,8 +65,9 @@ router.get('/user/avatar/:id', getImg);
 
 router.get('/meetup/image/:id', getMeetupImg);
 
-router.post('/recoverpwd/', recoverPassword);
-router.post('/resetpwd/', resetPassword);
+router.post('/recoverpwd', recoverPassword);
+
+router.post('/resetpwd', resetPassword);
 
 // Rutas de cookies
 router.get('/visit', OnRefreshCookies);

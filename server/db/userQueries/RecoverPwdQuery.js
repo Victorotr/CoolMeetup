@@ -10,7 +10,7 @@ import sendMail from '../../services/sendMail.js';
 
 // Query ↓
 
-export const recoverPasswordQuery = async (email) => {
+export const recoverPwdQuery = async (email) => {
   let connection;
   try {
     connection = await getConnection();
@@ -20,7 +20,7 @@ export const recoverPasswordQuery = async (email) => {
       `
           SELECT id_user
           FROM users
-          WHERE email = ?
+          WHERE user_email = ?
           `,
       [email]
     );
@@ -58,7 +58,7 @@ export const recoverPasswordQuery = async (email) => {
     await connection.query(
       `
           UPDATE users
-          SET recoverCode = ?, lastAuthUpdate = ?
+          SET recoverCode = ?, updated_at = ?
           WHERE user_email = ?
         `,
       [recoverCode, new Date(), email]

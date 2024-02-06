@@ -4,7 +4,7 @@ import { generateError } from '../../services/generateError.js';
 
 // Query require ↓
 
-import { resetPasswordQuery } from '../../db/userQueries/resetPasswordQuery.js';
+import { resetPasswordQuery } from '../../db/userQueries/resetPwdQuery.js';
 
 // Joi require ↓
 
@@ -16,6 +16,8 @@ export const resetPassword = async (req, res, next) => {
   try {
     const { recoverCode, newPassword } = req.body;
 
+    console.log(recoverCode, newPassword);
+
     // Joi validation
     const schema = resetPasswordJoi;
     const validation = schema.validate(req.body);
@@ -23,7 +25,7 @@ export const resetPassword = async (req, res, next) => {
     if (validation.error) {
       throw generateError(validation.error.message, 401);
     }
-
+    console.log(recoverCode);
     //Query: swithPassword
     await resetPasswordQuery(recoverCode, newPassword);
 

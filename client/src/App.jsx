@@ -16,7 +16,7 @@ import EditUserProfile from "./pages/EditUserProfile";
 import Loading from "./components/Loading";
 import MeetupDetails from "./pages/MeetupDetails";
 import RecoverPwd from "./pages/RecoverPwd";
-import ResetPwd from "./pages/RecoverPwd";
+import ResetPwd from "./pages/ResetPwd";
 
 function App() {
   const { myData, setMyData, setmenuOn } = Handler();

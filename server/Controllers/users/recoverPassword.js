@@ -4,7 +4,7 @@ import { generateError } from '../../services/generateError.js';
 
 // Querie require ↓
 
-import { recoverPasswordQuery } from '../../db/userQueries/recoverPasswordQuery.js';
+import { recoverPwdQuery } from '../../db/userQueries/RecoverPwdQuery.js';
 
 // Joi require ↓
 
@@ -15,6 +15,7 @@ import { recoverPasswordJoi } from '../../jois/userSchemas.cjs';
 export const recoverPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
+    console.log(email);
 
     // Joi validation
     const schema = recoverPasswordJoi;
@@ -25,8 +26,8 @@ export const recoverPassword = async (req, res, next) => {
     }
 
     // Query: create recoverCode
-    await recoverPasswordQuery(email);
-
+    const recoverPass = await recoverPwdQuery(email);
+    console.log('hola');
     res.status(200).send({
       status: 'ok',
       message: 'Se ha solicitado su cambio de contraseña',
