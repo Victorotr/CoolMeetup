@@ -140,7 +140,7 @@ const SignIn = () => {
                   </div>
                 </div>
                 <a
-                  href="/password/reset"
+                  href="/recoverpwd"
                   className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Has olvidado tu contraseña?

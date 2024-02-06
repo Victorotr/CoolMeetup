@@ -1,11 +1,11 @@
 // Npm requires ↓
 
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
 // Functions requires ↓
 
-import { generateError } from '../../services/generateError';
-import { getConnection } from '../ConnectionDB';
+import { generateError } from '../../services/generateError.js';
+import { getConnection } from '../ConnectionDB.js';
 
 // Query ↓
 
@@ -42,7 +42,7 @@ export const resetPasswordQuery = async (recoverCode, newPassword) => {
     await connection.query(
       `
           UPDATE users
-          SET password = ?, lastAuthUpdate = ?, recoverCode = NULL
+          SET user_password = ?, lastAuthUpdate = ?, recoverCode = NULL
           WHERE id = ?
         `,
       [newPasswordHash, new Date(), user[0].id]

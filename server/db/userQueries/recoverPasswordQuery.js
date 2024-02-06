@@ -1,12 +1,12 @@
 // Npm require↓
 
-const { v4: uuidv4 } = require('uuid');
+import { v4 as uuidv4 } from 'uuid';
 
 // Functions requires ↓
 
-import { generateError } from '../../services/generateError';
-import { getConnection } from '../ConnectionDB';
-import { sendMail } from '../../services/sendMail';
+import { generateError } from '../../services/generateError.js';
+import { getConnection } from '../ConnectionDB.js';
+import sendMail from '../../services/sendMail.js';
 
 // Query ↓
 
@@ -18,7 +18,7 @@ export const recoverPasswordQuery = async (email) => {
     // Check email in the database
     const [currentMail] = await connection.query(
       `
-          SELECT id
+          SELECT id_user
           FROM users
           WHERE email = ?
           `,
@@ -59,7 +59,7 @@ export const recoverPasswordQuery = async (email) => {
       `
           UPDATE users
           SET recoverCode = ?, lastAuthUpdate = ?
-          WHERE email = ?
+          WHERE user_email = ?
         `,
       [recoverCode, new Date(), email]
     );

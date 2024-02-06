@@ -8,7 +8,7 @@ import { resetPasswordQuery } from '../../db/userQueries/resetPasswordQuery.js';
 
 // Joi require ↓
 
-import { resetPasswordJoi } from '../../jois/userSchemas.js';
+import { resetPasswordJoi } from '../../jois/userSchemas.cjs';
 
 // Controller ↓
 

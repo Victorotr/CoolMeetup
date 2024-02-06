@@ -8,7 +8,7 @@ import { recoverPasswordQuery } from '../../db/userQueries/recoverPasswordQuery.
 
 // Joi require ↓
 
-const { recoverPasswordJoi } = require('../../jois/userSchemas.js');
+import { recoverPasswordJoi } from '../../jois/userSchemas.cjs';
 
 // Controller ↓
 
