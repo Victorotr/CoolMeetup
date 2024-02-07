@@ -7,7 +7,6 @@ export const getAllMeetupsQuery = async (filters) => {
   const theme = filters.tematica;
   const province = filters.provincia;
   const order = filters.order === 'Fecha' ? 'meetup_datetime ASC' : filters.order === 'Asistentes' ? 'assistants DESC' : 'meetup_datetime ASC'
-  console.log('order', order)
   let themeFilter = "";
   let provinceFilter = "";
   

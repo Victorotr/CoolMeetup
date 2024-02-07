@@ -56,6 +56,7 @@ router.get('/islogged', isLogged);
 router.get('/meetup/:id', getSingleMeetupDetails);
 
 router.post('/signin', SignIn);
+
 router.get('/logout', LogOut);
 
 router.post('/update/user', isUser, Upload, savePhoto, UpdateUserDetails);
@@ -63,13 +64,14 @@ router.post('/update/user', isUser, Upload, savePhoto, UpdateUserDetails);
 router.get('/user/details/:id', getUserDetails);
 
 
+router.get('/user/meetups/:id',isUser, getUserMeetups);
 
-router.get('/user/meetups/:id', getUserMeetups);
 router.get('/user/meetupsAttendees/:id',getUserMeetupsAttendees);
 
 // router.post('/singUp/:meetupId', singUpForMeetup);
 
 router.post('/create/meetup', isUser, Upload, saveMeetupPhoto, postMeetup);
+
 router.get('/signUp/:meetupId',isUser, signUpMeetup);
 
 router.post('/cancel/meetup',isUser,cancelMeetup)
@@ -85,6 +87,7 @@ router.get('/user/:id', getUserInfo)
 router.patch("/user", modifyUserInfo);
 */
 router.get('/getImage/:id/:fileType', getImg);
+
 router.get('/user/avatar/:id', getImg);
 
 router.get('/meetup/image/:id', getMeetupImg);

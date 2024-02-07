@@ -9,8 +9,8 @@ export const getUserMeetups = async (req, res, next) => {
     // Query: get all meetups from a user ID
     const {id} = req.params;
     const meetups = await getUserMeetupsQuery(id);
-    console.log('meetups',meetups)
-    // Res.send
+    
+    
     res.status(200).send({
       status: 'ok',
       data: meetups,

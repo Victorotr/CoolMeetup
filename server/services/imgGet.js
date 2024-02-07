@@ -20,8 +20,12 @@ export const getImg = async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-        const img = fs.readFileSync('./Controllers/users/avatars/no_picture.png');
+        try {
+             const img =fileType === 'Avatar' ? fs.readFileSync('./Controllers/users/avatars/no_picture.png') : fs.readFileSync('./Controllers/users/meetup/no_meetup_image.png');
         res.end(img)
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 }

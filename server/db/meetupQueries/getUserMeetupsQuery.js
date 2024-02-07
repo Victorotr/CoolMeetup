@@ -14,7 +14,7 @@ import { getConnection } from '../ConnectionDB.js';
 //       // WHERE meetups.id_main_user = ?`
 export const getUserMeetupsQuery = async (id) => {
   let connection;
- 
+  console.log('getusersMeetupsQuery')
   try {
     connection = await getConnection();
     const [userMeetups] = await connection.query(
@@ -30,7 +30,7 @@ export const getUserMeetupsQuery = async (id) => {
 
       [id,id]
     );
-    console.log('query results',userMeetups)
+    
     const parsedArray = userMeetups.map((item) => { return { ...item, main_user_details: JSON.parse(item.main_user_details) } });
     return parsedArray || null;
   } catch (error) {
