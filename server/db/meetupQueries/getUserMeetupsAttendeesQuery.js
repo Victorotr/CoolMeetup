@@ -9,14 +9,19 @@ export const getUserMeetupsAttendeesQuery = async (id) => {
       `
       SELECT 
       meetups.*,
-      JSON_OBJECT('user_id', users.id_user, 'username', users.user_name, 'avatar', users.picture_url) 
-      as main_user_details,
-      COALESCE(COUNT(users_meetups.id_user), 0) as assistants 
-      FROM meetups 
-      LEFT JOIN users ON meetups.id_main_user = users.id_user
-      LEFT JOIN users_meetups ON users_meetups.id_meetup = meetups.id_meetup
-      WHERE users_meetups.id_user = ? 
-      GROUP BY meetups.id_meetup;`,
+      JSON_OBJECT('user_id', users.id_user, 'username', users.user_name, 'avatar', users.picture_url) as main_user_details,
+      COALESCE(assistant_counts.assistants_count, 0) as assistants 
+  FROM meetups 
+  LEFT JOIN users ON meetups.id_main_user = users.id_user
+  LEFT JOIN (
+      SELECT id_meetup, COUNT(id_user) as assistants_count
+      FROM users_meetups
+      GROUP BY id_meetup
+  ) as assistant_counts ON meetups.id_meetup = assistant_counts.id_meetup
+  LEFT JOIN users_meetups ON users_meetups.id_meetup = meetups.id_meetup
+  WHERE users_meetups.id_user = ? OR users_meetups.id_user IS NULL
+  GROUP BY meetups.id_meetup;
+  `,
 
       [id]
     );
