@@ -28,8 +28,6 @@ export const getSingleMeetupDetailsQuery = async (id) => {
       LEFT JOIN users u ON users_meetups.id_user = u.id_user
       WHERE meetups.id_meetup = ?
       GROUP BY meetups.id_meetup, users.id_user, users.user_name, users.picture_url;
-
-
     `,
       [id]
     );
