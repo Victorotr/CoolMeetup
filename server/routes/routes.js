@@ -63,11 +63,13 @@ router.post('/update/user', isUser, Upload, savePhoto, UpdateUserDetails);
 router.get('/user/details/:id', getUserDetails);
 
 
+router.get('/user/meetups/:id',isUser, getUserMeetups);
 
-router.get('/user/meetups/:id', getUserMeetups);
 router.get('/user/meetupsAttendees/:id',getUserMeetupsAttendees);
 
 router.post('/create/meetup', isUser, Upload, saveMeetupPhoto, postMeetup);
+
+router.get('/signUp/:meetupId',isUser, signUpMeetup);
 
 router.post('/cancel/meetup',isUser,cancelMeetup)
 // Rutas de Usuarios

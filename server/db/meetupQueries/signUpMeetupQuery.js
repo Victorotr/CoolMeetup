@@ -52,8 +52,6 @@ export const signUpMeetupQuery = async (meetupId, userId) => {
         
         console.log(deleteJoin)
         return  {action:'deleted',title:meetup[0].meetup_title}
-        
-        
       }
     } catch (error) {
       console.log(error)
