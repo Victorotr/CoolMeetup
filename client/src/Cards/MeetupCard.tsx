@@ -29,7 +29,7 @@ const MeetupCard: React.FC<MeetupCardProps> = ({ meetup }: MeetupCardProps): Rea
   return (
     <div
       onClick={handleDetailsClick}
-      className="flex relative max-w-md sm:max-w-xs w-full flex-col border border-zinc-900/10 rounded-md overflow-hidden justify-between shadow-lg hover:scale-105 transition-all "
+      className="flex relative max-w-md sm:max-w-[350px] sm:min-w-[350px] w-full flex-col border border-zinc-900/10 rounded-md overflow-hidden justify-between shadow-lg hover:scale-105 transition-all "
     >
       <span className={`${meetup?.cancelled ? 'flex' : isOutDated ? 'flex' : 'hidden'}  bg-zinc-600/20 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}>
         <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">MEETUP <br /> FINALIZADO O CANCELADO</p>
@@ -88,7 +88,7 @@ const MeetupCard: React.FC<MeetupCardProps> = ({ meetup }: MeetupCardProps): Rea
         <div className="flex justify-between items-center px-2 border-t  py-1">
           <span className="">
             {meetup.assistants === 0 ? (
-              <span className="border rounded-full px-3 py-1.5 text-sm text-zinc-800/90 shadow-md bg-green-500/70 font-medium">
+              <span className="border rounded-full px-3 py-1.5 text-xs text-zinc-800/90 shadow-md bg-green-500/70 font-medium">
                 Sé el primero en asistir!
               </span>
             ) : (
