@@ -69,7 +69,7 @@ const MeetupCard: React.FC<MeetupCardProps> = ({ meetup }: MeetupCardProps): Rea
               </span>
             </a>
             <a
-              href={`#`}
+              href={`/meetups/details/${meetup.id_meetup}`}
               className="inline-flex gap-2 sahdow-md float-right items-center px-3 py-1.5 text-sm font-medium text-center text-white bg-indigo-600 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300 "
             >
               Me apunto!
