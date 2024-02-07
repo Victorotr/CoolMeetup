@@ -33,7 +33,7 @@ const MeetupCardMin: React.FC<MeetupCardMinProps> = ({ meetup }: MeetupCardMinPr
   return (
     <div
       onClick={handleDetailsClick}
-      className="flex relative max-w-md sm:max-w-sm w-full flex-col border border-zinc-900/10 rounded-md overflow-hidden justify-between shadow-md hover:scale-105 transition-all "
+      className="flex relative max-w-md sm:max-w-xs w-full flex-col border border-zinc-900/10 rounded-md overflow-hidden justify-between shadow-md hover:scale-105 transition-all "
     >
       <span className={`${meetup?.cancelled ? 'flex' : isOutDated ? 'flex' : 'hidden'}  bg-zinc-500/10 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}>
         <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">MEETUP <br /> FINALIZADO O CANCELADO</p>
@@ -44,7 +44,7 @@ const MeetupCardMin: React.FC<MeetupCardMinProps> = ({ meetup }: MeetupCardMinPr
       </span>
 
       <img
-        className={`${meetup.meetup_image ? 'object-cover' : 'object-contain opacity-70'} max-h-52 w-full  hover:scale-105 transition-all`}
+        className={`${meetup.meetup_image ? 'object-cover' : 'object-contain opacity-70'} shadow-inner rounded-t-md border border-blue-600/20  max-h-52 w-full  hover:scale-105 transition-all`}
         src={meetup.meetup_image || "/src/assets/no_meetup_image.png"}
         alt="meetup image"
       />
@@ -56,7 +56,7 @@ const MeetupCardMin: React.FC<MeetupCardMinProps> = ({ meetup }: MeetupCardMinPr
               {meetup.meetup_title}
             </h4>
 
-            <p className=" overflow-ellipsis relative max-h-10 font-normal text-gray-700 dark:text-gray-400">
+            <p className=" overflow-ellipsis relative max-h-10 font-normal text-gray-700 dark:text-gray-400 ">
               {meetup.meetup_description}
               <span className="absolute top-0 left-0 w-full h-full  bg-gradient-to-b from-transparent via-transparent to-white/70"></span>
             </p>

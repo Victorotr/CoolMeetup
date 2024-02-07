@@ -221,7 +221,7 @@ const Map = () => {
     });
   };
   return (
-    <section className="w-full max-w-xl mx-auto py-10 border rounded-lg sm:px-2">
+    <section className="w-full max-w-4xl mx-auto py-10 border rounded-lg sm:px-2">
       <h1 className="font-Lora text-xl font-semibold px-3 mx-auto">
         Crear Meetup
       </h1>
@@ -236,7 +236,7 @@ const Map = () => {
           type="text"
           name="title"
           onChange={HandleForm}
-          className="mx-1 px-2 w-full rounded-md shadow-sm flex items-center font-normal bg-zinc-50 relative border border-zinc-900/10 justify-between py-2"
+          className="mx-1 px-2 w-full rounded-md shadow-sm  flex items-center font-normal  relative border border-zinc-900/10 justify-between py-2"
           placeholder="Como se va a llamar el meetup?"
           value={meetupForm.title}
           required
@@ -251,14 +251,14 @@ const Map = () => {
             rows={5}
             cols={10}
             onChange={HandleForm}
-            className="resize-none shadow-sm mx-1 px-2 w-full rounded-md  flex items-center font-normal bg-zinc-50 relative border border-zinc-900/20 justify-between py-2"
+            className="resize-none shadow-sm mx-1 px-2 w-full rounded-md  flex items-center font-normal relative border border-zinc-900/20 justify-between py-2"
             placeholder="De que se trata?"
             value={meetupForm.description}
           />
           <div
             className={`${
               emojiOn ? "h-full" : "h-0 "
-            } transition-all absolute bottom-6 max-h-48 overflow-y-scroll left-0 mx-1 z-50 px-3  w-full text-xl flex flex-wrap gap-2 bg-zinc-50`}
+            } transition-all absolute bottom-6 max-h-48 overflow-y-scroll left-0 mx-1 z-50 px-3  w-full text-xl flex flex-wrap gap-2 bg-white`}
           >
             {emojis.map((item, index) => (
               <span
@@ -290,7 +290,7 @@ const Map = () => {
         <select
           onChange={HandleForm}
           name="category"
-          className="p-3 shadow-md bg-zinc-50 border-2 border-blue-500 font-semibold rounded-md"
+          className="p-3 shadow-md bg-zinc-50/20 border-2 border-blue-500 font-semibold rounded-md"
         >
           {categories.map((item, i) => {
             return <option key={i}>{item}</option>;
@@ -315,6 +315,7 @@ const Map = () => {
             className={`w-full  relative flex flex-col justify-center items-center `}
           >
             <div
+            className="border w-full"
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
               onDragOver={handleDrag}
@@ -323,7 +324,7 @@ const Map = () => {
               <img
                 className={`${
                   DragActive && "border-2 border-indigo-500"
-                } transition-all w-full h-72  object-cover  border-zinc-900/20 m-1`}
+                } ${!file ? 'object-contain':'object-cover'} transition-all w-full h-72   border-zinc-900/20 m-1`}
                 src={file ? URL.createObjectURL(file) : nopicture}
                 alt="User picture"
               />
@@ -347,7 +348,7 @@ const Map = () => {
               </label>
 
               <button
-                onClick={() => setfile(null)}
+                onClick={(e) =>{e.preventDefault();setfile(null)}}
                 className={`${
                   !file && "hidden"
                 } flex items-center justify-center gap-1 py-2 px-3  border border-zinc-50 bg-red-500 outline outline-1 hover:outline-2 outline-red-600 transition-all rounded-full font-semibold text-zinc-50`}
