@@ -113,7 +113,7 @@ const MeetupDetails = () => {
   return (
     <div className={`${isOutDated || meetup?.cancelled? 'opacity-70' : ''} w-full max-w-lg text-lg flex flex-col mx-auto py-10`}>
       <img
-        className="w-full h-60  object-cover"
+        className={`w-full h-60  ${meetup?.meetup_image? 'object-cover':'object-contain'}`}
         src={meetup?.meetup_image || nopicture}
         alt=""
       />

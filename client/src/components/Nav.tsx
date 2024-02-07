@@ -11,7 +11,7 @@ const Nav: FC = () => {
   const { user } = Handler();
 
   return (
-    <header className="max-w-4xl mx-auto h-14 flex items-center justify-between px-3">
+    <header className="max-w-6xl mx-auto h-14 flex items-center justify-between px-3">
       <div
         onClick={() => navigate("/")}
         className="font-semibold text-xl flex items-center gap-2 font-Lora cursor-pointer"
@@ -19,8 +19,8 @@ const Nav: FC = () => {
         <img className="w-10 h-10" src='/map.png' alt="mapa" />
         <p className="text-zinc-900/80 text-md">Cool Meetups</p>
       </div>
-      <div className="hidden md:flex ">
-        <ul className="w-full font-Lora text-md font-semibold flex text-zinc-900/80">
+      <div className="hidden md:flex  max-w-xs w-full ">
+        <ul className="w-full justify-between  gap-2 font-Lora text-md font-semibold flex text-zinc-900/80">
           <li
             onClick={() => navigate("/")}
             className="p-3 text-shadow-medium transition-all flex items-center justify-start gap-1 hover:scale-105 cursor-pointer"

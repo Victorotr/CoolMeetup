@@ -8,7 +8,7 @@ import { Meetup ,MeetupCardProps} from "../Interfaces/TypesInterfaces";
 const MeetupCard: React.FC<MeetupCardProps> = ({ meetup }: MeetupCardProps): ReactElement => {
   const navigate = useNavigate();
   const [isOutDated, setisOutDated] = useState(false);
-
+  console.log(meetup)
   useEffect(() => {
     const now = new Date();
     const meetupDate = new Date(meetup.meetup_datetime);
@@ -29,18 +29,18 @@ const MeetupCard: React.FC<MeetupCardProps> = ({ meetup }: MeetupCardProps): Rea
   return (
     <div
       onClick={handleDetailsClick}
-      className="flex relative max-w-md w-full flex-col border border-zinc-900/10 rounded-md overflow-hidden justify-between shadow-md hover:scale-105 transition-all "
+      className="flex relative max-w-md sm:max-w-xs w-full flex-col border border-zinc-900/10 rounded-md overflow-hidden justify-between shadow-lg hover:scale-105 transition-all "
     >
       <span className={`${meetup?.cancelled ? 'flex' : isOutDated ? 'flex' : 'hidden'}  bg-zinc-600/20 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}>
         <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">MEETUP <br /> FINALIZADO O CANCELADO</p>
       </span>
 
-      <span className="absolute top-2 right-2 border shadow-md font-semibold text-xs bg-zinc-50 rounded-full px-2 py-0.5">
+      <span className="absolute top-2 right-2 border shadow-md font-semibold text-xs  bg-zinc-50 rounded-full px-3 py-1.5">
         {meetup.meetup_theme}
       </span>
 
       <img
-        className={`${meetup.meetup_image ? 'object-cover' : 'object-contain opacity-70'} max-h-52 w-full  hover:scale-105 transition-all`}
+        className={`${meetup.meetup_image ? 'object-cover' : 'object-contain opacity-70'} shadow-inner rounded-t-md border border-blue-600/20 max-h-52 w-full  hover:scale-105 transition-all`}
         src={meetup.meetup_image || "/src/assets/no_meetup_image.png"}
         alt="meetup image"
       />

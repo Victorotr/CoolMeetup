@@ -16,7 +16,7 @@ const UserProfile = () => {
   const [userMeetups, setUserMeetups] = useState(null);
   const [userMeetupsAttendees, setUserMeetupsAttendees] = useState(null);
 
-  const getUser = async () => {
+  useEffect(() => {
     if (!user && !accessLoading) {
       navigate("/signin");
       settoast({
@@ -25,6 +25,10 @@ const UserProfile = () => {
         text: "Accede para ver la info de usuarios",
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user,accessLoading]);
+  const getUser = async () => {
+   
     try {
       const res = await Instance.get(`/user/details/${id}`);
       if (res.status === 200 && res.data.user) {
@@ -85,8 +89,8 @@ const UserProfile = () => {
   }, [id]);
 
   return (
-    <main className="mx-auto w-full max-w-4xl ">
-      <section className=" py-5 border rounded-lg shadow-md">
+    <main className="mx-auto w-full max-w-4xl  flex flex-col">
+      <section className=" py-5 border rounded-lg shadow-md ">
         <div className="flex  px-3 relative">
           <div className="relative w-32 max-w-32">
             <img
@@ -123,12 +127,12 @@ const UserProfile = () => {
           </div>
         </div>
       </section>
-      <section className="w-full ">
+      <section className="w-full  ">
       <div className="w-full h-72  max-w-5xl mx-auto">  
-        <h2 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
+        <h2 className="text-2xl text-shadow font-semibold my-5 mx-3 font-Lora ">
           Mis Meetups
         </h2>
-        <div className=" flex flex-wrap justify-start items-start gap-4 p-1 py-3 max-h-[500px] overflow-y-scroll">
+        <div className="no-scrollbar shadow-inner  sm:px-3 rounded-lg border border-zinc-900/5  flex flex-wrap justify-start items-start gap-4 p-1 py-3 max-h-[500px] overflow-y-scroll">
           {userMeetups?.length ? (
             userMeetups?.map((item) => {
               return <MeetupCardMin key={item.id_meetup} meetup={item} />;
@@ -139,11 +143,11 @@ const UserProfile = () => {
             </div>
           )}
         </div>
-          <div className="w-full h-72   mx-auto ">  
-            <h2 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
+          <div className="w-full mx-auto">  
+            <h2 className="text-2xl text-shadow font-semibold my-5 mx-3 font-Lora ">
               Meetups a los que estoy inscrito
             </h2>
-            <div className=" flex flex-wrap justify-start items-start gap-4 p-1 py-3 max-h-[500px] overflow-y-scroll">
+            <div className="no-scrollbar sm:px-3 shadow-inner rounded-lg border border-blue-600/20 flex flex-wrap justify-start items-start gap-4 p-1 py-3 max-h-[500px] overflow-y-scroll">
             {userMeetupsAttendees?.length ? (
               userMeetupsAttendees?.map((item) => {
                 return <MeetupCardMin key={item.id_meetup} meetup={item} />;
