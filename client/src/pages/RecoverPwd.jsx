@@ -23,8 +23,13 @@ const RecoverPwd = () => {
       const res = await RecoverPwdinstance.post("/recoverpwd", {
         email: email,
       });
-      console.log(res);
+
       if (res && res.status === 200) {
+        settoast({
+          on: true,
+          type: "success",
+          text: "Enviado código de recuperación a su correo",
+        });
         navigate("/resetpwd");
       } else {
         settoast({

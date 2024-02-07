@@ -16,8 +16,6 @@ export const resetPassword = async (req, res, next) => {
   try {
     const { recoverCode, newPassword } = req.body;
 
-    console.log(recoverCode, newPassword);
-
     // Joi validation
     const schema = resetPasswordJoi;
     const validation = schema.validate(req.body);

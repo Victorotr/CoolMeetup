@@ -15,7 +15,6 @@ import { recoverPasswordJoi } from '../../jois/userSchemas.cjs';
 export const recoverPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
-    console.log(email);
 
     // Joi validation
     const schema = recoverPasswordJoi;
@@ -26,8 +25,8 @@ export const recoverPassword = async (req, res, next) => {
     }
 
     // Query: create recoverCode
-    const recoverPass = await recoverPwdQuery(email);
-    console.log('hola');
+    await recoverPwdQuery(email);
+
     res.status(200).send({
       status: 'ok',
       message: 'Se ha solicitado su cambio de contraseña',

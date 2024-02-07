@@ -3,6 +3,7 @@
 import axios from "axios";
 import { Handler } from "../context/Context";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
 // Llamada a la API para envío de recovercode al email
 
@@ -14,22 +15,30 @@ const ResetPwd = () => {
 
   const { settoast } = Handler();
   const navigate = useNavigate();
+  const [recoverCode, setRecoverCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newPassword0, setNewPassword0] = useState("");
 
   const submitForm = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData(e.target);
-    const form_values = Object.fromEntries(formData);
     try {
-      const res = await ResetPwdIstance.post("/recoverpwd", {
-        recoverCode: form_values.recoverCode,
+      const res = await ResetPwdIstance.post("/resetpwd", {
+        recoverCode: recoverCode,
         newPassword: newPassword,
       });
-      console.log(res);
-      settoast({ on: true, type: "success", text: res.data.message });
-      navigate("/signin");
+
+      if (res && newPassword === newPassword0) {
+        settoast({ on: true, type: "success", text: res.data.message });
+        navigate("/signin");
+      } else {
+        settoast({
+          on: true,
+          type: "warning",
+          text: "Las contraseñas no coinciden",
+        });
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       settoast({
         on: true,
         type: "success",
@@ -48,7 +57,7 @@ const ResetPwd = () => {
             <form className="space-y-4 md:space-y-6" onSubmit={submitForm}>
               <div>
                 <label
-                  htmlFor="nombre_usuario"
+                  htmlFor="recover_code"
                   className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Introduce el código de recuperación
@@ -57,6 +66,8 @@ const ResetPwd = () => {
                   type="text"
                   name="recover_code"
                   id="recover_code"
+                  value={recoverCode}
+                  onChange={(e) => setRecoverCode(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5  "
                   placeholder="Código"
                   required="required"
@@ -64,15 +75,17 @@ const ResetPwd = () => {
               </div>
               <div>
                 <label
-                  htmlFor="nombre_usuario"
+                  htmlFor="new_password0"
                   className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Introduce tu nueva contraseña
                 </label>
                 <input
                   type="password"
-                  name="recover_code"
-                  id="recover_code"
+                  name="new_password0"
+                  id="new_password0"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5  "
                   placeholder="Nueva contraseña"
                   required="required"
@@ -80,15 +93,17 @@ const ResetPwd = () => {
               </div>
               <div>
                 <label
-                  htmlFor="nombre_usuario"
+                  htmlFor="new_password1"
                   className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Repite la nueva contraseña
                 </label>
                 <input
                   type="password"
-                  name="recover_code"
-                  id="recover_code"
+                  name="new_password1"
+                  id="new_password1"
+                  value={newPassword0}
+                  onChange={(e) => setNewPassword0(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  focus:border-primary-600 block w-full p-2.5  "
                   placeholder="Repetir contraseña"
                   required="required"

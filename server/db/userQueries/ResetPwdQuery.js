@@ -42,10 +42,10 @@ export const resetPasswordQuery = async (recoverCode, newPassword) => {
     await connection.query(
       `
           UPDATE users
-          SET user_password = ?, lastAuthUpdate = ?, recoverCode = NULL
-          WHERE id = ?
+          SET user_password = ?, updated_at = ?, recoverCode = NULL
+          WHERE id_user = ?
         `,
-      [newPasswordHash, new Date(), user[0].id]
+      [newPasswordHash, new Date(), user[0].id_user]
     );
   } finally {
     if (connection) connection.release();
