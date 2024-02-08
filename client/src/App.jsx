@@ -16,17 +16,21 @@ import EditUserProfile from "./pages/EditUserProfile";
 import Loading from "./components/Loading";
 import MeetupDetails from "./pages/MeetupDetails";
 function App() {
-  const { myData, setMyData,setmenuOn } = Handler();
+  const { myData, setMyData, setmenuOn } = Handler();
 
   useEffect(() => {
     setMyData("hello");
-   
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myData]);
   return (
-    <main 
-    onClick={(e)=>{e.stopPropagation();setmenuOn(false)}}
-    className={` min-h-screen  relative font-Inter pb-20`}>
+    <main
+      onClick={(e) => {
+        e.stopPropagation();
+        setmenuOn(false);
+      }}
+      className={` min-h-screen  relative font-Inter pb-20`}
+    >
       <Nav />
       <Loading />
       <ToastWindow />
