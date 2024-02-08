@@ -1,7 +1,7 @@
 // Npm require ↓
 
-const Joi = require("joi");
-const { joiPasswordExtendCore } = require("joi-password");
+const Joi = require('joi');
+const { joiPasswordExtendCore } = require('joi-password');
 const joiPassword = Joi.extend(joiPasswordExtendCore);
 
 // Schemas ↓

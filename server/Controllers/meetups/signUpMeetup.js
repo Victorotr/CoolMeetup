@@ -6,22 +6,34 @@ import { signUpMeetupQuery } from '../../db/meetupQueries/signUpMeetupQuery.js';
 
 export const signUpMeetup = async (req, res, next) => {
   try {
-    const meetupId = req.params.commentId;
-    const userId = req.isUser.id; // ¿? Puede que haya que modificar la manera de traer el id**
+    const meetupId = req.params.meetupId;
+    const userId = req.isUser || null;
+    if (!meetupId || !userId) {
+      return res.status(403).send({ message: 'Problema de autenticación o al encontrar el meetup' })
+    }
 
     // Query: like comment
     const signUpInfo = await signUpMeetupQuery(meetupId, userId);
 
-    res.status(201).send({
-      status: 'ok',
-      message: `Usuario con id ${userId} registrado en el meetup con id ${meetupId}`,
-      data: {
-        user: userId,
-        meetup: meetupId,
-        data: signUpInfo,
-      },
-    });
+    if (signUpInfo.action === 'added') {
+      res.status(200).send({
+        status: 'ok',
+        message: `Te has apuntado correctamente a ${signUpInfo.title}`,
+        data: {
+          user: userId,
+          meetup: meetupId,
+          data: signUpInfo,
+        },
+      });
+    } else {
+      res.status(200).send({
+        status: 'ok',
+        message: `Te has desapuntado correctamente a ${signUpInfo.title}`,
+      });
+    }
+
   } catch (error) {
+    console.log(error)
     next(error);
   }
 };

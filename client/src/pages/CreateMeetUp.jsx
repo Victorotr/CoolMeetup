@@ -8,20 +8,14 @@ import {
 import { IoMdClose } from "react-icons/io";
 import { ImCamera } from "react-icons/im";
 import nopicture from "../assets/no_meetup_image.png";
-import axios from "axios";
-import { MdSearch, MdDelete } from "react-icons/md";
+import { MdSearch, MdDelete, MdEmojiEmotions } from "react-icons/md";
 import { Handler } from "../context/Context";
 import { useNavigate } from "react-router-dom";
 import { categories } from "../../categories";
 import DatePickerComponent from "../components/DatePicker";
 import CustomTimePicker from "../components/CustomTimePicker";
-const createMeetupInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true,
-  headers: {
-    "Content-Type": "multipart/form-data",
-  },
-});
+import { formDataInstance } from "../axios/Instance";
+
 const Map = () => {
   const { user, settoast, accessLoading } = Handler();
   const navigate = useNavigate();
@@ -36,6 +30,7 @@ const Map = () => {
   const [DragActive, setDragActive] = useState(false);
   const [meetupTime, setMeetupTime] = useState(null);
   const [meetupDate, setmeetupDate] = useState(null);
+  const [emojiOn, setemojiOn] = useState(false);
   const [meetupForm, setmeetupForm] = useState({
     user_id: null,
     title: "",
@@ -45,24 +40,28 @@ const Map = () => {
     address: null,
   });
   useEffect(() => {
-    if (accessLoading) {
-      return;
-    }
-    if (!user && !user.id) {
-    
+   
+    if (!user && !accessLoading ) {
       navigate("/signin");
       settoast({
         on: true,
         type: "warning",
         text: "Accede para poder crear meetups",
       });
-      return; 
-    } 
-  
-    
+      return;
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, accessLoading]);
-
+  let emojis =
+    `😀😄😁😆😅😂🤣🥲🥹😊😇🙂🙃😉😌😍🥰😘😗😙😚
+     😋😛😝😜🤪🤨🧐🤓😎🥸🤩🥳😏😒😞😔😟😕🙁☹️😣
+     😖😫😩🥺😢😭😮‍💨😤😠😡🤬🤯😳🥵🥶😱😨😰😥😓🫣
+     🤗🫡🤔🫢🤭🤫🤥😶😶‍🌫️😐😑😬🫨🫠🙄😯😦😧😮😲🥱
+     😴🤤😪😵😵‍💫🫥🤐🥴🤢🤮🤧😷🤒🤕🤑🤠😈👿👹👺🤡
+     💩👻💀☠️👽👾🤖🎃😺😸😹😻😼😽🙀😿😾`;
+     
+  emojis = [...emojis];
   const onMapLoad = (mapInstance) => {
     setMap(mapInstance);
   };
@@ -128,9 +127,9 @@ const Map = () => {
         type === "peg"
       ) {
         setfile(e.dataTransfer.files[0]);
-        // setfileErr("");
+        
       } else {
-        // setfileErr("Not allowed file extention");
+       settoast({on:true,type:'warning',text:'Extensión no permitida'})
       }
     }
   };
@@ -156,8 +155,8 @@ const Map = () => {
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
-    
-    setmeetupForm({...meetupForm,user_id:user.id})
+
+    setmeetupForm({ ...meetupForm, user_id: user.id });
     try {
       const now = new Date();
       now.setHours(now.getHours() + 1);
@@ -170,7 +169,7 @@ const Map = () => {
         });
         return;
       }
-      console.log(meetupForm)
+
       let formData = new FormData();
       if (file) {
         formData.append("avatar", file);
@@ -192,20 +191,18 @@ const Map = () => {
         }
       }
 
-      const res = await createMeetupInstance.post("/create/meetup", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      if(res.status === 200 && res.data){
+      const res = await formDataInstance.post("/create/meetup", formData);
+
+      if (res.status === 200 && res.data) {
         settoast({
-        on:true,type:'success',text:res.data.message
-        })
-        navigate('/meetup/details/'+ res.data.meetupId)
+          on: true,
+          type: "success",
+          text: res.data.message,
+        });
+        navigate("/meetups/details/" + res.data.meetupId);
       }
-      console.log(res);
     } catch (error) {
-    
+      console.log(error);
       if (error && error.response.data.message) {
         settoast({
           on: true,
@@ -224,7 +221,7 @@ const Map = () => {
     });
   };
   return (
-    <section className="w-full max-w-xl mx-auto py-10 ">
+    <section className="w-full max-w-4xl mx-auto py-10 border rounded-lg sm:px-2">
       <h1 className="font-Lora text-xl font-semibold px-3 mx-auto">
         Crear Meetup
       </h1>
@@ -239,31 +236,61 @@ const Map = () => {
           type="text"
           name="title"
           onChange={HandleForm}
-          className="mx-1 px-2 w-full rounded-md shadow-sm flex items-center font-normal bg-zinc-50 relative border border-zinc-900/10 justify-between py-2"
+          className="mx-1 px-2 w-full rounded-md shadow-sm  flex items-center font-normal  relative border border-zinc-900/10 justify-between py-2"
           placeholder="Como se va a llamar el meetup?"
           value={meetupForm.title}
           required
         />
-        <label htmlFor="title" className="font-semibold px-1">
-          Descripción
-        </label>
-        <textarea
-          required
-          name="description"
-          rows={5}
-          cols={10}
-          onChange={HandleForm}
-          className="resize-none shadow-sm mx-1 px-2 w-full rounded-md  flex items-center font-normal bg-zinc-50 relative border border-zinc-900/20 justify-between py-2"
-          placeholder="De que se trata?"
-          value={meetupForm.description}
-        />
+        <div className="relative w-full justify-center">
+          <label htmlFor="title" className="font-semibold px-1">
+            Descripción
+          </label>
+          <textarea
+            required
+            name="description"
+            rows={5}
+            cols={10}
+            onChange={HandleForm}
+            className="resize-none shadow-sm mx-1 px-2 w-full rounded-md  flex items-center font-normal relative border border-zinc-900/20 justify-between py-2"
+            placeholder="De que se trata?"
+            value={meetupForm.description}
+          />
+          <div
+            className={`${
+              emojiOn ? "h-full" : "h-0 "
+            } transition-all absolute bottom-6 max-h-48 overflow-y-scroll left-0 mx-1 z-50 px-3  w-full text-xl flex flex-wrap gap-2 bg-white`}
+          >
+            {emojis.map((item, index) => (
+              <span
+                className="hover:bg-zinc-900/10"
+                onClick={() => {
+                  setmeetupForm({
+                    ...meetupForm,
+                    description: meetupForm.description + item,
+                  });
+                  setemojiOn(false);
+                }}
+                key={index}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+          <span className="absolute flex item-center justify-between px-3 bottom-1 w-full font-medium text-xs">
+            <span onClick={() => setemojiOn(!emojiOn)}>
+              <MdEmojiEmotions className="text-zinc-900/70" size={20} />
+            </span>
+            {meetupForm.description.length || 0}/500
+          </span>
+        </div>
+
         <label htmlFor="categoria" className="font-semibold px-1">
           Categoría
         </label>
         <select
           onChange={HandleForm}
           name="category"
-          className="p-3 shadow-md bg-zinc-50 border-2 border-blue-500 font-semibold rounded-md"
+          className="p-3 shadow-md bg-zinc-50/20 border-2 border-blue-500 font-semibold rounded-md"
         >
           {categories.map((item, i) => {
             return <option key={i}>{item}</option>;
@@ -288,6 +315,7 @@ const Map = () => {
             className={`w-full  relative flex flex-col justify-center items-center `}
           >
             <div
+            className="border w-full"
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
               onDragOver={handleDrag}
@@ -296,7 +324,7 @@ const Map = () => {
               <img
                 className={`${
                   DragActive && "border-2 border-indigo-500"
-                } transition-all w-full h-72  object-cover  border-zinc-900/20 m-1`}
+                } ${!file ? 'object-contain':'object-cover'} transition-all w-full h-72   border-zinc-900/20 m-1`}
                 src={file ? URL.createObjectURL(file) : nopicture}
                 alt="User picture"
               />
@@ -320,7 +348,7 @@ const Map = () => {
               </label>
 
               <button
-                onClick={() => setfile(null)}
+                onClick={(e) =>{e.preventDefault();setfile(null)}}
                 className={`${
                   !file && "hidden"
                 } flex items-center justify-center gap-1 py-2 px-3  border border-zinc-50 bg-red-500 outline outline-1 hover:outline-2 outline-red-600 transition-all rounded-full font-semibold text-zinc-50`}

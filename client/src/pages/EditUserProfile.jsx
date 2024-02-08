@@ -3,9 +3,9 @@ import { Handler } from "../context/Context";
 import { CiSaveDown2 } from "react-icons/ci";
 import nouser from "../assets/no_picture.png";
 import { ImCamera } from "react-icons/im";
-import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { formDataInstance } from "../axios/Instance";
 const EditUserProfile = () => {
   const navigate = useNavigate();
   const { user,settoast,accessLoading} = Handler();
@@ -65,13 +65,7 @@ const EditUserProfile = () => {
     }
   };
 
-  const getUserInstance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true,
-    headers: {
-      "Content-Type": "multipart/form-data",
-    }
-  });
+  
   const getUser = async () => {
     try {
       if (!user && !accessLoading) {
@@ -86,7 +80,6 @@ const EditUserProfile = () => {
   };
   useEffect(() => {
     getUser();
-    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -109,10 +102,8 @@ const EditUserProfile = () => {
       formData.append(key, userData[key]);
     }
     
-    const res = await getUserInstance.post('/update/user',formData, {headers: {
-      'Content-Type': 'multipart/form-data',
-    }});
-    console.log(res);
+    const res = await formDataInstance.post('/update/user',formData);
+   
     if(res && res.status === 200){
     navigate(`/user/details/${user.id}`)
     }

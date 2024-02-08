@@ -1,15 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Lora&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
+  
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  /* Hide scrollbar for IE, Edge and Firefox */
+
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -73,48 +73,6 @@
   animation: lds-dual-ring 1.2s linear infinite;
 }
 
-.meetupsBoard {
-  display: flex;
-  justify-content: center;
-}
-.meetupCard {
-  max-height: 500px;
-  min-height: 500px;
-}
-
-.resume-text {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  max-height: 150px;
-  font-size: 0.8rem;
-}
-
-.owner {
-  font-size: 0.9rem;
-  color: gray;
-  border: 1px solid gray;
-  padding: 0 5px;
-  border-radius: 20px;
-}
-
-.cardHeader {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.dateTime {
-  flex-grow: 1;
-}
-
-.meetupAttendees {
-  font-size: 0.7rem;
-  background-color: red;
-  padding: 5px;
-  color: white;
-  border-radius: 5px;
-  font-weight: bold;
-}
 
 @keyframes lds-dual-ring {
   0% {

@@ -1,31 +1,42 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useRef } from "react";
+import React,{ useState, useEffect, useRef, FC } from "react";
 import { CiTimer } from "react-icons/ci";
 
-const CustomTimePicker = ({timeSelected}) => {
-  const [time, settime] = useState({ hours: "", minutes: "" });
-  const [hours, sethours] = useState([]);
-  const [minutes, setminutes] = useState([]);
-  const [pickOn, setpickOn] = useState(false);
+interface Time {
+  hours: string;
+  minutes: string;
+}
+
+interface Props {
+  timeSelected: (time: Time) => void;
+}
+
+const CustomTimePicker: FC<Props> = ({ timeSelected }) => {
+  const [time, settime] = useState<Time>({ hours: "", minutes: "" });
+  const [hours, sethours] = useState<string[]>([]);
+  const [minutes, setminutes] = useState<string[]>([]);
+  const [pickOn, setpickOn] = useState<boolean>(false);
   const now = new Date();
-  const timePickerRef = useRef(null);
+  const timePickerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const hoursArray = [];
-    const minutesArray = ["00", "15", "30", "45"];
+    const hoursArray: string[] = [];
+    const minutesArray: string[] = ["00", "15", "30", "45"];
     for (let i = 0; i < 24; i++) {
       hoursArray.push(i < 10 ? `0${i}` : `${i}`);
     }
     sethours(hoursArray);
     setminutes(minutesArray);
-    settime({ hours: now.getHours() + 1, minutes: "00" });
+    settime({ hours: String(now.getHours() + 1), minutes: "00" });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         timePickerRef.current &&
-        !timePickerRef.current.contains(event.target)
+        !timePickerRef.current.contains(event.target as Node)
       ) {
         // Clic fuera del componente, perder foco
         setpickOn(false);
@@ -38,18 +49,21 @@ const CustomTimePicker = ({timeSelected}) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   useEffect(() => {
-   timeSelected(time)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [time])
-  
+    timeSelected(time);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [time]);
+
   return (
     <div
       onClick={() => setpickOn(true)}
       ref={timePickerRef}
-      className= {`${pickOn && 'border-2 border-b border-zinc-900'} px-3 shadow-md border min-w-32 rounded-md h-10 flex items-center justify-start gap-1 relative z-50 font-semibold text-zinc-900/80`}
+      className={`${
+        pickOn && "border-2 border-b border-zinc-900"
+      } px-3 shadow-md border min-w-32 rounded-md h-10 flex items-center justify-start gap-1 relative z-50 font-semibold text-zinc-900/80`}
     >
-      <CiTimer strokeWidth={1} className="text-zinc-900/70"/>
+      <CiTimer strokeWidth={1} className="text-zinc-900/70" />
       {time.hours}:{time.minutes}
       <div
         className={`${

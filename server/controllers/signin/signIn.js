@@ -50,7 +50,7 @@ export const SignIn = async (req, res) => {
         sessionOpen && res.cookie('user_token', { token: token }, {
             maxAge: expiration,
             httpOnly: true,
-            secure: false,
+            secure: process.env.ENVIROMENT !== "development",
             path: '/'
         });
         res.status(200).send({ status: 'Logged', user: info });
