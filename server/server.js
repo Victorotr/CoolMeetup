@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import router from './routes/routes.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { deleteOldMeetups } from './Controllers/meetups/deleteOldMeetups.js';
 const app = express();
 
 app.use(morgan('dev'));
@@ -42,8 +43,16 @@ app.use((error, req, res, next) => {
   res.status(error.httpStatus || 500).send({
     status: 'error',
     message: error.message,
-  });
-});
+  }); 
+  
+});   
+
+const interval = setInterval(() => {
+  deleteOldMeetups() 
+}, process.env.AUTO_DELETE_TIME);  
+if(process.env.AUTO_DELETE  === 'false'){
+  clearInterval(interval)
+}
 
 // Lanzamos el servidor
 

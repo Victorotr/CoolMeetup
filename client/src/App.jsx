@@ -27,13 +27,9 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myData]);
   return (
-    <main
-      onClick={(e) => {
-        e.stopPropagation();
-        setmenuOn(false);
-      }}
-      className={` min-h-screen  relative font-Inter `}
-    >
+    <main 
+    onClick={(e)=>{e.stopPropagation();setmenuOn(false)}}
+    className={` min-h-screen  relative font-Inter pb-20`}>
       <Nav />
       <Loading />
       <ToastWindow />
@@ -48,6 +44,7 @@ function App() {
         <Route path="/user/details/:id" element={<UserProfile />} />
         <Route path="/edit/user/details" element={<EditUserProfile />} />
         <Route path="/user/recovercode/" element={<MeetupDetails />} />
+        <Route path="/meetups/details/:id" element={<MeetupDetails />} />
         <Route path="/recoverpwd/" element={<RecoverPwd />} />
         <Route path="/resetpwd/" element={<ResetPwd />} />
         <Route path="/*" element={<NotFound />} />

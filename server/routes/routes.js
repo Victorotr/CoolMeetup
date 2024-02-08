@@ -22,14 +22,21 @@ import { saveMeetupPhoto } from '../services/saveMeetupPhoto.js';
 import { getMeetupImg } from '../services/meetupImgGet.js';
 import { recoverPassword } from '../controllers/users/recoverPassword.js';
 import { resetPassword } from '../controllers/users/resetPassword.js';
+import { getUserMeetups } from '../Controllers/meetups/getUserMeetups.js';
+import { getUserMeetupsAttendees } from '../Controllers/meetups/getUserMeetupsAttendees.js';
+import { cancelMeetup } from '../Controllers/meetups/cancelMeetup.js';
+
 
 const router = Router();
 
 // Rutas de Meetups
 
 router.get('/', getAllMeetups);
+
 router.get('/meetup/:id', getSingleMeetupDetails);
+
 router.post('/meetup', isUser, postMeetup);
+
 router.post('/singUp/:meetupId', isUser, signUpMeetup);
 
 // Rutas de Usuarios
@@ -55,9 +62,22 @@ router.post('/update/user', isUser, Upload, savePhoto, UpdateUserDetails);
 
 router.get('/user/details/:id', getUserDetails);
 
+
+router.get('/user/meetups/:id',isUser, getUserMeetups);
+
+router.get('/user/meetupsAttendees/:id',getUserMeetupsAttendees);
+
 router.post('/create/meetup', isUser, Upload, saveMeetupPhoto, postMeetup);
 
-router.get('/signUp/:meetupId', isUser, signUpMeetup);
+router.get('/signUp/:meetupId',isUser, signUpMeetup);
+
+router.post('/cancel/meetup',isUser,cancelMeetup)
+// Rutas de Usuarios
+// router.post('/user', registerUser);
+// router.post('/login', loginUser);
+//Opcional: Ver el perfil de un usuario y los meetups a los que se ha
+//apuntado ordenados de más nuevo a más antiguo 
+//router.get('/user/:id', getUserInfo)
 
 router.get('/getImage/:id/:fileType', getImg);
 

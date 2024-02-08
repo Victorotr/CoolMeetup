@@ -1,14 +1,9 @@
-import axios from "axios";
 import { Handler } from "../context/Context";
 import { useNavigate } from "react-router";
 import { GoogleLogin } from '@react-oauth/google';
-
+import { Instance } from "../axios/Instance";
 const Signup = () => {
   
-const SigninUpstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true,
-});
   const {settoast, setuser} = Handler();
   const navigate = useNavigate();
   const submitForm = async(e) => {
@@ -18,25 +13,22 @@ const SigninUpstance = axios.create({
     const formData = new FormData(e.target);
     const form_values = Object.fromEntries(formData);
     try {
-      const res = await SigninUpstance.post('/registerUser', {
+      const res = await Instance.post('/registerUser', {
         mail: form_values.email,
         pwd: form_values.password,
         name: form_values.nombre_usuario
       });
-      console.log(res);
       settoast({on:true,type:'success',text:res.data.message});
       navigate('/signin');
     } catch (error) {
       console.log(error)
       settoast({on:true,type:'success',text:error.response.data.message});
-
     }
-  
   };
 
   const loginRegisterWithGoogle = async(credential) => {
     try {
-      const res = await  axios.post(import.meta.env.VITE_API_URL+'/loginRegisterWithGoogle', {
+      const res = await  Instance.post('/loginRegisterWithGoogle', {
         credential:credential
       });
     if(res && res.status === 200){
@@ -45,12 +37,9 @@ const SigninUpstance = axios.create({
       navigate('/list/meetups')
     }
     } catch (error) {
-      console.log(error);
       settoast({on:true,type:'error',text:error.message});
     }
- 
   }
-
   return (
     <section className="bg-zinc-50">
       <div className="flex flex-col items-center justify-center px-6 py-32">

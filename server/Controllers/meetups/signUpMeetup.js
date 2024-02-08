@@ -12,7 +12,7 @@ export const signUpMeetup = async (req, res, next) => {
     console.log(meetupId,userId)
     // Query: like comment
    const signUpInfo = await signUpMeetupQuery(meetupId, userId);
-   console.log(signUpInfo)
+  
    if(signUpInfo.action === 'added'){
     res.status(200).send({
       status: 'ok',

@@ -28,8 +28,8 @@ const HandleDate = (date) => {
     DateIn.getMinutes() < 10 ? "0" + DateIn.getMinutes() : DateIn.getMinutes();
 
   return (
-    <span className="flex items-center justify-start gap-1">
-     <CiCalendar/> {day} {monthsNames[month]} {year} <span className="font-normal">a las </span> <CiClock1/>{hours}:{minutes}
+    <span className="flex items-center justify-start gap-[2px] font-medium ">
+     <CiCalendar /> {day} {monthsNames[month]} {year} <span className="font-normal">a las </span>{hours}:{minutes}
     </span>
   );
 };

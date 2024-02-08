@@ -1,13 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { Handler } from "../context/Context";
 import { GoogleLogin } from "@react-oauth/google";
-
-const SigninInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true,
-});
+import { Instance } from "../axios/Instance";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -24,7 +19,7 @@ const SignIn = () => {
     e.preventDefault();
     try {
       setloading(true);
-      const res = await SigninInstance.post("/signin", formData);
+      const res = await Instance.post("/signin", formData);
 
       if (res && res.status === 200) {
         setloading(false);
@@ -67,8 +62,7 @@ const SignIn = () => {
 
   const loginRegisterWithGoogle = async (credential) => {
     try {
-      const res = await axios.post(
-        import.meta.env.VITE_API_URL + "/loginRegisterWithGoogle",
+      const res = await Instance.post("/loginRegisterWithGoogle",
         {
           credential: credential,
         }
@@ -79,7 +73,7 @@ const SignIn = () => {
         navigate("/list/meetups");
       }
     } catch (error) {
-      console.log(error);
+    
       settoast({ on: true, type: "error", text: error.message });
     }
   };

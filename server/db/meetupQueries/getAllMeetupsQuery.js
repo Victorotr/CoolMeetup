@@ -7,7 +7,6 @@ export const getAllMeetupsQuery = async (filters) => {
   const theme = filters.tematica;
   const province = filters.provincia;
   const order = filters.order === 'Fecha' ? 'meetup_datetime ASC' : filters.order === 'Asistentes' ? 'assistants DESC' : 'meetup_datetime ASC'
-  console.log('order', order)
   let themeFilter = "";
   let provinceFilter = "";
   
@@ -22,11 +21,11 @@ export const getAllMeetupsQuery = async (filters) => {
       JSON_OBJECT('user_id', users.id_user, 'username', users.user_name, 'avatar', users.picture_url) 
       as main_user_details,
       COUNT(users_meetups.id_user) as assistants 
-    FROM meetups 
-    LEFT JOIN users ON meetups.id_main_user = users.id_user
-    LEFT JOIN users_meetups ON users_meetups.id_meetup = meetups.id_meetup 
-    WHERE meetups.meetup_datetime >= ? ${themeFilter} ${provinceFilter} 
-    GROUP BY meetups.id_meetup ORDER BY ${order};
+      FROM meetups 
+      LEFT JOIN users ON meetups.id_main_user = users.id_user
+       LEFT JOIN users_meetups ON users_meetups.id_meetup = meetups.id_meetup 
+      WHERE meetups.meetup_datetime >= ? ${themeFilter} ${provinceFilter} 
+      GROUP BY meetups.id_meetup ORDER BY ${order};
    `,
       [mysqlDate]
     );
