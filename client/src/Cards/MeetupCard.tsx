@@ -31,7 +31,7 @@ const MeetupCard: React.FC<MeetupCardProps> = ({ meetup }: MeetupCardProps): Rea
       onClick={handleDetailsClick}
       className="flex relative max-w-md sm:max-w-[350px] sm:min-w-[350px] w-full flex-col border border-zinc-900/10 rounded-md overflow-hidden justify-between shadow-lg hover:scale-105 transition-all "
     >
-      <span className={`${meetup?.cancelled ? 'flex' : isOutDated ? 'flex' : 'hidden'}  bg-zinc-600/20 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}>
+      <span className={`${meetup?.cancelled ? 'flex' : isOutDated ? 'flex' : 'hidden'}  bg-zinc-500/10 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}>
         <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">MEETUP <br /> FINALIZADO O CANCELADO</p>
       </span>
 

@@ -111,11 +111,11 @@ const MeetupDetails = () => {
     }
   };
   return (
-    <div className={`${isOutDated || meetup?.cancelled? 'opacity-70' : ''} w-full max-w-lg text-lg flex flex-col mx-auto py-10`}>
+    <div className={`${isOutDated || meetup?.cancelled? 'opacity-70' : ''} w-full max-w-4xl text-lg flex flex-col mx-auto py-10`}>
       <img
-        className={`w-full h-60  ${meetup?.meetup_image? 'object-cover':'object-contain'}`}
+        className={`w-full h-96  ${meetup?.meetup_image? 'object-cover':'object-contain'}`}
         src={meetup?.meetup_image || nopicture}
-        alt=""
+        alt="meetup image"
       />
       <div className="p-2 py-3 flex flex-col gap-2">
       <span 
@@ -138,7 +138,7 @@ const MeetupDetails = () => {
           <p className="font-Lora">{meetup?.meetup_theme}</p>
         </div>
         <p className="font-Lora font-lg font-semibold">Donde?</p>
-        <div className="w-full h-52 max-w-lg">
+        <div className="w-full h-52 max-w-6xl">
           {isLoaded && (
             <GoogleMap
               mapContainerStyle={{ height: "100%", width: "100%" }}
@@ -164,7 +164,7 @@ const MeetupDetails = () => {
           href={`https://www.google.com/maps?q=${meetup?.x_cordinate},${meetup?.y_cordinate}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="shadow-xl border my-5 w-full max-w-lg rounded-md"
+          className="shadow-xl border my-5 w-full max-w-4xl rounded-md"
         >
           <button className="border text-sm font-semibold w-full  border-blue-600/50 rounded-md text-zinc-50 shadow-md bg-blue-500 px-2 py-2 ">
             Abrir en Google Maps
@@ -216,7 +216,7 @@ const MeetupDetails = () => {
               ))}
           </div>
         </div>
-        <div className="my-4 w-full max-w-lg shadow-lg flex flex-col gap-1">
+        <div className="my-4 w-full  shadow-lg flex flex-col gap-1">
           <button
             onClick={HandleJoin}
             disabled={JoinLoading || isOutDated || meetup?.cancelled}
