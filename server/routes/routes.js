@@ -20,9 +20,12 @@ import { getImg } from '../services/imgGet.js';
 import { UpdateUserDetails } from '../Controllers/users/updateUserDetails.js';
 import { saveMeetupPhoto } from '../services/saveMeetupPhoto.js';
 import { getMeetupImg } from '../services/meetupImgGet.js';
+import { recoverPassword } from '../controllers/users/recoverPassword.js';
+import { resetPassword } from '../controllers/users/resetPassword.js';
 import { getUserMeetups } from '../Controllers/meetups/getUserMeetups.js';
 import { getUserMeetupsAttendees } from '../Controllers/meetups/getUserMeetupsAttendees.js';
 import { cancelMeetup } from '../Controllers/meetups/cancelMeetup.js';
+
 
 const router = Router();
 
@@ -35,9 +38,6 @@ router.get('/meetup/:id', getSingleMeetupDetails);
 router.post('/meetup', isUser, postMeetup);
 
 router.post('/singUp/:meetupId', isUser, signUpMeetup);
-//router.get('/meetup/:id', getSingleMeetupDetails);
-//router.post('/singUp/:meetupId', singUpForMeetup);
-//router.post('/meetup', postMeetup);
 
 // Rutas de Usuarios
 router.post('/registerUser', registerUser);
@@ -47,7 +47,6 @@ router.get('/islogged', isLogged);
 router.post('/validateUser', validateUser);
 
 router.post('/loginRegisterWithGoogle', loginRegisterWithGoogle);
-//router.post('/login', loginUser);
 
 router.post('/getMeetups', getAllMeetups);
 
@@ -68,8 +67,6 @@ router.get('/user/meetups/:id',isUser, getUserMeetups);
 
 router.get('/user/meetupsAttendees/:id',getUserMeetupsAttendees);
 
-// router.post('/singUp/:meetupId', singUpForMeetup);
-
 router.post('/create/meetup', isUser, Upload, saveMeetupPhoto, postMeetup);
 
 router.get('/signUp/:meetupId',isUser, signUpMeetup);
@@ -78,19 +75,19 @@ router.post('/cancel/meetup',isUser,cancelMeetup)
 // Rutas de Usuarios
 // router.post('/user', registerUser);
 // router.post('/login', loginUser);
-/*
-*Opcional: Ver el perfil de un usuario y los meetups a los que se ha
-apuntado ordenados de más nuevo a más antiguo 
-router.get('/user/:id', getUserInfo)
+//Opcional: Ver el perfil de un usuario y los meetups a los que se ha
+//apuntado ordenados de más nuevo a más antiguo 
+//router.get('/user/:id', getUserInfo)
 
-*Opcional: Gestión del perfil (nombre, biografía y avatar)
-router.patch("/user", modifyUserInfo);
-*/
 router.get('/getImage/:id/:fileType', getImg);
 
 router.get('/user/avatar/:id', getImg);
 
 router.get('/meetup/image/:id', getMeetupImg);
+
+router.post('/recoverpwd', recoverPassword);
+
+router.post('/resetpwd', resetPassword);
 
 // Rutas de cookies
 router.get('/visit', OnRefreshCookies);
