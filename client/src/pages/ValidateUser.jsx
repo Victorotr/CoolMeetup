@@ -1,50 +1,40 @@
-import axios from "axios";
 import { Handler } from "../context/Context";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
+import { Instance } from "../axios/Instance";
 
-const ValidateUser = () => {
+const ValidateUser = ()=>{
   const { settoast } = Handler();
   const navigate = useNavigate();
   const { regCode } = useParams();
-  const submitForm = (e) => {
+  const submitForm =async(e) => {
     e.preventDefault();
 
     //lanzar login en la api
     const formData = new FormData(e.target);
     const form_values = Object.fromEntries(formData);
-
-    axios
-      .post(
-        import.meta.env.VITE_API_URL + "/validateUser",
+    try {
+      const res = await Instance.post(    import.meta.env.VITE_API_URL + "/validateUser",
         {
           regCode: form_values.regCode,
-        },
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            origin: "x-requested-with",
-            "Access-Control-Allow-Headers":
-              "POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin",
-            "Content-Type": "application/json",
-          },
         }
       )
-      .then(function (response) {
+      if(res && res.status === 200){
         settoast({
           on: true,
           type: "success",
           text: "Usuario validado correctamente, ¡Ya puedes acceder a Coolmeetups!",
         });
         navigate("/signin");
-      })
-      .catch(function (error) {
-        settoast({
-          on: true,
-          type: "error",
-          text: error.response.data.message,
-        });
+      }
+    } catch (error) {
+      settoast({
+        on: true,
+        type: "error",
+        text: error.response.data.message,
       });
+    }
+   
   };
 
   return (

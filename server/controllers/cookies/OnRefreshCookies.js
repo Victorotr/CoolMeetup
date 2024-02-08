@@ -16,7 +16,7 @@ export const OnRefreshCookies = async (req, res) => {
       res.cookie('visitId', userId, {
         maxAge: expiration,
         httpOnly: true,
-        secure: false,
+        secure: process.env.ENVIROMENT !== "development",
       });
     }
     res.send({ message: 'received' });

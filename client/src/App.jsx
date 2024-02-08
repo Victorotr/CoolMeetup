@@ -15,18 +15,25 @@ import UserProfile from "./pages/UserProfile";
 import EditUserProfile from "./pages/EditUserProfile";
 import Loading from "./components/Loading";
 import MeetupDetails from "./pages/MeetupDetails";
+import RecoverPwd from "./pages/RecoverPwd";
+import ResetPwd from "./pages/ResetPwd";
+
 function App() {
-  const { myData, setMyData,setmenuOn } = Handler();
+  const { myData, setMyData, setmenuOn } = Handler();
 
   useEffect(() => {
     setMyData("hello");
-   
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myData]);
   return (
-    <main 
-    onClick={(e)=>{e.stopPropagation();setmenuOn(false)}}
-    className={` min-h-screen  relative `}>
+    <main
+      onClick={(e) => {
+        e.stopPropagation();
+        setmenuOn(false);
+      }}
+      className={` min-h-screen  relative font-Inter pb-20`}
+    >
       <Nav />
       <Loading />
       <ToastWindow />
@@ -40,7 +47,10 @@ function App() {
         <Route path="/new/meetup" element={<CreateMeetUp />} />
         <Route path="/user/details/:id" element={<UserProfile />} />
         <Route path="/edit/user/details" element={<EditUserProfile />} />
+        <Route path="/user/recovercode/" element={<MeetupDetails />} />
         <Route path="/meetups/details/:id" element={<MeetupDetails />} />
+        <Route path="/recoverpwd/" element={<RecoverPwd />} />
+        <Route path="/resetpwd/" element={<ResetPwd />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </main>

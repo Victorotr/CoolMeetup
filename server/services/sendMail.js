@@ -1,5 +1,5 @@
 import sgEmail from "@sendgrid/mail";
-
+ 
 sgEmail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendMail = async (to, subject, body) => {
@@ -8,10 +8,10 @@ const sendMail = async (to, subject, body) => {
       to,
       from: process.env.SENDGRID_FROM,
       subject,
-      text: body,
+      text: body, 
       html: `
           <div>
-              <h1>${subject}</h1>
+              <h1>${subject}</h1> 
               <p>${body}</p>
           </div>
           `,
