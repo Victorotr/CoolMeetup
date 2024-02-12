@@ -19,7 +19,7 @@ const SideBar: FC = () => {
     <div
       className={`${menuOn ? "w-72" : "w-0"} z-50 shadow-2xl transition-all bg-zinc-50 overflow-hidden absolute top-14 right-0 h-full rounded-tl-lg`}
     >
-      <ul className="w-full font-Lora text-md font-semibold flex flex-col">
+      <ul className="w-full  text-md font-semibold flex flex-col">
         <li
           onClick={() => navigate("/")}
           className="p-4 border-y transition-all flex items-center justify-start shadow-inner text-zinc-900/90 gap-1 hover:scale-105 cursor-pointer"

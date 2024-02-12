@@ -19,6 +19,9 @@ const ListMeetups = () => {
   const [themeList, setthemeList] = useState([]);
   const [pronviceList, setProvinceList] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
+  const [isLoading, setisLoading] = useState(false);
+  const [queryParams, setQueryParams] = useState({});
+
   const navigate = useNavigate();
   // const [map, setmap] = useState(null);
   const { isLoaded } = useJsApiLoader({
@@ -26,29 +29,35 @@ const ListMeetups = () => {
     googleMapsApiKey: import.meta.env.VITE_MAPS_TOKEN,
   });
   const { settoast } = Handler();
+
   const submitForm = async (e) => {
     e.preventDefault();
-
     const formData = new FormData(e.target);
     const form_values = Object.fromEntries(formData);
 
     //llamada al endpoint de listar meetups
     try {
+      setisLoading(true);
       const res = await Instance.post("/getMeetups", {
         date: form_values.date,
         tematica: form_values.tematica,
         provincia: form_values.provincia,
         order: form_values.order,
       });
-      console.log(res);
+
       if (res && res.status === 200) {
         settoast({
           on: true,
           type: "success",
-          text: "Meetups listados con éxito",
+          text: `${res.data?.data.length}  ${
+            res.data?.data.length === 1
+              ? "Meetup encontrado"
+              : "Meetups encontrados"
+          }`,
         });
         setMeetupsList(res.data.data);
       }
+      setisLoading(false);
     } catch (error) {
       settoast({
         on: true,
@@ -58,7 +67,6 @@ const ListMeetups = () => {
     }
   };
   useEffect(() => {
-    //cargar lista completa de meetups próximos a celebrarse al dia de hoy
     const getMeets = async () => {
       const res = await Instance.post("/getMeetups", {
         date: new Date(),
@@ -71,6 +79,14 @@ const ListMeetups = () => {
       }
     };
     getMeets();
+    const currentUrl = window.location.href;
+    const searchParams = new URLSearchParams(currentUrl);
+    const paramsObject = {};
+    for (const [key, value] of searchParams.entries()) {
+      paramsObject[key] = value;
+    }
+    console.log(paramsObject);
+    setQueryParams(paramsObject);
   }, []);
 
   useEffect(() => {
@@ -106,72 +122,74 @@ const ListMeetups = () => {
     setSelectedMarker(null);
   };
   return (
-    <div className="">
+    <div className=" max-w-6xl mx-auto">
       <div>
-        <div className="w-full h-72  max-w-6xl mx-auto">
-          <h1 className="text-2xl font-semibold my-5 mx-3 font-Lora ">
-            Mapa Meetups
-          </h1>
+        <div className="w-full h-72  mx-auto">
+          <h1 className="text-2xl font-semibold my-5 mx-3  ">Mapa Meetups</h1>
           <div className="h-72">
-          {isLoaded && (
-            <GoogleMap
-              mapContainerStyle={{ height: "100%", width: "100%" }}
-              zoom={zoom}
-              center={center}
-              options={{ controlSize: 25 }}
-            >
-              {meetupsList?.map((item) => (
-                <Marker
-                  key={item.id_meetup}
-                  onClick={() => {
-                    handleMarkerClick({
+            {isLoaded && (
+              <GoogleMap
+                mapContainerStyle={{ height: "100%", width: "100%" }}
+                zoom={zoom}
+                center={center}
+                options={{ controlSize: 25 }}
+              >
+                {meetupsList?.map((item) => (
+                  <Marker
+                    key={item.id_meetup}
+                    onClick={() => {
+                      handleMarkerClick({
+                        lat: item.x_cordinate,
+                        lng: item.y_cordinate,
+                      });
+                    }}
+                    position={{
                       lat: item.x_cordinate,
                       lng: item.y_cordinate,
-                    });
-                  }}
-                  position={{
-                    lat: item.x_cordinate,
-                    lng: item.y_cordinate,
-                  }}
-                >
-                  {selectedMarker?.lat === item.x_cordinate &&
-                    selectedMarker.lng === item.y_cordinate && (
-                      <InfoWindow
-                        position={{
-                          lat: item.x_cordinate,
-                          lng: item.y_cordinate,
-                        }}
-                        onCloseClick={handleInfoWindowClose}
-                      >
-                        <div className="p-1 flex flex-col justify-center gap-2 max-w-xs ">
-                          <img
-                            className="w-[200px] h-20 object-cover"
-                            src={item.meetup_image || nopicture}
-                            alt="marker image"
-                          />
+                    }}
+                  >
+                    {selectedMarker?.lat === item.x_cordinate &&
+                      selectedMarker.lng === item.y_cordinate && (
+                        <InfoWindow
+                          position={{
+                            lat: item.x_cordinate,
+                            lng: item.y_cordinate,
+                          }}
+                          onCloseClick={handleInfoWindowClose}
+                        >
+                          <div className="p-1 flex flex-col justify-center gap-2 max-w-xs ">
+                            <img
+                              className="w-[200px] h-20 object-cover"
+                              src={item.meetup_image || nopicture}
+                              alt="marker image"
+                            />
 
-                          <div className="max-w-[200px]">
-                            <p className="font-medium">{item.meetup_title}</p>
-                            <p className="">{item.meetup_description}</p>
+                            <div className="max-w-[200px]">
+                              <p className="font-medium">{item.meetup_title}</p>
+                              <p className="">{item.meetup_description}</p>
+                            </div>
+                            <button
+                              onClick={() =>
+                                navigate("/meetups/details/" + item.id_meetup)
+                              }
+                              className="border w-full rounded-md bg-blue-500 h-10 text-zinc-50 font-medium shadow-md"
+                            >
+                              Detalles
+                            </button>
                           </div>
-                          <button 
-                          onClick={()=>navigate('/meetups/details/'+ item.id_meetup)}
-                          className="border w-full rounded-md bg-blue-500 h-10 text-zinc-50 font-medium shadow-md">
-                            Detalles
-                          </button>
-                        </div>
-                      </InfoWindow>
-                    )}
-                </Marker>
-              ))}
-            </GoogleMap>
-          )}</div>
+                        </InfoWindow>
+                      )}
+                  </Marker>
+                ))}
+              </GoogleMap>
+            )}
+          </div>
         </div>
         <form
-          className="mt-10 p-3 rounded-md dark:text-white"
+          className="mt-10 p-3  mx-auto rounded-md dark:text-white "
           onSubmit={submitForm}
         >
-          <div className="py-3 flex-wrap flex items-start font-medium  relative  justify-between gap-2 max-w-4xl mx-auto">
+          <div className="py-3 flex-wrap flex items-start font-medium  relative  justify-between gap-2  mx-auto">
             <div className="flex flex-col max-w-[120px] ">
               <p className="text-left">Eventos desde</p>
               <DatePickerComponent />
@@ -180,13 +198,14 @@ const ListMeetups = () => {
               <p className="text-left">Temática</p>
               <select
                 name="tematica"
-                className="bg-slate-50/10 border shadow-md border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+                defaultValue={queryParams.tematica || "TODAS"}
+                className="custom-select bg-slate-50/10 border shadow-md border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
               >
-                <option className="w-full h-10">Todas</option>
+                <option className="w-full h-10 bg-red">Todas</option>
                 {themeList &&
                   themeList.map((item) => {
                     return (
-                      <option key={item} className="w-full h-10">
+                      <option value={item} key={item} className="w-full h-10">
                         {item}
                       </option>
                     );
@@ -221,21 +240,39 @@ const ListMeetups = () => {
                 <option className="w-full h-10">Asistentes</option>
               </select>
             </div>
+            {/* <div className="flex flex-col h-14 justify-between items-center">
+              <p className="text-left">Ocultar cancelados</p>
+              <input type="checkbox" checked  className="w-5 h-5" />
+            
+            </div> */}
           </div>
           <button
             type="submit"
-            className="mx-auto w-full max-w-4xl bg-blue-500 text-zinc-50  border border-blue-300  text-sm font-semibold rounded-lg focus:ring-blue-500  block p-2.5 hover:border-blue-600/70 hover:bg-blue-400 transition-all"
+            className="mx-auto flex justify-center items-center gap-2 h-10  w-full  bg-blue-500 text-zinc-50  border border-blue-300  text-sm font-semibold rounded-lg focus:ring-blue-500  hover:border-blue-600/70 hover:bg-blue-400 transition-all"
           >
-            Aplicar Filtro
+            <span>{isLoading ? "Filtrando" : "Filtrar"}</span>{" "}
+            {isLoading && <div className="lds-dual-ring" />}
           </button>
         </form>
-        <div className=" flex flex-wrap justify-center items-start gap-4 p-1 py-3 max-w-6xl mx-auto">
+        <div className=" flex flex-wrap justify-center items-start gap-4 p-1 py-3 max-w-6xl mx-auto max-h-[900px] no-scrollbar overflow-y-scroll">
           {meetupsList?.length ? (
             meetupsList?.map((item) => {
-              return <MeetupCard key={item.id_meetup} meetup={item} />;
+              return (
+                <div
+                  className="max-w-md sm:max-w-[350px] sm:min-w-[350px] w-full"
+                  key={item.id_meetup}
+                  onClick={(e) => {
+                    setcenter({ lat: item.x_cordinate, lng: item.y_cordinate });
+                    
+                    e.stopPropagation();
+                  }}
+                >
+                  <MeetupCard mapcenter={center} meetup={item} />
+                </div>
+              );
             })
           ) : (
-            <div className="my-10 px-5 text-lg font-Lora text-center font-medium">
+            <div className="my-10 px-5 text-lg  text-center font-medium">
               No se han encontrado meetups! <br /> Crea uno o cambia los
               filtros.
             </div>

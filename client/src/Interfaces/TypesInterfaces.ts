@@ -6,14 +6,19 @@ export  interface Meetup {
     meetup_image: string;
     meetup_title: string;
     meetup_description: string;
+    meetup_address:string|null;
     assistants: number;
     main_user_details: {
       user_id: number;
       avatar: string;
       username: string;
     };
+    x_cordinate:number,
+    y_cordinate:number
+
   }
   
 export   interface MeetupCardProps {
     meetup: Meetup;
+    mapcenter: { lat: number; lng: number };
   }

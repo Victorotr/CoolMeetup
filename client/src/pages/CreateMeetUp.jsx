@@ -15,8 +15,9 @@ import { categories } from "../../categories";
 import DatePickerComponent from "../components/DatePicker";
 import CustomTimePicker from "../components/CustomTimePicker";
 import { formDataInstance } from "../axios/Instance";
-
+import { useRef } from "react";
 const Map = () => {
+  const addressRef = useRef(null)
   const { user, settoast, accessLoading } = Handler();
   const navigate = useNavigate();
   const [map, setMap] = useState(null);
@@ -177,7 +178,11 @@ const Map = () => {
 
       for (const key in meetupForm) {
         if (key === "address") {
-          if (!meetupForm["address"]) {
+          if(!meetupForm["address"]) {
+            console.log(addressRef)
+            addressRef.current.scrollIntoView({ behavior: 'smooth' });
+            addressRef.current.focus();
+       
             settoast({
               on: true,
               type: "warning",
@@ -221,8 +226,8 @@ const Map = () => {
     });
   };
   return (
-    <section className="w-full max-w-4xl mx-auto py-10 border rounded-lg sm:px-2">
-      <h1 className="font-Lora text-xl font-semibold px-3 mx-auto">
+    <section className=" w-full max-w-4xl mx-auto py-10 border rounded-lg sm:px-2">
+      <h1 className=" text-xl font-semibold px-3 mx-auto">
         Crear Meetup
       </h1>
       <form
@@ -300,7 +305,7 @@ const Map = () => {
           <label htmlFor="date" className="font-semibold px-1">
             Cuando?
           </label>
-          <div className="flex  gap-2">
+          <div className="flex  gap-2 font-semibold text-sm">
             <DatePickerComponent
               onDateChange={(date) => {
                 setmeetupDate(date);
@@ -363,11 +368,14 @@ const Map = () => {
         <label htmlFor="direction" className="font-semibold px-1">
           Donde?
         </label>
-        <div className="mx-1  w-full rounded-md shadow-md flex items-center font-normal  relative border border-zinc-900/10 justify-between py-2">
+        <div
+       
+        className=" w-full rounded-md shadow-md flex items-center font-normal  relative border border-zinc-900/10 justify-between ">
           <input
             type="text"
             name="direction"
             placeholder="Busca una dirección"
+             ref={addressRef} 
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 handleSearch();
@@ -375,17 +383,18 @@ const Map = () => {
             }}
             value={address}
             disabled={selected.isSelected}
-            className="w-full h-full py-1 px-3 disabled:bg-transparent placeholder:text-zinc-900/60 focus:outline-none bg-transparent"
+            className="focus:border-4  focus:border-blue-500 rounded-md w-full h-full py-1.5 px-3 disabled:bg-transparent placeholder:text-zinc-900/60 focus:outline-none bg-transparent"
             onChange={(e) => setAddress(e.target.value)}
           />
           <div className="flex items-center px-2">
             <span
               onClick={handleSearch}
+              disabled={address.length < 5}
               className={`${
                 selected.isSelected && "hidden"
-              }  hover:scale-110 transition-all`}
+              }  hover:scale-110 transition-all flex items-center border px-2 py-1 mt-1 rounded-lg bg-blue-500 text-white`}
             >
-              <MdSearch className="text-zinc-900/70" size={25} />
+              <MdSearch className="text-white" size={25} /> Buscar
             </span>
             <span
               onClick={() => {
@@ -462,7 +471,7 @@ const Map = () => {
           </div>
         )}
         <button
-          //  disabled={!meetupForm.user_id || !meetupForm.title || !meetupForm.meetupDate}
+       
           className="border w-full p-3 font-semibold text-zinc-50 bg-blue-500 rounded-md disabled:brightness-75"
           type="submit"
         >
