@@ -9,9 +9,10 @@ interface Time {
 
 interface Props {
   timeSelected: (time: Time) => void;
+  onChange:(time:Time)=>void;
 }
 
-const CustomTimePicker: FC<Props> = ({ timeSelected }) => {
+const CustomTimePicker: FC<Props> = ({ timeSelected,onChange }) => {
   const [time, settime] = useState<Time>({ hours: "", minutes: "" });
   const [hours, sethours] = useState<string[]>([]);
   const [minutes, setminutes] = useState<string[]>([]);
@@ -58,6 +59,7 @@ const CustomTimePicker: FC<Props> = ({ timeSelected }) => {
   return (
     <div
       onClick={() => setpickOn(true)}
+      
       ref={timePickerRef}
       className={`${
         pickOn && "border-2 border-b border-zinc-900"
@@ -82,6 +84,7 @@ const CustomTimePicker: FC<Props> = ({ timeSelected }) => {
                 onClick={(e) => {
                   e.preventDefault();
                   settime({ ...time, hours: item });
+                  onChange()
                 }}
               >
                 {item}
@@ -101,6 +104,7 @@ const CustomTimePicker: FC<Props> = ({ timeSelected }) => {
                 onClick={(e) => {
                   e.preventDefault();
                   settime({ ...time, minutes: item });
+                  onChange()
                 }}
               >
                 {item}
