@@ -28,8 +28,6 @@ export const deleteOldMeetupQuery = async () => {
     }
 
     try {
-        const [getImages] = await connection.query(`SELECT meetup_image_id FROM meetups WHERE meetup_datetime < ?`, [MaxDate]);
-
 
         const [deleteMeetups] = await connection.query(` 
         DELETE FROM meetups

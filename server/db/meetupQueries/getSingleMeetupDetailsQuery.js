@@ -33,10 +33,9 @@ export const getSingleMeetupDetailsQuery = async (id) => {
       [id]
     );
     if (meetupDetails.length) {
-      console.log(meetupDetails[0])
+
       meetupDetails[0].assistants = JSON.parse(meetupDetails[0].assistants)
-
-
+      
       return meetupDetails[0];
     }
     return null
