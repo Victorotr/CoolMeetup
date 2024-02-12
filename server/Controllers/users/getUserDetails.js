@@ -17,7 +17,7 @@ export const getUserDetails = async (req, res, next) => {
 
         connect = await getConnection();
         const [user] = await connect.query('SELECT id_user,user_name,picture_url,user_bio FROM users WHERE id_user = ?', id)
-        console.log(user)
+   
         if (!user.length) {
             const error = new Error("Usuario no encontrado"); error.httpStatus = 404;  // envio el error y salgo de la función
             return next(error)

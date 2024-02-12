@@ -14,7 +14,7 @@ import { getConnection } from '../ConnectionDB.js';
 //       // WHERE meetups.id_main_user = ?`
 export const getUserMeetupsQuery = async (id) => {
   let connection;
-  console.log('getusersMeetupsQuery')
+
   try {
     connection = await getConnection();
     const [userMeetups] = await connection.query(

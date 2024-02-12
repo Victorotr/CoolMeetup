@@ -23,7 +23,7 @@ export const resetPassword = async (req, res, next) => {
     if (validation.error) {
       throw generateError(validation.error.message, 401);
     }
-    console.log(recoverCode);
+ 
     //Query: swithPassword
     await resetPasswordQuery(recoverCode, newPassword);
 

@@ -91,7 +91,7 @@ export const postMeetup = async (req, res, next) => {
         meetupObject.image_id
       ]
     );
-    console.log(insert_meetup);
+   
     if (insert_meetup.affectedRows > 0) {
       res
         .status(200)
