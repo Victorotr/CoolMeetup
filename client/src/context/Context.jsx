@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { HandleVisit } from "../functions/SetVisit";
 import axios from "axios";
+import { io } from 'socket.io-client';
 
 const LoggedInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -26,6 +27,7 @@ export const MyContextProvider = ({ children }) => {
   const [user, setuser] = useState(null);
   const [accessLoading, setaccessLoading] = useState(true);
   const [userLocation, setuserLocation] = useState(null);
+  const [socket, setsocket] = useState(null)
 
   useEffect(() => {
     const isLogged = async () => {
@@ -75,6 +77,29 @@ export const MyContextProvider = ({ children }) => {
       window.removeEventListener("beforeunload", handleUnload);
     };
   }, []);
+  useEffect(() => {
+    if(user && user.id){
+      console.log('there is user',user);
+     
+      const socketConn = io(import.meta.env.VITE_API_URL, {
+        withCredentials: true // Asegúrate de incluir esta opción para enviar las cookies
+      });  
+      socketConn?.emit('user_id',user.id || null)
+      if(socketConn){
+        setsocket(socketConn) ;
+    
+      }
+     
+      socket?.on('disconnect', () => {
+        console.log('Desconectado del servidor de Socket.io');
+      });
+      return () => {
+           if(socket) socket.disconnect();
+      };
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
+  
   return (
     <MyContext.Provider
       value={{
@@ -87,7 +112,8 @@ export const MyContextProvider = ({ children }) => {
         user,
         setuser,
         accessLoading,
-        userLocation
+        userLocation,
+        socket
       }}
     >
       {children}

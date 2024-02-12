@@ -9,13 +9,17 @@ import HandleDate from "../functions/HandleDate";
 import { Instance } from "../axios/Instance";
 import Swal from "sweetalert2";
 import { MdShare } from "react-icons/md";
+import { IoIosSend } from "react-icons/io";
+
 const MeetupDetails = () => {
   const [JoinLoading, setJoinLoading] = useState(false);
-  const { toast, settoast, user, accessLoading } = Handler();
+  const { toast, settoast, user, accessLoading, socket } = Handler();
   const { id } = useParams();
   const [meetup, setmeetup] = useState(null);
   const [userJoined, setuserJoined] = useState(false);
   const [isOutDated, setisOutDated] = useState(false);
+  const [chatMessages, setchatMessages] = useState([]);
+  const [message, setmessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,11 +46,10 @@ const MeetupDetails = () => {
     const getDetails = async () => {
       try {
         const res = await Instance.get("/meetup/" + id);
-        console.log(res);
         if (res && res.status === 200) {
           setmeetup(res.data.data);
         } else {
-          console.log("no encontrado");
+     
           navigate("/meetup/notfound");
         }
       } catch (error) {
@@ -58,6 +61,22 @@ const MeetupDetails = () => {
     getDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, JoinLoading]);
+    useEffect(() => {
+    if (!socket || !meetup) {
+      return;
+    }
+    const handleData = async(data)=>{
+      if(data.meetup === meetup.id_meetup){
+       console.log(data)
+       //setTheArray(oldArray => [...oldArray, newElement]);
+       setchatMessages(oldMessages =>[...oldMessages,data]);
+     
+      }
+    }
+    socket.on('messages',(data)=>handleData(data))
+    
+  }, [socket,meetup]);
+
   const HandleJoin = async () => {
     try {
       if (!meetup && !meetup.id_meetup) {
@@ -66,8 +85,9 @@ const MeetupDetails = () => {
       const LeaveMeetup = async () => {
         setJoinLoading(true);
         const res = await Instance.get("/signUp/" + meetup?.id_meetup);
+      
         if (res && res.status === 200 && res.data.message);
-
+        console.log('if fired')
         setJoinLoading(false);
       };
       if (userJoined) {
@@ -120,6 +140,9 @@ const MeetupDetails = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetup, user, JoinLoading]);
+
+
+
   const HandleDelete = async () => {
     if (!meetup && !meetup.id_meetup) {
       return;
@@ -164,7 +187,15 @@ const MeetupDetails = () => {
       text: `Enlace copiado`,
     });
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+   
+    if(!socket){
+      settoast({on:true,type:'warning',message:'No ha sido posible connectarse con el chat,intentelo más tarde'})
+    }
+    socket.emit('message',{user:user,message:message,meetup:meetup.id_meetup})
 
+  };
   return (
     <div
       className={`${
@@ -328,6 +359,33 @@ const MeetupDetails = () => {
         >
           {}Cancelar Meetup
         </button>
+      </div>
+
+      <p className="text-xl my-5 font-medium">{meetup?.meetup_title} Chat</p>
+      <div className="border w-full  flex flex-col justify-between">
+        <div className="flex flex-col my-5 max-h-[500px] overflow-y-scroll">
+          {chatMessages.length
+            ? chatMessages.map((item,i) => 
+            <span key={i} className="flex flex-col items-start border" >
+            <span className="flex items-center gap-1">
+            <img className="w-8 h-8 rounded-full border" src={item.user.avatar || '/src/assets/no_picture.png'} alt="user-picture"  />
+            {item.user.username}</span>
+            <span className="px-9">{item.message}</span>
+            </span>
+            )
+            : "Tienes alguna duda o quieres proponer algo? Sé el primero en escribir!"}
+        </div>
+        <div className="w-full h-12 border-2 flex items-center justify-between ">
+          <form onSubmit={handleSubmit} className="w-full h-12 border-2 flex items-center justify-between ">
+            <input 
+            onChange={(e)=>setmessage(e.target.value)}
+            value={message}
+            type="text" className="border w-full h-full" />
+            <button type="submit"><span className="rounded-md text-zinc-50 font-medium flex items-center p-2 border bg-indigo-500">
+              <IoIosSend /> Enviar
+            </span></button>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -11,7 +11,9 @@ import { useState, useEffect } from "react";
 import MeetupCard from "../Cards/MeetupCard";
 import nopicture from "../assets/no_meetup_image.png";
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 const ListMeetups = () => {
+  const mapRef = useRef(null)
   const [meetupsList, setMeetupsList] = useState([]);
   const [allMeetups, setAllMeetups] = useState([]);
   const [center, setcenter] = useState({ lat: 40.4165, lng: -3.70256 });
@@ -127,7 +129,9 @@ const ListMeetups = () => {
       <div>
         <div className="w-full h-72  mx-auto">
           <h1 className="text-2xl font-semibold my-5 mx-3  ">Mapa Meetups</h1>
-          <div className="h-72">
+          <div 
+          ref={mapRef}
+          className="h-72">
             {isLoaded && (
               <GoogleMap
                 mapContainerStyle={{ height: "100%", width: "100%" }}
@@ -274,8 +278,9 @@ const ListMeetups = () => {
                   key={item.id_meetup}
                   onClick={(e) => {
                     setcenter({ lat: item.x_cordinate, lng: item.y_cordinate });
-                    
                     e.stopPropagation();
+                    mapRef?.current.scrollIntoView({ behavior: "smooth", block: "center",inline:'nearest' });
+               
                   }}
                 >
                   <MeetupCard mapcenter={center} meetup={item} />
