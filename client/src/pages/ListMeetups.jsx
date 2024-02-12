@@ -87,6 +87,7 @@ const ListMeetups = () => {
     }
     console.log(paramsObject);
     setQueryParams(paramsObject);
+  
   }, []);
 
   useEffect(() => {
@@ -134,6 +135,15 @@ const ListMeetups = () => {
                 center={center}
                 options={{ controlSize: 25 }}
               >
+                {/* {userLocation &&  
+                 <Marker
+                    position={{
+                      lat: parseFloat(userLocation?.latitude),
+                      lng: parseFloat(userLocation?.longitude),
+                    }}
+                    icon={{url:'/src/assets/custom-marker.png'}}
+                  />
+                  } */}
                 {meetupsList?.map((item) => (
                   <Marker
                     key={item.id_meetup}
@@ -147,6 +157,7 @@ const ListMeetups = () => {
                       lat: item.x_cordinate,
                       lng: item.y_cordinate,
                     }}
+                  
                   >
                     {selectedMarker?.lat === item.x_cordinate &&
                       selectedMarker.lng === item.y_cordinate && (

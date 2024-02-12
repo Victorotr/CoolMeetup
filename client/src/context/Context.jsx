@@ -25,6 +25,7 @@ export const MyContextProvider = ({ children }) => {
   const [toast, settoast] = useState({ on: false, type: "", text: "" });
   const [user, setuser] = useState(null);
   const [accessLoading, setaccessLoading] = useState(true);
+  const [userLocation, setuserLocation] = useState(null);
 
   useEffect(() => {
     const isLogged = async () => {
@@ -55,6 +56,7 @@ export const MyContextProvider = ({ children }) => {
     const success = (position) => {
       const { latitude, longitude } = position.coords;
       console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+      setuserLocation({lat:latitude,lng:longitude})
     };
 
     const error = (err) => {
@@ -85,6 +87,7 @@ export const MyContextProvider = ({ children }) => {
         user,
         setuser,
         accessLoading,
+        userLocation
       }}
     >
       {children}
