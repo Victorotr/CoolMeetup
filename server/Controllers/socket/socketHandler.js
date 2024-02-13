@@ -33,23 +33,23 @@ export const configureSocket = (server) => {
 
     io.on('connection', (socket) => {
         console.log('Cliente conectado');
-        // Acceder a las cookies desde el objeto handshake
+ 
         try {
             const cookies = socket.handshake.cookies;
-
             const validate = jsonwebtoken.verify(cookies.user_token.token, process.env.SECRET_TOKEN);
-
             socket.userId = validate.id;
-            console.log(socket.userId)
+         
         } catch (error) {
             console.log(error)
             socket.disconnect();
         }
 
 
-        socket.on('message', (data) => {
-            console.log('Mensaje recibido:', data,socket.userId);
-           io.emit('messages',data)
+        socket.on('message',(data) =>{
+            console.log('Mensaje recibido:', data);
+            const now= new Date()
+            data.date= now
+            io.emit('messages',data)
         });
 
         socket.on('disconnect', () => {
