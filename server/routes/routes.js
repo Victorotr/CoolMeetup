@@ -32,7 +32,7 @@ const router = Router();
 
 router.get('/', getAllMeetups);
 
-router.get('/meetup/:id', getSingleMeetupDetails);
+router.get('/meetup/:id',isUser, getSingleMeetupDetails);
 
 router.post('/meetup', isUser, postMeetup);
 
@@ -50,7 +50,6 @@ router.post('/getMeetups', getAllMeetups);
 
 router.get('/islogged', isLogged);
 
-router.get('/meetup/:id', getSingleMeetupDetails);
 
 router.post('/signin', SignIn);
 

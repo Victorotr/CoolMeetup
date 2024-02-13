@@ -1,8 +1,9 @@
 import jsonwebtoken from 'jsonwebtoken';
 
 export const isUser = async (req, res, next) => {
-    console.log(req.cookies)
+ 
     try {
+        console.log('cookies is user',req.cookies)
         if (req.cookies && req.cookies.user_token.token){
             const validate = jsonwebtoken.verify(req.cookies.user_token.token, process.env.SECRET_TOKEN);
          

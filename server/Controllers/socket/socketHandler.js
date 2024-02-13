@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
 import cookieParser from 'cookie-parser';
 import jsonwebtoken from 'jsonwebtoken';
-
+import { postMessageMeetup } from '../../db/meetupQueries/postMessageMeetup.js';
 export let io; // Variable para almacenar el objeto io y poder exportarlo
 
 
@@ -14,7 +14,7 @@ export const configureSocket = (server) => {
                 'http://192.168.1.65:5173',
             ],
             credentials: true,
-        },
+        }, 
     });
 
     // Usar cookie-parser en el middleware de conexión de Socket.IO
@@ -32,24 +32,25 @@ export const configureSocket = (server) => {
     });
 
     io.on('connection', (socket) => {
-        console.log('Cliente conectado');
- 
+
         try {
             const cookies = socket.handshake.cookies;
             const validate = jsonwebtoken.verify(cookies.user_token.token, process.env.SECRET_TOKEN);
             socket.userId = validate.id;
-         
+            console.log(validate?.username + ' se ha connectado');
         } catch (error) {
             console.log(error)
             socket.disconnect();
         }
 
 
-        socket.on('message',(data) =>{
+        socket.on('message',async (data) => {
             console.log('Mensaje recibido:', data);
-            const now= new Date()
-            data.date= now
-            io.emit('messages',data)
+           const inserted = await postMessageMeetup(data.user.id,data.meetup,data.message)
+        console.log(inserted);
+        const now = new Date();
+        data.created_at = now;
+            io.emit('messages', data)
         });
 
         socket.on('disconnect', () => {
