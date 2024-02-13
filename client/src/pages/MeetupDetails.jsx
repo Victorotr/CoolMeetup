@@ -24,7 +24,9 @@ const MeetupDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user && !accessLoading){
+    console.log("first useeffect");
+    if (!user && !accessLoading) {
+      console.log("if first");
       settoast({
         on: true,
         type: "warning",
@@ -41,21 +43,22 @@ const MeetupDetails = () => {
   });
 
   useEffect(() => {
-    if (JoinLoading ) { return}
-    const getDetails = async () => {        
+    if (JoinLoading || !user) {
+      return;
+    }
+    const getDetails = async () => {
       setchatMessages([]);
       try {
         const res = await Instance.get("/meetup/" + id);
-        console.log(res)
+        console.log(res);
         if (res && res.status === 200) {
-          setmeetup(res.data.data); 
-          if(res.data.messages){
-          setchatMessages(res.data.messages)
-        }
+          setmeetup(res.data.data);
+          if (res.data.messages) {
+            setchatMessages(res.data.messages);
+          }
         } else {
           navigate("/meetup/notfound");
         }
-
       } catch (error) {
         console.log(error);
         navigate("/meetup/notfound");
@@ -64,11 +67,13 @@ const MeetupDetails = () => {
 
     getDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, JoinLoading]);
+  }, [id, JoinLoading, user]);
 
   const HandleJoin = async () => {
     try {
-      if (!meetup && !meetup.id_meetup) {return;}
+      if (!meetup && !meetup.id_meetup) {
+        return;
+      }
       const LeaveMeetup = async () => {
         setJoinLoading(true);
         const res = await Instance.get("/signUp/" + meetup?.id_meetup);
@@ -148,7 +153,8 @@ const MeetupDetails = () => {
     }
   };
   const HandleShare = async () => {
-    const link =import.meta.env.VITE_FRONT_URL + "/meetups/details/" + meetup.id_meetup;
+    const link =
+      import.meta.env.VITE_FRONT_URL + "/meetups/details/" + meetup.id_meetup;
 
     if (!navigator.clipboard) {
       settoast({
@@ -171,7 +177,6 @@ const MeetupDetails = () => {
   };
   useEffect(() => {
     if (!socket || !meetup) {
-      console.log("return");
       return;
     }
     const handleData = async (data) => {
@@ -180,13 +185,13 @@ const MeetupDetails = () => {
         AddMessage(data);
       }
     };
-   
+
     socket.on("messages", (data) => handleData(data));
     return () => {
       socket.off("messages");
-      socket.off('getmessages')
+      socket.off("getmessages");
     };
-  }, [socket, meetup,user]);
+  }, [socket, meetup, user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -260,12 +265,14 @@ const MeetupDetails = () => {
             <p className="">{meetup?.meetup_theme}</p>
             <p className=" font-semibold ">Donde?</p>
             <p className=" ">
-              {meetup?.meetup_address ? meetup.meetup_address : "Dirección disponible en el mapa"}
+              {meetup?.meetup_address
+                ? meetup.meetup_address
+                : "Dirección disponible en el mapa"}
             </p>
           </div>
         </div>
       </div>
-     
+
       <div className="w-full h-52 max-w-6xl">
         {isLoaded && (
           <GoogleMap
@@ -387,7 +394,9 @@ const MeetupDetails = () => {
                 <div
                   key={i}
                   className={`w-full flex  slideup ${
-                    item?.user?.id === user?.id ? "justify-end" : "justify-start"
+                    item?.user?.id === user?.id
+                      ? "justify-end"
+                      : "justify-start"
                   }`}
                 >
                   <span
@@ -395,7 +404,7 @@ const MeetupDetails = () => {
                       item?.user?.id === user?.id
                         ? "bg-gradient-to-b from-slate-100 via-zinc-100 to-indigo-100/20"
                         : "bg-gradient-to-br from-slate-100 via-zinc-50 to-cyan-100/20"
-                    }  shadow-md max-w-md p-1 py-2 min-w-[250px] flex flex-col justify-start items-start border rounded-md`}
+                    }  shadow-md max-w-md p-1 py-2 min-w-[250px] md:min-w-[350px] flex flex-col justify-start items-start border rounded-md`}
                   >
                     <span className="flex items-center gap-1 font-medium  rounded-full text-xs text-shadow-soft">
                       <img

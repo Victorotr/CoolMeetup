@@ -1,4 +1,4 @@
-import React,{ FC }  from "react";
+import React, { FC } from "react";
 import { Handler } from "../context/Context";
 import { MdHome, MdPeople, MdAdd, MdLogout } from "react-icons/md";
 import { LiaSignInAltSolid } from "react-icons/lia";
@@ -12,12 +12,14 @@ const SideBar: FC = () => {
   const handleLogOut = async () => {
     LogOut();
     setuser(null);
-    settoast({ on: true, type: 'success', text: 'Usuario desconectado' });
+    settoast({ on: true, type: "success", text: "Usuario desconectado" });
   };
 
   return (
     <div
-      className={`${menuOn ? "w-72" : "w-0"} z-50 shadow-2xl transition-all bg-zinc-50 overflow-hidden absolute top-14 right-0 h-full rounded-tl-lg`}
+      className={`${
+        menuOn ? "w-72" : "w-0"
+      } z-50 shadow-2xl transition-all bg-zinc-50 overflow-hidden absolute top-14 right-0 h-full rounded-tl-lg`}
     >
       <ul className="w-full  text-md font-semibold flex flex-col">
         <li
@@ -47,13 +49,12 @@ const SideBar: FC = () => {
               onClick={() => navigate(`/user/details/${user?.id}`)}
               className="p-4 border-y transition-all flex items-center justify-start shadow-inner text-zinc-900/90 gap-1 hover:scale-105 cursor-pointer"
             >
-            
-                <img
-                  className="w-8 rounded-full object-cover border border-zinc-400/80"
-                  src={user.avatar || '/src/assets/no_picture.png'}
-                  alt="Avatar del usuario"
-                />
-              
+              <img
+                className="w-8 rounded-full object-cover border border-zinc-400/80"
+                src={user.avatar || "/src/assets/no_picture.png"}
+                alt="Avatar del usuario"
+              />
+
               <div className="flex flex-col justify-center items-start">
                 <span className="text-sm">{user.username}</span>
                 <span className="text-xs font-normal">Ir al perfil</span>

@@ -1,25 +1,29 @@
 import React, { ReactElement, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HandleDate from "../functions/HandleDate";
-import { FaUsers,  FaArrowRight, FaWalking } from "react-icons/fa";
-import { Meetup ,MeetupCardProps} from "../Interfaces/TypesInterfaces";
+import { FaUsers, FaArrowRight, FaWalking } from "react-icons/fa";
+import { MeetupCardProps } from "../Interfaces/TypesInterfaces";
 
-
-const MeetupCard: React.FC<MeetupCardProps> = ({ meetup ,mapcenter}: MeetupCardProps): ReactElement => {
+const MeetupCard: React.FC<MeetupCardProps> = ({
+  meetup,
+  mapcenter,
+}: MeetupCardProps): ReactElement => {
   const navigate = useNavigate();
   const [isOutDated, setisOutDated] = useState(false);
   const [isSelected, setisSelected] = useState(false);
   useEffect(() => {
-   
-   const coordenades = {lat:meetup.x_cordinate,lng:meetup.y_cordinate}
- 
-   if(mapcenter.lat === coordenades.lat && mapcenter.lng === coordenades.lng){
-    setisSelected(true)
-   }else{
-  setisSelected(false)
-   }
-  }, [mapcenter])
-  
+    const coordenades = { lat: meetup.x_cordinate, lng: meetup.y_cordinate };
+
+    if (
+      mapcenter.lat === coordenades.lat &&
+      mapcenter.lng === coordenades.lng
+    ) {
+      setisSelected(true);
+    } else {
+      setisSelected(false);
+    }
+  }, [mapcenter]);
+
   useEffect(() => {
     const now = new Date();
     const meetupDate = new Date(meetup.meetup_datetime);
@@ -28,7 +32,6 @@ const MeetupCard: React.FC<MeetupCardProps> = ({ meetup ,mapcenter}: MeetupCardP
     }
   }, [meetup.meetup_datetime]);
 
-
   const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     navigate(`/user/details/${meetup.main_user_details.user_id}`);
@@ -36,10 +39,18 @@ const MeetupCard: React.FC<MeetupCardProps> = ({ meetup ,mapcenter}: MeetupCardP
 
   return (
     <div
-      className={`${isSelected ?  'border-4 border-blue-500/80' : 'border border-zinc-500/5' } flex relative max-w-md sm:max-w-[350px] sm:min-w-[350px] w-full flex-col  rounded-md overflow-hidden justify-between shadow-lg hover:scale-105 transition-all `}
+      className={`${
+        isSelected ? "border-4 border-blue-500/80" : "border border-zinc-500/5"
+      } flex relative max-w-md sm:max-w-[350px] sm:min-w-[350px] w-full flex-col  rounded-md overflow-hidden justify-between shadow-lg hover:scale-105 transition-all `}
     >
-      <span className={`${meetup?.cancelled ? 'flex' : isOutDated ? 'flex' : 'hidden'}  bg-zinc-500/10 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}>
-        <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">MEETUP <br /> FINALIZADO O CANCELADO</p>
+      <span
+        className={`${
+          meetup?.cancelled ? "flex" : isOutDated ? "flex" : "hidden"
+        }  bg-zinc-500/10 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}
+      >
+        <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">
+          MEETUP <br /> FINALIZADO O CANCELADO
+        </p>
       </span>
 
       <span className="absolute top-2 right-2 border shadow-md font-semibold text-xs  bg-zinc-50 rounded-full px-3 py-1.5">
@@ -47,7 +58,9 @@ const MeetupCard: React.FC<MeetupCardProps> = ({ meetup ,mapcenter}: MeetupCardP
       </span>
 
       <img
-        className={`${meetup.meetup_image ? 'object-cover' : 'object-contain opacity-70'} shadow-inner rounded-t-md border border-blue-600/20 max-h-52 w-full  hover:scale-105 transition-all`}
+        className={`${
+          meetup.meetup_image ? "object-cover" : "object-contain opacity-70"
+        } shadow-inner rounded-t-md border border-blue-600/20 max-h-52 w-full  hover:scale-105 transition-all`}
         src={meetup.meetup_image || "/src/assets/no_meetup_image.png"}
         alt="meetup image"
       />
@@ -82,7 +95,7 @@ const MeetupCard: React.FC<MeetupCardProps> = ({ meetup ,mapcenter}: MeetupCardP
             >
               Me apunto!
               <span>
-               <FaWalking/>
+                <FaWalking />
               </span>{" "}
             </a>
           </div>
@@ -113,7 +126,9 @@ const MeetupCard: React.FC<MeetupCardProps> = ({ meetup ,mapcenter}: MeetupCardP
           >
             <img
               className="w-8 h-8 rounded-full object-cover "
-              src={meetup.main_user_details.avatar || "/src/assets/no_picture.png"}
+              src={
+                meetup.main_user_details.avatar || "/src/assets/no_picture.png"
+              }
               alt="user picture"
             />
             <p className="font-medium text-sm">

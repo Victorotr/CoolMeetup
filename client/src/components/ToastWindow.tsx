@@ -35,7 +35,7 @@ const ToastWindow: FC = () => {
     <div
       className={`${
         toast.text ? "flex" : "hidden"
-      } ${toast.on ? "slidedown" : "slideup"} ${
+      } ${toast.on ? "slidedown" : "slideupToast"} ${
         toast.type
       } ${toastType === 'warning' ? 'border-amber-600/50' : toastType === 'error' ? 'border-red-500/50' : 'border-blue-500/50'} text-sm items-center justify-between gap-2 z-50 fixed p-2 rounded-md shadow-xl top-16 max-w-sm sm:max-w-xl bg-zinc-50 left-0 right-0 mx-auto border-l-8`}
     >

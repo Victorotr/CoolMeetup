@@ -23,7 +23,7 @@ export const Handler = () => {
 export const MyContextProvider = ({ children }) => {
   const [myData, setMyData] = useState("inital Data");
   const [menuOn, setmenuOn] = useState(false);
-  const [toast, settoast] = useState({ on: false, type: "", text: "" });
+  const [toast, settoast] = useState({ on: false, type: "",text: "" });
   const [user, setuser] = useState(null);
   const [accessLoading, setaccessLoading] = useState(true);
   const [userLocation, setuserLocation] = useState(null);
@@ -62,7 +62,7 @@ export const MyContextProvider = ({ children }) => {
     };
 
     const error = (err) => {
-      console.error(`Error getting geolocation: ${err.message}`);
+    console.error(`Error getting geolocation: ${err.message}`);
     };
 
     navigator.geolocation.getCurrentPosition(success, error);

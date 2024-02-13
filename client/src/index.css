@@ -61,12 +61,12 @@
   animation: menuoff 0.3s forwards;
 }
 .slidedown {
-  animation: slidedown 0.5s forwards;
+  animation: slidedown 0.5s ;
 }
-.slideup {
+.slideupToast {
   animation: slideup 0.5s forwards;
 }
-.slideup {
+.slideup{
   animation: slidein 0.5s forwards;
 }
 .generalButton {
