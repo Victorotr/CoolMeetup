@@ -24,7 +24,7 @@ const MeetupDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user && !accessLoading) {
+    if (!user && !accessLoading){
       settoast({
         on: true,
         type: "warning",
@@ -41,15 +41,21 @@ const MeetupDetails = () => {
   });
 
   useEffect(() => {
-    if (JoinLoading) { return}
-    const getDetails = async () => {
+    if (JoinLoading ) { return}
+    const getDetails = async () => {        
+      setchatMessages([]);
       try {
         const res = await Instance.get("/meetup/" + id);
+        console.log(res)
         if (res && res.status === 200) {
-          setmeetup(res.data.data);
+          setmeetup(res.data.data); 
+          if(res.data.messages){
+          setchatMessages(res.data.messages)
+        }
         } else {
           navigate("/meetup/notfound");
         }
+
       } catch (error) {
         console.log(error);
         navigate("/meetup/notfound");
@@ -62,7 +68,7 @@ const MeetupDetails = () => {
 
   const HandleJoin = async () => {
     try {
-      if (!meetup && !meetup.id_meetup) {  return;}
+      if (!meetup && !meetup.id_meetup) {return;}
       const LeaveMeetup = async () => {
         setJoinLoading(true);
         const res = await Instance.get("/signUp/" + meetup?.id_meetup);
@@ -174,11 +180,13 @@ const MeetupDetails = () => {
         AddMessage(data);
       }
     };
+   
     socket.on("messages", (data) => handleData(data));
     return () => {
       socket.off("messages");
+      socket.off('getmessages')
     };
-  }, [socket, meetup]);
+  }, [socket, meetup,user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -245,7 +253,7 @@ const MeetupDetails = () => {
           <p className="">{meetup?.meetup_description}</p>
           <div className="flex flex-col gap-3">
             <p className="font-semibold">Cuando?</p>
-            <p className="flex font-semibold">
+            <p className="flex font-semibold text-sm">
               {HandleDate(meetup?.meetup_datetime)}
             </p>
             <p className=" font-semibold">Temática</p>
@@ -257,7 +265,7 @@ const MeetupDetails = () => {
           </div>
         </div>
       </div>
-      <div className="px-2 "></div>
+     
       <div className="w-full h-52 max-w-6xl">
         {isLoaded && (
           <GoogleMap
@@ -321,7 +329,7 @@ const MeetupDetails = () => {
               : "participará"
             : "partciparán"}
         </p>
-        <div className="w-full flex flex-wrap gap-2 mt-2">
+        <div className="no-scrollbar py-2  w-full flex flex-wrap gap-2 mt-2 max-h-20 overflow-scroll">
           {meetup?.assistants?.length &&
             meetup?.assistants.map((item) => (
               <span
@@ -379,12 +387,12 @@ const MeetupDetails = () => {
                 <div
                   key={i}
                   className={`w-full flex  slideup ${
-                    item.user.id === user?.id ? "justify-end" : "justify-start"
+                    item?.user?.id === user?.id ? "justify-end" : "justify-start"
                   }`}
                 >
                   <span
                     className={`scroller-content ${
-                      item.user.id === user?.id
+                      item?.user?.id === user?.id
                         ? "bg-gradient-to-b from-slate-100 via-zinc-100 to-indigo-100/20"
                         : "bg-gradient-to-br from-slate-100 via-zinc-50 to-cyan-100/20"
                     }  shadow-md max-w-md p-1 py-2 min-w-[250px] flex flex-col justify-start items-start border rounded-md`}
@@ -392,19 +400,19 @@ const MeetupDetails = () => {
                     <span className="flex items-center gap-1 font-medium  rounded-full text-xs text-shadow-soft">
                       <img
                         className="w-6 h-6 rounded-full border"
-                        src={item.user.avatar || "/src/assets/no_picture.png"}
+                        src={item?.user?.avatar || "/src/assets/no_picture.png"}
                         alt="user-picture"
                       />
-                      {item.user.username === user?.username
+                      {item?.user?.username === user?.username
                         ? "Tú"
-                        : item.user.username}{" "}
-                      {meetup?.id_main_user === item.user.id
-                        ? "(creador de este meetup)"
+                        : item?.user?.username}{" "}
+                      {meetup?.id_main_user === item?.user?.id
+                        ? "(organizador)"
                         : ""}
                     </span>
-                    <span className="px-8">{item.message}</span>
+                    <span className="px-8">{item?.message}</span>
                     <span className="w-full text-xs flex justify-end text-zinc-900/70 text-shadow-soft">
-                      {HandleDateMin(item.date)}
+                      {HandleDateMin(item?.created_at)}
                     </span>
                   </span>
                 </div>
@@ -435,6 +443,7 @@ const MeetupDetails = () => {
                 onChange={(e) => setmessage(e.target.value)}
                 value={message}
                 type="text"
+                disabled={isOutDated || meetup?.cancelled}
                 placeholder="Escribe algo aqui..."
                 className="w-full bg-transparent h-full px-5 border-none focus:outline-none "
               />

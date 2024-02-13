@@ -19,7 +19,7 @@ const Nav: FC = () => {
         <img className="w-8 h-8 drop-shadow-lg" src='/map.png' alt="mapa" />
         <p className="text-zinc-900/80 text-md ">Cool Meetups</p>
       </div>
-      <div className="hidden md:flex  max-w-sm w-full border-x rounded-full">
+      <div className="hidden md:flex  max-w-sm w-full rounded-full">
         <ul className="w-full justify-between  gap-2  text-md font-semibold flex text-zinc-900/80 ">
           <li
             onClick={() => navigate("/")}
