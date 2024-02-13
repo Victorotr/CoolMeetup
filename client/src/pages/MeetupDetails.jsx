@@ -6,6 +6,7 @@ import nouserpicure from "../assets/no_picture.png";
 import { Handler } from "../context/Context";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import HandleDate from "../functions/HandleDate";
+import HandleDateMin from "../functions/HandleDateMin";
 import { Instance } from "../axios/Instance";
 import Swal from "sweetalert2";
 import { MdShare } from "react-icons/md";
@@ -19,7 +20,7 @@ const MeetupDetails = () => {
   const [userJoined, setuserJoined] = useState(false);
   const [isOutDated, setisOutDated] = useState(false);
   const [chatMessages, setchatMessages] = useState([]);
-  const [message, setmessage] = useState('');
+  const [message, setmessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,16 +41,13 @@ const MeetupDetails = () => {
   });
 
   useEffect(() => {
-    if (JoinLoading) {
-      return;
-    }
+    if (JoinLoading) { return}
     const getDetails = async () => {
       try {
         const res = await Instance.get("/meetup/" + id);
         if (res && res.status === 200) {
           setmeetup(res.data.data);
         } else {
-     
           navigate("/meetup/notfound");
         }
       } catch (error) {
@@ -61,43 +59,22 @@ const MeetupDetails = () => {
     getDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, JoinLoading]);
-    useEffect(() => {
-    if (!socket || !meetup) {
-      return;
-    }
-    const handleData = async(data)=>{
-      if(data.meetup === meetup.id_meetup){
-       console.log(data)
-       //setTheArray(oldArray => [...oldArray, newElement]);
-       setchatMessages(oldMessages =>[...oldMessages,data]);
-     
-      }
-    }
-    socket.on('messages',(data)=>handleData(data))
-    
-  }, [socket,meetup]);
 
   const HandleJoin = async () => {
     try {
-      if (!meetup && !meetup.id_meetup) {
-        return;
-      }
+      if (!meetup && !meetup.id_meetup) {  return;}
       const LeaveMeetup = async () => {
         setJoinLoading(true);
         const res = await Instance.get("/signUp/" + meetup?.id_meetup);
-      
-        if (res && res.status === 200 && res.data.message);
-        console.log('if fired')
-        setJoinLoading(false);
+        if (res && res.status === 200 && res.data.message)
+          setJoinLoading(false);
       };
       if (userJoined) {
-        console.log("if");
         Swal.fire({
           title: "Estás seguro que quieres desapuntarte?",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
           confirmButtonText: "Si! Ya no quiero ir!",
           cancelButtonText: "Cancelar",
         }).then((result) => {
@@ -141,8 +118,6 @@ const MeetupDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetup, user, JoinLoading]);
 
-
-
   const HandleDelete = async () => {
     if (!meetup && !meetup.id_meetup) {
       return;
@@ -154,7 +129,6 @@ const MeetupDetails = () => {
       });
 
       if (res && res.status === 200) {
-        console.log(res.data);
         settoast({
           on: true,
           type: res.data.data.done ? "success" : "warning",
@@ -168,8 +142,7 @@ const MeetupDetails = () => {
     }
   };
   const HandleShare = async () => {
-    const link =
-      import.meta.env.VITE_API_URL + "/meetups/details/" + meetup.id_meetup;
+    const link =import.meta.env.VITE_FRONT_URL + "/meetups/details/" + meetup.id_meetup;
 
     if (!navigator.clipboard) {
       settoast({
@@ -187,20 +160,50 @@ const MeetupDetails = () => {
       text: `Enlace copiado`,
     });
   };
+  const AddMessage = (data) => {
+    setchatMessages((oldMessages) => [...oldMessages, data]);
+  };
+  useEffect(() => {
+    if (!socket || !meetup) {
+      console.log("return");
+      return;
+    }
+    const handleData = async (data) => {
+      if (data.meetup === meetup.id_meetup) {
+        console.log(data);
+        AddMessage(data);
+      }
+    };
+    socket.on("messages", (data) => handleData(data));
+    return () => {
+      socket.off("messages");
+    };
+  }, [socket, meetup]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
-    if(!socket){
-      settoast({on:true,type:'warning',message:'No ha sido posible connectarse con el chat,intentelo más tarde'})
-    }
-    socket.emit('message',{user:user,message:message,meetup:meetup.id_meetup})
 
+    if (!socket) {
+      settoast({
+        on: true,
+        type: "warning",
+        message:
+          "No ha sido posible connectarse con el chat,intentelo más tarde",
+      });
+    }
+    socket.emit("message", {
+      user: user,
+      message: message,
+      meetup: meetup.id_meetup,
+    });
+    setmessage("");
   };
+
   return (
     <div
       className={`${
         isOutDated || meetup?.cancelled ? "opacity-70" : ""
-      } w-full max-w-6xl text-md flex flex-col mx-auto py-10`}
+      } w-full max-w-6xl text-md flex flex-col mx-auto py-10 `}
     >
       <div className="flex items-center justify-between mb-5 px-1">
         <h1 className=" text-xl font-semibold">{meetup?.meetup_title}</h1>
@@ -228,16 +231,16 @@ const MeetupDetails = () => {
           </span>
         </div>
       </div>
-      <div className="md:flex items-start md:mb-10">
+      <div className="md:flex md:items-center md:gap-2 items-start md:mb-10">
         <img
-          className={`w-full h-96  ${
+          className={`w-full h-72  ${
             meetup?.meetup_image ? "object-cover" : "object-contain"
           }`}
           src={meetup?.meetup_image || nopicture}
           alt="meetup image"
         />
 
-        <div className=" px-3 py-3 flex flex-col gap-2 min-w-[200px]">
+        <div className="md:border md:rounded-md md:shadow-md py-2 px-3  h-full flex flex-col gap-2 min-w-[200px]">
           <p className=" font-semibold">Descripción</p>
           <p className="">{meetup?.meetup_description}</p>
           <div className="flex flex-col gap-3">
@@ -249,7 +252,7 @@ const MeetupDetails = () => {
             <p className="">{meetup?.meetup_theme}</p>
             <p className=" font-semibold ">Donde?</p>
             <p className=" ">
-              {meetup?.meetup_address ? meetup.meetup_address : ""}
+              {meetup?.meetup_address ? meetup.meetup_address : "Dirección disponible en el mapa"}
             </p>
           </div>
         </div>
@@ -309,7 +312,7 @@ const MeetupDetails = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-start items-start py-3  px-2">
+      <div className="flex flex-col justify-start items-start py-3 px-2">
         <p className="flex items-center justify-start gap-2 font-semibold">
           {meetup?.assistants?.length ? meetup.assistants.length : "0"} personas{" "}
           {meetup?.assistants?.length
@@ -361,29 +364,86 @@ const MeetupDetails = () => {
         </button>
       </div>
 
-      <p className="text-xl my-5 font-medium">{meetup?.meetup_title} Chat</p>
-      <div className="border w-full  flex flex-col justify-between">
-        <div className="flex flex-col my-5 max-h-[500px] overflow-y-scroll">
-          {chatMessages.length
-            ? chatMessages.map((item,i) => 
-            <span key={i} className="flex flex-col items-start border" >
-            <span className="flex items-center gap-1">
-            <img className="w-8 h-8 rounded-full border" src={item.user.avatar || '/src/assets/no_picture.png'} alt="user-picture"  />
-            {item.user.username}</span>
-            <span className="px-9">{item.message}</span>
-            </span>
-            )
-            : "Tienes alguna duda o quieres proponer algo? Sé el primero en escribir!"}
+      <p className=" px-2 text-xl mt-5 font-medium text-shadow-soft">
+        {meetup?.meetup_title}Chat
+      </p>
+      <p className="px-2 text-xs mb-5 font-medium text-shadow-soft">
+        Utiliza el chat para contactar con los usuarios que participarán o
+        quieran saber más sobre este Meetup.
+      </p>
+      <div className="border  justify-between shadow-inner">
+        <div className="scroller">
+          <div className="scroller-content  flex flex-col gap-1 px-3">
+            {chatMessages.length ? (
+              chatMessages.map((item, i) => (
+                <div
+                  key={i}
+                  className={`w-full flex  slideup ${
+                    item.user.id === user?.id ? "justify-end" : "justify-start"
+                  }`}
+                >
+                  <span
+                    className={`scroller-content ${
+                      item.user.id === user?.id
+                        ? "bg-gradient-to-b from-slate-100 via-zinc-100 to-indigo-100/20"
+                        : "bg-gradient-to-br from-slate-100 via-zinc-50 to-cyan-100/20"
+                    }  shadow-md max-w-md p-1 py-2 min-w-[250px] flex flex-col justify-start items-start border rounded-md`}
+                  >
+                    <span className="flex items-center gap-1 font-medium  rounded-full text-xs text-shadow-soft">
+                      <img
+                        className="w-6 h-6 rounded-full border"
+                        src={item.user.avatar || "/src/assets/no_picture.png"}
+                        alt="user-picture"
+                      />
+                      {item.user.username === user?.username
+                        ? "Tú"
+                        : item.user.username}{" "}
+                      {meetup?.id_main_user === item.user.id
+                        ? "(creador de este meetup)"
+                        : ""}
+                    </span>
+                    <span className="px-8">{item.message}</span>
+                    <span className="w-full text-xs flex justify-end text-zinc-900/70 text-shadow-soft">
+                      {HandleDateMin(item.date)}
+                    </span>
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="w-full h-[250px] flex items-center justify-center border text-sm font-medium text-center">
+                Tienes alguna duda o quieres proponer algo? <br /> Sé el primero
+                en escribir!
+              </p>
+            )}
+          </div>
         </div>
-        <div className="w-full h-12 border-2 flex items-center justify-between ">
-          <form onSubmit={handleSubmit} className="w-full h-12 border-2 flex items-center justify-between ">
-            <input 
-            onChange={(e)=>setmessage(e.target.value)}
-            value={message}
-            type="text" className="border w-full h-full" />
-            <button type="submit"><span className="rounded-md text-zinc-50 font-medium flex items-center p-2 border bg-indigo-500">
-              <IoIosSend /> Enviar
-            </span></button>
+
+        <div className="w-full flex items-center justify-between my-3">
+          <form
+            onSubmit={handleSubmit}
+            className=" h-10 flex items-center w-full justify-between"
+          >
+            <div className="border bg-zinc-500/5 shadow-inner rounded-full flex items-center  h-full justify-between px-1 w-full">
+              <span className="flex items-center h-full my-1  border rounded-full">
+                <img
+                  className="w-10 h-10 min-w-10 min-h-10 rounded-full border"
+                  src={user?.avatar || "/src/assets/no_picture.png"}
+                  alt="user picture"
+                />
+              </span>
+              <input
+                onChange={(e) => setmessage(e.target.value)}
+                value={message}
+                type="text"
+                placeholder="Escribe algo aqui..."
+                className="w-full bg-transparent h-full px-5 border-none focus:outline-none "
+              />
+            </div>
+            <button type="submit" className="h-full ">
+              <span className="rounded-full px-2 h-full gap-1 text-zinc-50 text-xs font-medium flex items-center  border bg-indigo-500">
+                <IoIosSend /> Enviar
+              </span>
+            </button>
           </form>
         </div>
       </div>

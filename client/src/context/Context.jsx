@@ -79,19 +79,17 @@ export const MyContextProvider = ({ children }) => {
   }, []);
   useEffect(() => {
     if(user && user.id){
-      console.log('there is user',user);
-     
+   
       const socketConn = io(import.meta.env.VITE_API_URL, {
-        withCredentials: true // Asegúrate de incluir esta opción para enviar las cookies
+        withCredentials: true 
       });  
       socketConn?.emit('user_id',user.id || null)
       if(socketConn){
         setsocket(socketConn) ;
-    
       }
      
       socket?.on('disconnect', () => {
-        console.log('Desconectado del servidor de Socket.io');
+      console.log('Desconectado del servidor de Socket.io');
       });
       return () => {
            if(socket) socket.disconnect();
