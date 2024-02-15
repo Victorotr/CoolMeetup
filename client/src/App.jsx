@@ -17,6 +17,7 @@ import Loading from "./components/Loading";
 import MeetupDetails from "./pages/MeetupDetails";
 import RecoverPwd from "./pages/RecoverPwd";
 import ResetPwd from "./pages/ResetPwd";
+import MeetupNotFound from "./pages/MeetupsNotFound";
 
 function App() {
   const { myData, setMyData, setmenuOn } = Handler();
@@ -32,7 +33,7 @@ function App() {
         e.stopPropagation();
         setmenuOn(false);
       }}
-      className={` min-h-screen  relative font-Inter pb-20`}
+      className={` min-h-screen  relative font-Barlow pb-20`}
     >
       <Nav />
       <Loading />
@@ -52,6 +53,7 @@ function App() {
         <Route path="/recoverpwd/" element={<RecoverPwd />} />
         <Route path="/resetpwd/" element={<ResetPwd />} />
         <Route path="/*" element={<NotFound />} />
+        <Route path="/meetup/notfound" element={<MeetupNotFound />} />
       </Routes>
     </main>
   );

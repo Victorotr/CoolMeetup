@@ -75,11 +75,12 @@ export const postMeetup = async (req, res, next) => {
     }
     const [insert_meetup] = await connection.query(
       `
-    INSERT INTO meetups(id_main_user,meetup_title,meetup_description,meetup_country,meetup_town,x_cordinate,y_cordinate,meetup_datetime,meetup_theme,meetup_image,meetup_image_id) VALUES(?,?,?,?,?,?,?,?,?,?,?);`,
+    INSERT INTO meetups(id_main_user,meetup_title,meetup_description,meetup_address,meetup_country,meetup_town,x_cordinate,y_cordinate,meetup_datetime,meetup_theme,meetup_image,meetup_image_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);`,
       [
         id,
         title,
         description,
+        meetupObject.address.direction,
         meetupObject.address.country,
         meetupObject.address.city,
         meetupObject.address.coordenades[0],
@@ -90,7 +91,7 @@ export const postMeetup = async (req, res, next) => {
         meetupObject.image_id
       ]
     );
-    console.log(insert_meetup);
+   
     if (insert_meetup.affectedRows > 0) {
       res
         .status(200)
@@ -108,7 +109,12 @@ export const postMeetup = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(403).send({ status: 'FAILED', message: 'Algo ha ido mal' });
+    try {
+      fs.unlinkSync(`./Controllers/users/meetup/${req.file.originalname}`);
+    } catch (error) {
+      console.log(error)
+    }
+      res.status(403).send({ status: 'FAILED', message: 'Algo ha ido mal' });
   }finally{
     if(connection){connection.release()}
   }

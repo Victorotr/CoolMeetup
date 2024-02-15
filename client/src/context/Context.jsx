@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { HandleVisit } from "../functions/SetVisit";
 import axios from "axios";
+import { io } from 'socket.io-client';
 
 const LoggedInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -22,9 +23,11 @@ export const Handler = () => {
 export const MyContextProvider = ({ children }) => {
   const [myData, setMyData] = useState("inital Data");
   const [menuOn, setmenuOn] = useState(false);
-  const [toast, settoast] = useState({ on: false, type: "", text: "" });
+  const [toast, settoast] = useState({ on: false, type: "",text: "" });
   const [user, setuser] = useState(null);
   const [accessLoading, setaccessLoading] = useState(true);
+  const [userLocation, setuserLocation] = useState(null);
+  const [socket, setsocket] = useState(null)
 
   useEffect(() => {
     const isLogged = async () => {
@@ -55,10 +58,11 @@ export const MyContextProvider = ({ children }) => {
     const success = (position) => {
       const { latitude, longitude } = position.coords;
       console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+      setuserLocation({lat:latitude,lng:longitude})
     };
 
     const error = (err) => {
-      console.error(`Error getting geolocation: ${err.message}`);
+    console.error(`Error getting geolocation: ${err.message}`);
     };
 
     navigator.geolocation.getCurrentPosition(success, error);
@@ -73,6 +77,27 @@ export const MyContextProvider = ({ children }) => {
       window.removeEventListener("beforeunload", handleUnload);
     };
   }, []);
+  useEffect(() => {
+    if(user && user.id){
+   
+      const socketConn = io(import.meta.env.VITE_API_URL, {
+        withCredentials: true 
+      });  
+      socketConn?.emit('user_id',user.id || null)
+      if(socketConn){
+        setsocket(socketConn) ;
+      }
+     
+      socket?.on('disconnect', () => {
+      console.log('Desconectado del servidor de Socket.io');
+      });
+      return () => {
+           if(socket) socket.disconnect();
+      };
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
+  
   return (
     <MyContext.Provider
       value={{
@@ -85,6 +110,8 @@ export const MyContextProvider = ({ children }) => {
         user,
         setuser,
         accessLoading,
+        userLocation,
+        socket
       }}
     >
       {children}

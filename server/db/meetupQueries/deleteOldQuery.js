@@ -29,7 +29,6 @@ export const deleteOldMeetupQuery = async () => {
 
     try {
 
-
         const [deleteMeetups] = await connection.query(` 
         DELETE FROM meetups
         WHERE meetup_datetime < ?;`, [MaxDate]

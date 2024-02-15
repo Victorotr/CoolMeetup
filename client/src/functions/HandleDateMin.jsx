@@ -1,7 +1,6 @@
 
-import {  CiCalendar } from "react-icons/ci";
 
-const HandleDate = (date) => {
+const HandleDateMin = (date) => {
   const DateIn = new Date(date);
 
 
@@ -20,7 +19,7 @@ const HandleDate = (date) => {
     "Dic",
   ];
   const month = DateIn.getMonth();
-  const year = DateIn.getFullYear();
+ 
   const day = DateIn.getDate() < 10 ? "0" + DateIn.getDate() : DateIn.getDate();
   const hours =
     DateIn.getHours() < 10 ? "0" + DateIn.getHours() : DateIn.getHours();
@@ -29,9 +28,9 @@ const HandleDate = (date) => {
 
   return (
     <span className="flex items-center justify-start gap-[2px] font-medium ">
-     <CiCalendar /> {day} {monthsNames[month]} {year} <span className="font-normal">a las </span>{hours}:{minutes}
+    {day} {monthsNames[month]} {hours}:{minutes}
     </span>
   );
 };
 
-export default HandleDate;
+export default HandleDateMin;

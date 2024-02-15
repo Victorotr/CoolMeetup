@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Lora&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,14 +18,26 @@
   }
 }
 
+.scroller {
+  overflow: auto;
+  height: 250px;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-anchor: auto; 
+}
+.scroller .scroller-content .item {
+ 
+  transform: translateZ(0); /* fixes a bug in Safari iOS where the scroller doesn't update */
+}
+
 .custom-drop-shadow {
   filter: drop-shadow(20px 30px 10px #00000059);
 }
 .text-shadow-soft {
-  text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.103);
+  text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.26);
 }
 .text-shadow-medium {
-  text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.303);
+  text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.192);
 }
 .text-shadow {
   text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.486);
@@ -47,10 +61,13 @@
   animation: menuoff 0.3s forwards;
 }
 .slidedown {
-  animation: slidedown 0.5s forwards;
+  animation: slidedown 0.5s ;
 }
-.slideup {
+.slideupToast {
   animation: slideup 0.5s forwards;
+}
+.slideup{
+  animation: slidein 0.5s forwards;
 }
 .generalButton {
   cursor: pointer;
@@ -131,7 +148,16 @@
     transform: translateY(-10px);
   }
 }
-
+@keyframes slidein{
+  from {
+    opacity: 0;
+    transform: translateY(0px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-10px);
+  }
+}
 .pl {
   width: 6em;
   height: 6em;

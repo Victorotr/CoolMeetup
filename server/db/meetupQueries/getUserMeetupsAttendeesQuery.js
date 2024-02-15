@@ -26,7 +26,7 @@ export const getUserMeetupsAttendeesQuery = async (id) => {
 
       [id]
     );
-    console.log('getuserMettupsAtendees', userMeetupsAttendees);
+   
     const parsedArray = userMeetupsAttendees.map((item) => {
       return { ...item, main_user_details: JSON.parse(item.main_user_details) };
     });
