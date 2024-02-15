@@ -50,7 +50,6 @@ router.post('/getMeetups', getAllMeetups);
 
 router.get('/islogged', isLogged);
 
-
 router.post('/signin', SignIn);
 
 router.get('/logout', LogOut);

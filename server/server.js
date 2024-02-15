@@ -8,14 +8,17 @@ import { configureSocket } from './Controllers/socket/socketHandler.js';
 
 import { deleteOldMeetups } from './Controllers/meetups/deleteOldMeetups.js';
 const app = express();
+
 const server = http.createServer(app);
 
 configureSocket(server);
 
 app.use(morgan('dev'));
+
 app.use(cookieParser());
 
 app.use(express.static('public'));
+
 app.use(express.json());
 
 // Express cors
@@ -45,11 +48,11 @@ app.use((req, res) => {
 // Middleware de gestión de errores
 app.use((error, req, res, next) => {
   console.error('app error catch', error);
-
+ 
   res.status(error.httpStatus || 500).send({
     status: 'error',
     message: error.message, 
-  });  
+  });   
   
 });   
 
