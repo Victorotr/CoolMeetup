@@ -14,7 +14,7 @@ import { IoIosSend } from "react-icons/io";
 
 const MeetupDetails = () => {
   const [JoinLoading, setJoinLoading] = useState(false);
-  const { toast, settoast, user, accessLoading, socket } = Handler();
+  const { toast, settoast, user, accessLoading, socket,setloading } = Handler();
   const { id } = useParams();
   const [meetup, setmeetup] = useState(null);
   const [userJoined, setuserJoined] = useState(false);
@@ -25,6 +25,7 @@ const MeetupDetails = () => {
 
   useEffect(() => {
     console.log("first useeffect");
+  
     if (!user && !accessLoading) {
       console.log("if first");
       settoast({
@@ -49,6 +50,7 @@ const MeetupDetails = () => {
     const getDetails = async () => {
       setchatMessages([]);
       try {
+        setloading(true)
         const res = await Instance.get("/meetup/" + id);
         console.log(res);
         if (res && res.status === 200) {
@@ -59,6 +61,7 @@ const MeetupDetails = () => {
         } else {
           navigate("/meetup/notfound");
         }
+        setloading(false)
       } catch (error) {
         console.log(error);
         navigate("/meetup/notfound");
@@ -353,7 +356,7 @@ const MeetupDetails = () => {
             ))}
         </div>
       </div>
-      <div className="my-4 w-full  shadow-lg flex flex-col gap-1">
+      <div className="my-4 w-full  shadow-lg flex flex-col gap-3">
         <button
           onClick={HandleJoin}
           disabled={JoinLoading || isOutDated || meetup?.cancelled}

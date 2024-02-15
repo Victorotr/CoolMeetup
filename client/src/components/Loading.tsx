@@ -2,10 +2,10 @@ import { Handler } from "../context/Context";
 
 import React,{ FC } from "react";
 const Loading: FC = () => {
-  const { accessLoading } = Handler();
+  const { accessLoading,loading } = Handler();
 
   return (
-    <div className={`${!accessLoading ? 'hidden':'flex'} z-50 w-screen min-h-screen h-screen flex flex-col items-center justify-center border absolute top-0 left-0 bg-zinc-50/80`}>
+    <div className={`${!accessLoading || !loading ? 'hidden':'flex'} z-50 w-screen min-h-screen h-screen flex flex-col items-center justify-center border absolute top-0 left-0 bg-zinc-50/80`}>
       <p className="my-5 text-xl font-semibold">Cargando...</p>
       <svg className="pl" width="240" height="240" viewBox="0 0 240 240">
         <circle

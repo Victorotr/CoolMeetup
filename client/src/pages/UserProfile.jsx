@@ -88,7 +88,7 @@ const UserProfile = () => {
   }, [id]);
 
   return (
-    <main className="mx-auto w-full max-w-6xl pt-5 flex flex-col">
+    <section className="mx-auto w-full max-w-6xl pt-5 flex flex-col">
       <section className=" py-5 border rounded-lg shadow-md ">
         <div className="flex  px-3 relative">
           <div className="relative w-32 max-w-32">
@@ -127,7 +127,7 @@ const UserProfile = () => {
         </div>
       </section>
       <section className="w-full  ">
-      <div className="w-full h-72  mx-auto">  
+      <div className="w-full mx-auto">  
         <h2 className="text-2xl text-shadow font-semibold my-5 mx-3  ">
           Mis Meetups
         </h2>
@@ -161,7 +161,7 @@ const UserProfile = () => {
       </div>
       </section>
 
-    </main>
+    </section>
   );
 };
 
