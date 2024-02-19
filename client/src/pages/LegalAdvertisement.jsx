@@ -44,7 +44,8 @@ const LegalAdvertisement = () => {
         &nbsp;es Servicios de información sobre quedadas y agrupación voluntaria
         de personas para un fin común.
       </p>
-      <h4>Condiciones de Uso</h4>
+      <div>&nbsp;</div>
+      <h4 className="text-xl font-semibold">Condiciones de Uso</h4>
       <p>
         La utilización del sitio Web le otorga la condición de Usuario, e
         implica la aceptación completa de todas las cláusulas y condiciones de
