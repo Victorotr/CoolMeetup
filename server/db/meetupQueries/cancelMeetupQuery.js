@@ -2,7 +2,7 @@ import { getConnection } from '../ConnectionDB.js';
 
 export const cancelMeetupQuery = async (meetup_id,user_id) => {
   let connection;
-  console.log('query meetup id',meetup_id)
+ 
   try {
     connection = await getConnection();
     const [checkMeetup] = await connection.query(`

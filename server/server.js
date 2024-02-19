@@ -3,13 +3,22 @@ import morgan from 'morgan';
 import router from './routes/routes.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import http from 'http';
+import { configureSocket } from './Controllers/socket/socketHandler.js';
+
 import { deleteOldMeetups } from './Controllers/meetups/deleteOldMeetups.js';
 const app = express();
+
+const server = http.createServer(app);
+
+configureSocket(server);
 
 app.use(morgan('dev'));
 
 app.use(cookieParser());
+
 app.use(express.static('public'));
+
 app.use(express.json());
 
 // Express cors
@@ -39,11 +48,11 @@ app.use((req, res) => {
 // Middleware de gestión de errores
 app.use((error, req, res, next) => {
   console.error('app error catch', error);
-
+ 
   res.status(error.httpStatus || 500).send({
     status: 'error',
     message: error.message, 
-  });  
+  });   
   
 });   
 
@@ -54,8 +63,9 @@ if(process.env.AUTO_DELETE  === 'false'){
   clearInterval(interval)
 }
 
-// Lanzamos el servidor
+// Lanzamos el servidor 
 
-app.listen(3000, () => {
+
+server.listen(3000, () => {
   console.log('Servidor funcionado ✅ en puerto 3000');
 });

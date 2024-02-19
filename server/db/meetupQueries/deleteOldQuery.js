@@ -28,8 +28,7 @@ export const deleteOldMeetupQuery = async () => {
     }
 
     try {
-
-
+ 
         const [deleteMeetups] = await connection.query(` 
         DELETE FROM meetups
         WHERE meetup_datetime < ?;`, [MaxDate]
@@ -40,8 +39,16 @@ export const deleteOldMeetupQuery = async () => {
         WHERE id_meetup NOT IN (
         SELECT id_meetup
         FROM meetups
-        );
+        ); 
         `)
+        const [deleteMessages] = await connection.query(`
+        DELETE FROM meetup_messages
+        WHERE id_meetup NOT IN (
+        SELECT id_meetup
+        FROM meetups
+        ); 
+        `)
+        console.log(deleteMessages.affectedRows,'messajes eliminados')
         console.log(deleteAssistants.affectedRows, 'asistentes eliminados')
         const [getImages] = await connection.query(`SELECT meetup_image_id FROM meetups WHERE meetup_datetime < ?;`, [MaxDate]);
 

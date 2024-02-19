@@ -8,15 +8,25 @@ import {
 import { IoMdClose } from "react-icons/io";
 import { ImCamera } from "react-icons/im";
 import nopicture from "../assets/no_meetup_image.png";
-import { MdSearch, MdDelete, MdEmojiEmotions } from "react-icons/md";
+import { MdSearch, MdDelete, MdEmojiEmotions, MdWarning } from "react-icons/md";
+
 import { Handler } from "../context/Context";
 import { useNavigate } from "react-router-dom";
 import { categories } from "../../categories";
 import DatePickerComponent from "../components/DatePicker";
 import CustomTimePicker from "../components/CustomTimePicker";
 import { formDataInstance } from "../axios/Instance";
-
+import { useRef } from "react";
 const Map = () => {
+  const addressRef = useRef(null);
+  const dateRef = useRef(null);
+  const ImageRef = useRef(null)
+  const [formError, setformError] = useState({
+    address: false,
+    date: false,
+    image:false,
+    text: "",
+  });
   const { user, settoast, accessLoading } = Handler();
   const navigate = useNavigate();
   const [map, setMap] = useState(null);
@@ -40,8 +50,7 @@ const Map = () => {
     address: null,
   });
   useEffect(() => {
-   
-    if (!user && !accessLoading ) {
+    if (!user && !accessLoading) {
       navigate("/signin");
       settoast({
         on: true,
@@ -50,17 +59,14 @@ const Map = () => {
       });
       return;
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, accessLoading]);
-  let emojis =
-    `😀😄😁😆😅😂🤣🥲🥹😊😇🙂🙃😉😌😍🥰😘😗😙😚
+  let emojis = `😀😄😁😆😅😂🤣🥲🥹😊😇🙂🙃😉😌😍🥰😘😗😙😚
      😋😛😝😜🤪🤨🧐🤓😎🥸🤩🥳😏😒😞😔😟😕🙁☹️😣
      😖😫😩🥺😢😭😮‍💨😤😠😡🤬🤯😳🥵🥶😱😨😰😥😓🫣
      🤗🫡🤔🫢🤭🤫🤥😶😶‍🌫️😐😑😬🫨🫠🙄😯😦😧😮😲🥱
      😴🤤😪😵😵‍💫🫥🤐🥴🤢🤮🤧😷🤒🤕🤑🤠😈👿👹👺🤡
      💩👻💀☠️👽👾🤖🎃😺😸😹😻😼😽🙀😿😾`;
-     
   emojis = [...emojis];
   const onMapLoad = (mapInstance) => {
     setMap(mapInstance);
@@ -81,7 +87,7 @@ const Map = () => {
 
   const handleSearch = () => {
     if (!map || !address || selected.isSelected) return;
-
+    if(address.length<3){return}
     const geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ address: address }, (results, status) => {
       if (status === window.google.maps.GeocoderStatus.OK) {
@@ -94,18 +100,21 @@ const Map = () => {
 
   const handleUpButton = (e) => {
     e.preventDefault();
+    setformError({date:false,address:false,image:false,text:''})
     const type = e.target.files[0].type.slice(-3);
 
     if (type === "png" || type === "jpg" || type === "gif" || type === "peg") {
       setfile(e.target.files[0]);
-      //setfileErr("");
+     
     } else {
-      //setfileErr("Not allowed file extention");
+      console.log('image format error')
+       setformError({date:false,address:false,image:true,text:'Extensión imagen no permitida'})
     }
   };
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    setformError({date:false,address:false,image:false,text:''})
 
     if (e.type === "dragenter" || e.type === "dragover") {
       setDragActive(true);
@@ -117,6 +126,7 @@ const Map = () => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
+    setformError({date:false,address:false,image:false,text:''})
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const type = e.dataTransfer.files[0].type.slice(-3);
 
@@ -127,9 +137,8 @@ const Map = () => {
         type === "peg"
       ) {
         setfile(e.dataTransfer.files[0]);
-        
       } else {
-       settoast({on:true,type:'warning',text:'Extensión no permitida'})
+        setformError({date:false,address:false,image:true,text:'Extensión imagen no permitida'})
       }
     }
   };
@@ -162,11 +171,14 @@ const Map = () => {
       now.setHours(now.getHours() + 1);
 
       if (meetupForm.meetupDate < now) {
-        settoast({
-          on: true,
-          type: "warning",
+        dateRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        setformError({
+          date: true,
+          address: false,
+          image:false,
           text: "La fecha del meetup tiene que ser minimo una hora más tarde que el dia y hora actual.",
         });
+
         return;
       }
 
@@ -178,10 +190,14 @@ const Map = () => {
       for (const key in meetupForm) {
         if (key === "address") {
           if (!meetupForm["address"]) {
-            settoast({
-              on: true,
-              type: "warning",
-              text: "Falta la ubicación del Meetup!",
+        
+            addressRef.current.scrollIntoView({ behavior: "smooth" });
+            addressRef.current.focus();
+            setformError({
+              date: false,
+              address: true,
+              image:false,
+              text: "No se ha seleccionado ninguna dirección! Escribe una calle y/o ciudad, y selecciona la dirección de la lista que aparece abajo hasta que se vea un punto en el mapa",
             });
             return;
           }
@@ -221,10 +237,8 @@ const Map = () => {
     });
   };
   return (
-    <section className="w-full max-w-4xl mx-auto py-10 border rounded-lg sm:px-2">
-      <h1 className="font-Lora text-xl font-semibold px-3 mx-auto">
-        Crear Meetup
-      </h1>
+    <section className=" w-full max-w-4xl mx-auto py-10 border rounded-lg sm:px-2">
+      <h1 className=" text-xl font-semibold px-3 mx-auto">Crear Meetup</h1>
       <form
         onSubmit={HandleSubmit}
         className=" flex flex-col  items-start justify-start gap-3 py-5 px-2"
@@ -290,41 +304,67 @@ const Map = () => {
         <select
           onChange={HandleForm}
           name="category"
-          className="p-3 shadow-md bg-zinc-50/20 border-2 border-blue-500 font-semibold rounded-md"
+          className="p-3 shadow-md bg-zinc-50/20 border  font-semibold rounded-md"
         >
           {categories.map((item, i) => {
             return <option key={i}>{item}</option>;
           })}
         </select>
-        <div>
+        <div
+          className={`w-full flex flex-col gap-2 rounded-md py-1 `}
+          ref={dateRef}
+        >
           <label htmlFor="date" className="font-semibold px-1">
             Cuando?
           </label>
-          <div className="flex  gap-2">
+          <div className="flex w-full max-w-xs gap-2 font-semibold text-sm">
             <DatePickerComponent
               onDateChange={(date) => {
                 setmeetupDate(date);
+                setformError({ ...formError, date: false });
               }}
             />
 
-            <CustomTimePicker timeSelected={(time) => setMeetupTime(time)} />
+            <CustomTimePicker
+              onChange={() => setformError({ ...formError, date: false })}
+              timeSelected={(time) => setMeetupTime(time)}
+            />
           </div>
+          <p
+            className={`${
+              formError.date && formError.text ? "flex" : "hidden"
+            } ${
+              formError.date && "border-2 border-amber-500"
+            } gap-2 items-center rounded-md px-2 py-1`}
+          >
+            <MdWarning className="text-amber-500 w-10 h-10" /> {formError.text}
+          </p>
         </div>
-        <div className="flex flex-col  w-full my-5 relative">
+        <div ref={ImageRef} className="flex flex-col  w-full my-5 relative">
+          <label className="font-semibold px-1 mb-2">Añade una imagen a tu Meetup  &#40;Recomendado&#41; </label>
+          <p
+            className={`${
+              formError.image && formError.text ? "flex" : "hidden"
+            } ${
+              formError.image && "border-2 border-amber-500"
+            } gap-2 items-center rounded-md px-2 py-1`}
+          >
+            <MdWarning className="text-amber-500 w-10 h-10" /> {formError.text}
+          </p>
           <div
             className={`w-full  relative flex flex-col justify-center items-center `}
           >
             <div
-            className="border w-full"
+              className="border w-full"
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
               onDragOver={handleDrag}
               onDrop={handleDrop}
             >
               <img
-                className={`${
-                  DragActive && "border-2 border-indigo-500"
-                } ${!file ? 'object-contain':'object-cover'} transition-all w-full h-72   border-zinc-900/20 m-1`}
+                className={`${DragActive && "border-2 border-indigo-500"} ${
+                  !file ? "object-contain" : "object-cover"
+                } transition-all w-full h-72   border-zinc-900/20 m-1`}
                 src={file ? URL.createObjectURL(file) : nopicture}
                 alt="User picture"
               />
@@ -348,7 +388,11 @@ const Map = () => {
               </label>
 
               <button
-                onClick={(e) =>{e.preventDefault();setfile(null)}}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setfile(null);
+                  setformError({date:false,address:false,image:false,text:''})
+                }}
                 className={`${
                   !file && "hidden"
                 } flex items-center justify-center gap-1 py-2 px-3  border border-zinc-50 bg-red-500 outline outline-1 hover:outline-2 outline-red-600 transition-all rounded-full font-semibold text-zinc-50`}
@@ -363,11 +407,22 @@ const Map = () => {
         <label htmlFor="direction" className="font-semibold px-1">
           Donde?
         </label>
-        <div className="mx-1  w-full rounded-md shadow-md flex items-center font-normal  relative border border-zinc-900/10 justify-between py-2">
+        <p
+          className={`${
+            formError.address && formError.text ? "flex" : "hidden"
+          } ${
+            formError.address && "border-2 border-amber-500"
+          } gap-2 items-center rounded-md px-2 py-1`}
+        >
+          <MdWarning className="text-amber-500 w-10 h-10" /> {formError.text}
+        </p>
+        <div className=" w-full h-12 rounded-md shadow-md flex items-center font-normal  relative border-2 border-zinc-900/10 justify-between ">
           <input
             type="text"
             name="direction"
             placeholder="Busca una dirección"
+            ref={addressRef}
+            autoComplete='off'
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 handleSearch();
@@ -375,17 +430,22 @@ const Map = () => {
             }}
             value={address}
             disabled={selected.isSelected}
-            className="w-full h-full py-1 px-3 disabled:bg-transparent placeholder:text-zinc-900/60 focus:outline-none bg-transparent"
-            onChange={(e) => setAddress(e.target.value)}
+            className="focus:border-2  focus:border-blue-500 rounded-md w-full h-full py-1.5 px-3 disabled:bg-transparent placeholder:text-zinc-900/60 focus:outline-none bg-transparent"
+            onChange={(e) => {
+              setAddress(e.target.value);
+              handleSearch();
+              setformError({ date: false, address: false,image:false, text: "" });
+            }}
           />
           <div className="flex items-center px-2">
             <span
               onClick={handleSearch}
+              disabled={address.length < 5}
               className={`${
                 selected.isSelected && "hidden"
-              }  hover:scale-110 transition-all`}
+              }  hover:scale-110 transition-all h-10 disabled:brightness-0 flex items-center border px-2 rounded-lg bg-blue-500 text-white`}
             >
-              <MdSearch className="text-zinc-900/70" size={25} />
+              <MdSearch className="text-white" size={25} /> Buscar
             </span>
             <span
               onClick={() => {
@@ -462,7 +522,6 @@ const Map = () => {
           </div>
         )}
         <button
-          //  disabled={!meetupForm.user_id || !meetupForm.title || !meetupForm.meetupDate}
           className="border w-full p-3 font-semibold text-zinc-50 bg-blue-500 rounded-md disabled:brightness-75"
           type="submit"
         >

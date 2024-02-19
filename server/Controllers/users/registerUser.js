@@ -67,9 +67,37 @@ const registerUser = async (req, res, next) => {
 
     /**armamos el body del mail */
     const bodyMail = `
-       Te registraste en CoolMeetups.com.
-        Pulsa el enlace para activar la cuenta:
-       ${process.env.PUBLIC_HOST}${regCode}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
+        <style>
+            /* Estilos para hacer el correo electrónico responsive */
+            @media screen and (max-width: 600px) {
+                .container {
+                    width: 100% !important;
+                }
+            }
+        </style>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td style="padding: 20px 0; text-align: center;">
+                    <h1 style="margin-bottom: 20px;">Bienvenido/a a CoolMeetups</h1>
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Te has registrado con exíto en CoolMeetups!</p>
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Solo falta un paso más</p>
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Pulsa el enlace para activar la cuenta:</p>
+                    <a href="${process.env.PUBLIC_HOST}${regCode}" style="display: inline-block; background-color: #007bff; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Activar cuenta</a>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+
         `;
     /**llamo a enviar mail */
 

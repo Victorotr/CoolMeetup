@@ -19,7 +19,7 @@ export const signUpMeetupQuery = async (meetupId, userId) => {
     `,
       [meetupId]
     );
-    console.log('meetmup',meetup)
+  
     if (meetup.length < 1) {
       throw generateError('No existe un meetup con ese id', 409);
     }
@@ -37,7 +37,7 @@ export const signUpMeetupQuery = async (meetupId, userId) => {
 
       if (!signupInfo.length) {
         // Add user for a meetup
-        console.log('adding to meetup ')
+       
         await connection.query(
           `
             INSERT INTO users_meetups (id_user, id_meetup)
@@ -49,8 +49,8 @@ export const signUpMeetupQuery = async (meetupId, userId) => {
       
       } else {
         const [deleteJoin]= await connection.query(`DELETE FROM users_meetups WHERE id_user = ? AND id_meetup = ?`,[userId,meetupId]);
-        
         console.log(deleteJoin)
+  
         return  {action:'deleted',title:meetup[0].meetup_title}
       }
     } catch (error) {

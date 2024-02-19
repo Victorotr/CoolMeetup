@@ -2,14 +2,28 @@ import React, { ReactElement, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HandleDate from "../functions/HandleDate";
 import { FaUsers, FaArrowRight, FaWalking } from "react-icons/fa";
-import { Meetup, MeetupCardProps } from "../Interfaces/TypesInterfaces";
+import { MeetupCardProps } from "../Interfaces/TypesInterfaces";
 
 const MeetupCard: React.FC<MeetupCardProps> = ({
   meetup,
+  mapcenter,
 }: MeetupCardProps): ReactElement => {
   const navigate = useNavigate();
   const [isOutDated, setisOutDated] = useState(false);
-  console.log(meetup);
+  const [isSelected, setisSelected] = useState(false);
+  useEffect(() => {
+    const coordenades = { lat: meetup.x_cordinate, lng: meetup.y_cordinate };
+
+    if (
+      mapcenter.lat === coordenades.lat &&
+      mapcenter.lng === coordenades.lng
+    ) {
+      setisSelected(true);
+    } else {
+      setisSelected(false);
+    }
+  }, [mapcenter]);
+
   useEffect(() => {
     const now = new Date();
     const meetupDate = new Date(meetup.meetup_datetime);
@@ -18,10 +32,6 @@ const MeetupCard: React.FC<MeetupCardProps> = ({
     }
   }, [meetup.meetup_datetime]);
 
-  const handleDetailsClick = () => {
-    navigate(`/meetups/details/${meetup.id_meetup}`);
-  };
-
   const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     navigate(`/user/details/${meetup.main_user_details.user_id}`);
@@ -29,13 +39,18 @@ const MeetupCard: React.FC<MeetupCardProps> = ({
 
   return (
     <div
-      onClick={handleDetailsClick}
-      className="flex relative max-w-md sm:max-w-[350px] sm:min-w-[350px] w-full flex-col border border-zinc-900/10 rounded-md overflow-hidden justify-between shadow-lg hover:scale-105 transition-all "
+      className={`${
+        isSelected ? "border-4 border-blue-500/80" : "border border-zinc-500/5"
+      } flex relative max-w-md sm:max-w-[350px] sm:min-w-[350px] w-full flex-col  rounded-md overflow-hidden justify-between shadow-lg hover:scale-105 transition-all `}
     >
       <span
         className={`${
           meetup?.cancelled ? "flex" : isOutDated ? "flex" : "hidden"
+<<<<<<< HEAD
         }  bg-zinc-600/20 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}
+=======
+        }  bg-zinc-500/10 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}
+>>>>>>> origin/Matteos-Branch
       >
         <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">
           MEETUP <br /> FINALIZADO O CANCELADO
@@ -70,6 +85,7 @@ const MeetupCard: React.FC<MeetupCardProps> = ({
           <div className="flex gap-2 ">
             <a
               href={`/meetups/details/${meetup.id_meetup}`}
+              target="_blank"
               className="inline-flex shadow-md items-center gap-2 px-3 py-1.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Más detalles

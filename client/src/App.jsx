@@ -17,6 +17,9 @@ import Loading from "./components/Loading";
 import MeetupDetails from "./pages/MeetupDetails";
 import RecoverPwd from "./pages/RecoverPwd";
 import ResetPwd from "./pages/ResetPwd";
+import MeetupNotFound from "./pages/MeetupsNotFound";
+import Footer from "./components/Footer";
+import CookieAdvice from "./components/CookieAdvice";
 
 function App() {
   const { myData, setMyData, setmenuOn } = Handler();
@@ -27,13 +30,14 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myData]);
   return (
-    <main
+    <><main
       onClick={(e) => {
         e.stopPropagation();
         setmenuOn(false);
       }}
-      className={` min-h-screen  relative font-Inter pb-20`}
+      className={` min-h-screen  relative font-Barlow pb-20 `}
     >
+      <CookieAdvice/>
       <Nav />
       <Loading />
       <ToastWindow />
@@ -43,17 +47,19 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/validateUser/:regCode" element={<ValidateUser />} />
-        <Route path="/list/meetups" element={<ListMeetups />} />
+        <Route path="/list/meetups" element={<><ListMeetups /></>} />
         <Route path="/new/meetup" element={<CreateMeetUp />} />
-        <Route path="/user/details/:id" element={<UserProfile />} />
+        <Route path="/user/details/:id" element={<><UserProfile /></>} />
         <Route path="/edit/user/details" element={<EditUserProfile />} />
-        <Route path="/user/recovercode/" element={<MeetupDetails />} />
-        <Route path="/meetups/details/:id" element={<MeetupDetails />} />
+       {/* <Route path="/user/recovercode/" element={<MeetupDetails />} /> */}
+        <Route path="/meetups/details/:id" element={<><MeetupDetails /></>} />
         <Route path="/recoverpwd/" element={<RecoverPwd />} />
         <Route path="/resetpwd/" element={<ResetPwd />} />
-        <Route path="/*" element={<NotFound />} />
+        <Route path="/*" element={<><NotFound /></>} />
+        <Route path="/meetup/notfound" element={<><MeetupNotFound /></>} />
       </Routes>
-    </main>
+
+    </main><Footer/></>
   );
 }
 

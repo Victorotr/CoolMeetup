@@ -9,9 +9,10 @@ interface Time {
 
 interface Props {
   timeSelected: (time: Time) => void;
+  onChange:(time:Time)=>void;
 }
 
-const CustomTimePicker: FC<Props> = ({ timeSelected }) => {
+const CustomTimePicker: FC<Props> = ({ timeSelected,onChange }) => {
   const [time, settime] = useState<Time>({ hours: "", minutes: "" });
   const [hours, sethours] = useState<string[]>([]);
   const [minutes, setminutes] = useState<string[]>([]);
@@ -58,10 +59,11 @@ const CustomTimePicker: FC<Props> = ({ timeSelected }) => {
   return (
     <div
       onClick={() => setpickOn(true)}
+      
       ref={timePickerRef}
       className={`${
         pickOn && "border-2 border-b border-zinc-900"
-      } px-3 shadow-md border min-w-32 rounded-md h-10 flex items-center justify-start gap-1 relative z-50 font-semibold text-zinc-900/80`}
+      } px-3 shadow-md border min-w-32 rounded-md h-10 flex items-center justify-start gap-1 relative z-50 `}
     >
       <CiTimer strokeWidth={1} className="text-zinc-900/70" />
       {time.hours}:{time.minutes}
@@ -82,6 +84,7 @@ const CustomTimePicker: FC<Props> = ({ timeSelected }) => {
                 onClick={(e) => {
                   e.preventDefault();
                   settime({ ...time, hours: item });
+                  onChange()
                 }}
               >
                 {item}
@@ -101,6 +104,7 @@ const CustomTimePicker: FC<Props> = ({ timeSelected }) => {
                 onClick={(e) => {
                   e.preventDefault();
                   settime({ ...time, minutes: item });
+                  onChange()
                 }}
               >
                 {item}

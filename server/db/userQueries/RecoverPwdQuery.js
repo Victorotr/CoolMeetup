@@ -37,14 +37,42 @@ export const recoverPwdQuery = async (email) => {
     const recoverCode = uuidv4();
 
     // Write bodyMail
+
+
+        
+
+
+
     const bodyMail = `
-          Se ha solicitado un cambio de contraseña en Coolmeetup para este email.
-          El código de recuperación es: ${recoverCode}
-
-          Si usted no ha solicitado el cambio, por favor ignore este email.
-          Puede hacer login con su contraseña habitual.
-
-          Atentamente equipo de Coolmeetup.
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
+        <style>
+            /* Estilos para hacer el correo electrónico responsive */
+            @media screen and (max-width: 600px) {
+                .container {
+                    width: 100% !important;
+                }
+            }
+        </style>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td style="padding: 20px 0; text-align: center;">
+                    <h1 style="margin-bottom: 20px;">Cambio contraseña</h1>
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;"> Como solicitado, El código de recuperación es</p>
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">${recoverCode}</p>
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 20px;">  Si usted no ha solicitado el cambio, por favor ignore este email.
+                    Puede hacer login con su contraseña habitual. Atentamente equipo de Coolmeetup.</p>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
           `;
 
     // Call function sendMail

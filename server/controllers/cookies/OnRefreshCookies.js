@@ -6,7 +6,7 @@ export const OnRefreshCookies = async (req, res) => {
   const conexion = await getConnection();
 
   try {
-
+    console.log('refresh')
     let userId;
     const expiration = 1000 * 60 * 60 * 24 * 28;
     if (req.cookies && req.cookies.visitId) {
@@ -18,9 +18,11 @@ export const OnRefreshCookies = async (req, res) => {
         httpOnly: true,
         secure: process.env.ENVIROMENT !== "development",
       });
-    }
+    } const [saveVisit]= await conexion.query(`INSERT INTO visit(user_id) VALUE(?)`,[userId]);
+     console.log(saveVisit)
     res.send({ message: 'received' });
-    //const [saveVisit]= await conexion.query(`INSERT INTO visit(user_id) VALUE(?)`,[userId]);
+   
+   
   } catch (error) {
     console.log(error);
   } finally {

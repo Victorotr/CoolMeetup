@@ -6,7 +6,7 @@ import { Instance } from "../axios/Instance";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { settoast, setuser } = Handler();
+  const { settoast, setuser, setkeepOpen} = Handler();
 
   const [formData, setformData] = useState({
     email: "",
@@ -54,6 +54,8 @@ const SignIn = () => {
 
   const handleForm = (e) => {
     if (e.target.name === "checkbox") {
+     
+      setkeepOpen(e.target.checked)
       setformData({ ...formData, checked: e.target.checked });
       return;
     }
@@ -133,7 +135,9 @@ const SignIn = () => {
                       required={false}
                     />
                   </div>
-                  <div className="ml-3 text-sm">
+                  <div
+                  onChange={(e)=>{console.log(e.target)}}
+                  className="ml-3 text-sm">
                     <label htmlFor="remember" className="text-gray-500 ">
                       Mantener sesión abierta
                     </label>
@@ -168,7 +172,7 @@ const SignIn = () => {
                   o
                 </span>
               </div>
-              <div className=" w-full flex justify-center items-center py-5">
+              <div className="border w-full flex justify-center items-center py-5">
                 <GoogleLogin
                   size="large"
                   onSuccess={(credentialResponse) => {

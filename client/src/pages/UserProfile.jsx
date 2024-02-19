@@ -10,7 +10,6 @@ import { Instance } from "../axios/Instance";
 const UserProfile = () => {
   const { setuser, user, settoast,accessLoading } = Handler();
   const navigate = useNavigate();
-
   const { id } = useParams();
   const [userData, setuserData] = useState(null);
   const [userMeetups, setUserMeetups] = useState(null);
@@ -34,7 +33,7 @@ const UserProfile = () => {
       if (res.status === 200 && res.data.user) {
         setuserData(res.data.user);
         if (res.data.user.id === user.id) {
-          
+
           setuser(res.data.user);
         }
       }
@@ -89,7 +88,7 @@ const UserProfile = () => {
   }, [id]);
 
   return (
-    <main className="mx-auto w-full max-w-4xl  flex flex-col">
+    <section className="mx-auto w-full max-w-6xl pt-5 flex flex-col">
       <section className=" py-5 border rounded-lg shadow-md ">
         <div className="flex  px-3 relative">
           <div className="relative w-32 max-w-32">
@@ -128,8 +127,8 @@ const UserProfile = () => {
         </div>
       </section>
       <section className="w-full  ">
-      <div className="w-full h-72  max-w-5xl mx-auto">  
-        <h2 className="text-2xl text-shadow font-semibold my-5 mx-3 font-Lora ">
+      <div className="w-full mx-auto">  
+        <h2 className="text-2xl text-shadow font-semibold my-5 mx-3  ">
           Mis Meetups
         </h2>
         <div className="no-scrollbar shadow-inner  sm:px-3 rounded-lg border border-zinc-900/5  flex flex-wrap justify-start items-start gap-4 p-1 py-3 max-h-[500px] overflow-y-scroll">
@@ -138,13 +137,13 @@ const UserProfile = () => {
               return <MeetupCardMin key={item.id_meetup} meetup={item} />;
             })
           ) : (
-            <div className="my-10 px-3 text-lg font-Lora text-center font-medium">
+            <div className="my-10 px-3 text-lg  text-center font-medium">
            Todavía no has creado ningun Meetup
             </div>
           )}
         </div>
           <div className="w-full mx-auto">  
-            <h2 className="text-2xl text-shadow font-semibold my-5 mx-3 font-Lora ">
+            <h2 className="text-2xl text-shadow font-semibold my-5 mx-3  ">
               Meetups a los que estoy inscrito
             </h2>
             <div className="no-scrollbar sm:px-3 shadow-inner rounded-lg border border-blue-600/20 flex flex-wrap justify-start items-start gap-4 p-1 py-3 max-h-[500px] overflow-y-scroll">
@@ -153,7 +152,7 @@ const UserProfile = () => {
                 return <MeetupCardMin key={item.id_meetup} meetup={item} />;
               })
             ) : (
-              <div className="my-10 px-3 text-lg font-Lora text-center font-medium">
+              <div className="my-10 px-3 text-lg  text-center font-medium">
                  Todavia no te has apuntado a ningun Meetup
               </div>
             )}
@@ -162,7 +161,7 @@ const UserProfile = () => {
       </div>
       </section>
 
-    </main>
+    </section>
   );
 };
 

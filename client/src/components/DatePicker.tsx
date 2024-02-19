@@ -15,32 +15,33 @@ const months = [
   "nov",
   "dic",
 ];
-const minDate = new Date();
+
 let now = new Date();
 const options = {
 	autoHide: true,
-	todayBtn: false,
+	todayBtn: true,
 	clearBtn: false,
 	clearBtnText: "Clear",
 	maxDate: new Date("2099-01-01"),
-	minDate: new Date("2024-01-01"),
+	minDate: now,
 	theme: {
-	  background: "",
+	  background: "bg-white shadow-md border border-zinc-900/10",
 	  todayBtn: "",
 	  clearBtn: "",
 	  icons: "",
 	  text: "",
 	  disabledText: "",
-	  input: "",
+	  input: "bg-white",
 	  inputIcon: "",
 	  selected: "",
+	  
 	},
 	icons: {
 	  prev: () => (
-		<span>{months[now.getMonth() - 1 < 0 ? 11 : now.getMonth() - 1]}</span>
+		<span className="text-sm">{months[now.getMonth() - 1 < 0 ? 11 : now.getMonth() - 1]}</span>
 	  ),
 	  next: () => (
-		<span>{months[now.getMonth() + 1 > 11 ? 0 : now.getMonth() + 1]}</span>
+		<span className="text-sm">{months[now.getMonth() + 1 > 11 ? 0 : now.getMonth() + 1]}</span>
 	  ),
 	},
 	datepickerClassNames: "",
@@ -59,27 +60,33 @@ const options = {
   };
   
 
-const DatePickerComponent = ({ onDateChange }) => {
+const DatePickerComponent = ({ onDateChange,onChange }) => {
   const [show, setShow] = useState(false);
   const handleChange = (selectedDate: Date) => {
     now = new Date(selectedDate);
     if (onDateChange) {
       onDateChange(selectedDate);
     }
+	if (onChange) {
+		onChange(); // Llama a la función onChange del formulario
+	  }
   };
   const handleClose = (state: boolean) => {
     setShow(state);
   };
 
   return (
-    <div className="bg-slate-50/10">
+	
+   
       <Datepicker
         options={options}
         onChange={handleChange}
         show={show}
         setShow={handleClose}
+		classNames="shadow-md rounded-md"
       />
-    </div>
+ 
+	
   );
 };
 
