@@ -2,7 +2,7 @@ import React, { ReactElement, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HandleDate from "../functions/HandleDate";
 import { FaUsers, FaArrowRight, FaWalking } from "react-icons/fa";
-import { MeetupCardProps } from "../Interfaces/TypesInterfaces";
+import { Meetup, MeetupCardProps } from "../Interfaces/TypesInterfaces";
 
 const MeetupCard: React.FC<MeetupCardProps> = ({
   meetup,
@@ -32,6 +32,10 @@ const MeetupCard: React.FC<MeetupCardProps> = ({
     }
   }, [meetup.meetup_datetime]);
 
+  const handleDetailsClick = () => {
+    navigate(`/meetups/details/${meetup.id_meetup}`);
+  };
+
   const handleUserClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     navigate(`/user/details/${meetup.main_user_details.user_id}`);
@@ -39,18 +43,29 @@ const MeetupCard: React.FC<MeetupCardProps> = ({
 
   return (
     <div
-      className={`${
-        isSelected ? "border-4 border-blue-500/80" : "border border-zinc-500/5"
-      } flex relative max-w-md sm:max-w-[350px] sm:min-w-[350px] w-full flex-col  rounded-md overflow-hidden justify-between shadow-lg hover:scale-105 transition-all `}
+      onClick={handleDetailsClick}
+      className="flex relative max-w-md sm:max-w-[350px] sm:min-w-[350px] w-full flex-col border border-zinc-900/10 rounded-md overflow-hidden justify-between shadow-lg hover:scale-105 transition-all "
     >
       <span
         className={`${
           meetup?.cancelled ? "flex" : isOutDated ? "flex" : "hidden"
 <<<<<<< HEAD
+<<<<<<< HEAD
         }  bg-zinc-600/20 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}
 =======
         }  bg-zinc-500/10 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}
 >>>>>>> origin/Matteos-Branch
+=======
+        }  bg-zinc-500/10 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}
+      />
+      <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">
+        MEETUP <br /> FINALIZADO O CANCELADO
+      </p>
+      <span
+        className={`${
+          meetup?.cancelled ? "flex" : isOutDated ? "flex" : "hidden"
+        }  bg-zinc-600/20 z-40 absolute top-0 left-0 w-full h-full items-start py-14 justify-center`}
+>>>>>>> origin/Victor/branch
       >
         <p className="text-zinc-50 text-shadow font-bold text-xl text-center font-Lora bg-red-600/70 shadow-md p-3 rounded-md ">
           MEETUP <br /> FINALIZADO O CANCELADO
@@ -99,6 +114,7 @@ const MeetupCard: React.FC<MeetupCardProps> = ({
             >
               Me apunto!
               <span>
+                <FaWalking />
                 <FaWalking />
               </span>{" "}
             </a>
